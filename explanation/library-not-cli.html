@@ -289,7 +289,9 @@ compiled module exports the registration surface (<code class="docutils literal 
 <h2>Why the driver is not here<a class="headerlink" href="#why-the-driver-is-not-here" title="Link to this heading">#</a></h2>
 <p>A library composes. A binary does not.</p>
 <p>One CLI belongs with the engine. Call <code class="docutils literal notranslate"><span class="pre">seams</span></code> in seams-core.
-This repository does not grow a second one.</p>
+The engine CLI has <code class="docutils literal notranslate"><span class="pre">seams</span> <span class="pre">cn</span></code> and <code class="docutils literal notranslate"><span class="pre">seams</span> <span class="pre">hbonds</span> <span class="pre">--donors</span></code>.
+Those commands are not this binary. This repository does not
+grow a second one.</p>
 <p>The 2020 YAML workflow (config plus globals) belongs to <code class="docutils literal notranslate"><span class="pre">seams</span></code>.
 Run an ordinary file with <code class="docutils literal notranslate"><span class="pre">lua</span></code> after setting <code class="docutils literal notranslate"><span class="pre">LUA_PATH</span></code> and
 <code class="docutils literal notranslate"><span class="pre">LUA_CPATH</span></code>, or after <code class="docutils literal notranslate"><span class="pre">nix</span> <span class="pre">develop</span></code>. Hosts that already own
@@ -514,7 +516,7 @@ seams-core build flags. The helper surface stays the same.</p></li>
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=67b02a41"></script>
+      <script src="../_static/documentation_options.js?v=4d935f96"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/design-tabs.js?v=f930bc37"></script>
