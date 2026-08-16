@@ -138,6 +138,7 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#neighbors-cloud-opts">~neighbors~(cloud[, opts])</a></li>
 <li><a class="reference internal" href="#neighbors-pair-cloud-opts">~neighbors_pair~(cloud[, opts])</a></li>
 <li><a class="reference internal" href="#cn-cloud-opts">~cn~(cloud[, opts])</a></li>
+<li><a class="reference internal" href="#core-calcrunningcn-cloud-typei-typej-rmax-bins">~core.calcRunningCN~(cloud, typeI, typeJ, rmax, bins)</a></li>
 <li><a class="reference internal" href="#knn-cloud-opts">~knn~(cloud[, opts])</a></li>
 <li><a class="reference internal" href="#chillplus-cloud-opts">~chill<sub>plus</sub>~(cloud[, opts])</a></li>
 <li><a class="reference internal" href="#chill-cloud-opts">~chill~(cloud[, opts])</a></li>
@@ -414,6 +415,14 @@ Returns a Lua table of rows (self ID first).</p>
 <code class="docutils literal notranslate"><span class="pre">floor(cutoff</span> <span class="pre">/</span> <span class="pre">0.1)</span></code>). <code class="docutils literal notranslate"><span class="pre">rhoJ</span></code> is <code class="docutils literal notranslate"><span class="pre">nJ</span> <span class="pre">/</span> <span class="pre">volume</span></code> from the
 partial RDF.</p>
 </section>
+<section id="core-calcrunningcn-cloud-typei-typej-rmax-bins">
+<h2>~core.calcRunningCN~(cloud, typeI, typeJ, rmax, bins)<a class="headerlink" href="#core-calcrunningcn-cloud-typei-typej-rmax-bins" title="Link to this heading">#</a></h2>
+<p>Running integral of <code class="docutils literal notranslate"><span class="pre">g_IJ</span></code>. Returns <code class="docutils literal notranslate"><span class="pre">{r,</span> <span class="pre">cn}</span></code> with
+<code class="docutils literal notranslate"><span class="pre">rhoJ</span> <span class="pre">=</span> <span class="pre">nJ</span> <span class="pre">/</span> <span class="pre">volume</span></code>. There is no <code class="docutils literal notranslate"><span class="pre">dseams.running_cn</span></code> helper;
+call the compiled name on <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code>. Ice-score <code class="docutils literal notranslate"><span class="pre">--family</span></code>,
+contact pairs, polar/apolar domains, and type-resolved <code class="docutils literal notranslate"><span class="pre">rho(z)</span></code>
+are the <code class="docutils literal notranslate"><span class="pre">seams</span></code> CLI in seams-core 2.5.0.</p>
+</section>
 <section id="knn-cloud-opts">
 <h2>~knn~(cloud[, opts])<a class="headerlink" href="#knn-cloud-opts" title="Link to this heading">#</a></h2>
 <p>k-nearest graph by atom ID. Calls <code class="docutils literal notranslate"><span class="pre">core.kNearestNeighbourList</span></code>.</p>
@@ -635,7 +644,7 @@ registered on the Lua state, not on this table.
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=e9ebdb8f"></script>
+      <script src="../_static/documentation_options.js?v=3c4615cf"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/design-tabs.js?v=f930bc37"></script>
