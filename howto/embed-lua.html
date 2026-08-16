@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" data-accent-color="teal" data-content_root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Embed in a Lua host - dseams</title><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Frequently Asked Questions" href="faq.html" /><link rel="prev" title="Call dseams from Fennel" href="fennel.html" />
+      <link rel="canonical" href="https://d-seams.github.io/yodaStruct/howto/embed-lua.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=e1a1ceaf" />
+    <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=2ceb65ce" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link media="print" rel="stylesheet" type="text/css" href="../_static/print.css?v=20ff2c19" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://d-seams.github.io/yodaStruct/howto/embed-lua.html"/>
+  <meta property="og:title" content="Embed in a Lua host"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../index.html">
+      
+      
+      <strong>dseams</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"><ul>
+      <li class="link"><button class="js-menu" type="button" id="nav-trigger-1" aria-controls="nav-children-1">
+            <span>Ecosystem</span>
+            <i class="i-lucide chevron-down"></i>
+          </button>
+        <ul id="nav-children-1" aria-labelledby="nav-trigger-1"><li><a href="https://docs.dseams.info">
+                <span>d-SEAMS engine</span>
+                <small>libyodaLib and the seams CLI</small>
+              </a></li><li><a href="https://d-seams.github.io/PydSEAMSlib/">
+                <span>pydseams</span>
+                <small>Python Frame API on yoda</small>
+              </a></li><li><a href="https://d-seams.github.io/yodaStruct/">
+                <span>dseams (Lua)</span>
+                <small>require("dseams") and Fennel</small>
+              </a></li></ul>
+      </li></ul></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/d-SEAMS/yodaStruct" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="1"><p class="caption" role="heading" aria-level="3"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../tutorials/read-and-classify.html">Tutorial: Read a dump and classify</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">How-to</span></p>
+<ul class="current">
+<li class="toctree-l1 _expand"><a class="reference internal" href="index.html">How-to Guides</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="install.html">Install the library</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="fennel.html">Call dseams from Fennel</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Embed in a Lua host</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Explanation</span></p>
+<ul>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/library-not-cli.html">The library, not a second CLI</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/frontends.html">Four front ends</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/citation.html">How to cite</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../reference/index.html">Reference</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../reference/lua.html">require(&#8220;dseams&#8221;)</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../reference/lua-functions.html">Compiled registrations</a></li>
+</ul>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
+<li><a class="reference internal" href="#problem">Problem</a></li>
+<li><a class="reference internal" href="#what-to-load">What to load</a></li>
+<li><a class="reference internal" href="#stock-lua">Stock lua</a></li>
+<li><a class="reference internal" href="#c-host-via-package-cpath">C host via package.cpath</a></li>
+<li><a class="reference internal" href="#c-host-via-lual-requiref">C host via luaL_requiref</a></li>
+<li><a class="reference internal" href="#fennel-host">Fennel host</a></li>
+<li><a class="reference internal" href="#what-not-to-do">What not to do</a></li>
+<li><a class="reference internal" href="#see-also">See also</a></li>
+</ul>
+</div><a class="js-repo-stats repo-stats flex items-center" href="https://github.com/d-SEAMS/yodaStruct"
+  data-type="github" data-user="d-SEAMS" data-repo="yodaStruct">
+  <span class="w-8 flex items-center justify-around shrink-0 text-3xl">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </span>
+  <span class="flex-grow px-2 break-all">
+    
+    
+      <span>yodaStruct</span>
+    
+    <span class="flex text-sm repo-stats-count">
+      <span class="flex items-center pr-3">
+        <iconify-icon icon="lucide:star"></iconify-icon>
+        <strong class="js-repo-stars ml-1">0</strong>
+      </span>
+      <span class="flex items-center">
+        <iconify-icon icon="lucide:git-fork"></iconify-icon>
+        <strong class="js-repo-forks ml-1">0</strong>
+      </span>
+    </span>
+  </span>
+</a><div class="edit-this-page">
+  <a href="https://github.com/d-SEAMS/yodaStruct/blob/main/docs/source/howto/embed-lua.rst">Edit this page</a>
+</div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../index.html"><span itemprop="name">dseams</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">Embed in a Lua host</strong>
+        <meta itemprop="position" content="2" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="relative min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+  <div class="copy-page-wrapper relative pb-4 lg:absolute lg:top-8 lg:right-6 xl:right-12">
+  <div id="copy-page-trigger">
+    <button
+      type="button"
+      class="js-copy px-3 py-1 inline-flex items-center gap-1"
+      data-url="https://d-seams.github.io/yodaStruct/_sources/howto/embed-lua.rst.txt"
+    >
+      <i class="i-lucide" data-icon="copy"></i>
+      <span>Copy page</span>
+    </button>
+    <button class="js-menu px-2 py-1" type="button" aria-label="More actions"
+      aria-haspopup="menu" aria-expanded="false" aria-controls="copy-page-content">
+      <i class="i-lucide chevron-down"></i>
+    </button>
+  </div>
+  <div id="copy-page-content" role="menu" aria-orientation="vertical" aria-hidden="true">
+    <div role="presentation">
+      <div class="flex flex-col" role="group">
+        <button class="js-copy" type="button" role="menuitem"
+          data-url="https://d-seams.github.io/yodaStruct/_sources/howto/embed-lua.rst.txt">
+          <span class="iconify-icon">
+            <i class="i-lucide" data-icon="copy"></i>
+          </span>
+          <span>Copy page</span>
+        </button>
+        <a role="menuitem" href="https://d-seams.github.io/yodaStruct/_sources/howto/embed-lua.rst.txt" target="_blank" rel="nofollow"><iconify-icon icon="bi:code-slash"></iconify-icon>
+            <span>View Source</span></a><a role="menuitem" href="https://chatgpt.com/?hints=search&q=Read%20https%3A//d-seams.github.io/yodaStruct/_sources/howto/embed-lua.rst.txt%20so%20I%20can%20ask%20questions%20about%20it." target="_blank" rel="nofollow">
+          <iconify-icon icon="bi:openai"></iconify-icon>
+          <span>Open in ChatGPT</span>
+        </a><a role="menuitem" href="https://claude.ai/new?q=Read%20https%3A//d-seams.github.io/yodaStruct/_sources/howto/embed-lua.rst.txt%20so%20I%20can%20ask%20questions%20about%20it." target="_blank" rel="nofollow">
+          <iconify-icon icon="bi:claude"></iconify-icon>
+          <span>Open in Claude</span>
+        </a></div>
+    </div>
+  </div>
+</div><article class="yue dark-code" role="main">
+          <section id="embed-in-a-lua-host">
+<h1>Embed in a Lua host<a class="headerlink" href="#embed-in-a-lua-host" title="Link to this heading">#</a></h1>
+<section id="problem">
+<h2>Problem<a class="headerlink" href="#problem" title="Link to this heading">#</a></h2>
+<p>Your process already owns <code class="docutils literal notranslate"><span class="pre">main</span></code>. You want the d-SEAMS
+classifiers inside that process. A second CLI does not compose.
+Load the shared module.</p>
+</section>
+<section id="what-to-load">
+<h2>What to load<a class="headerlink" href="#what-to-load" title="Link to this heading">#</a></h2>
+<p>Two layers:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dseams_core.so</span></code> : compiled registrations. C entry
+<code class="docutils literal notranslate"><span class="pre">luaopen_dseams_core</span></code>. This is <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code> : helpers (<code class="docutils literal notranslate"><span class="pre">read</span></code>, <code class="docutils literal notranslate"><span class="pre">neighbors</span></code>, <code class="docutils literal notranslate"><span class="pre">knn</span></code>,
+<code class="docutils literal notranslate"><span class="pre">chill_plus</span></code>, <code class="docutils literal notranslate"><span class="pre">chill</span></code>, <code class="docutils literal notranslate"><span class="pre">cages</span></code>). This file calls
+<code class="docutils literal notranslate"><span class="pre">require(&quot;dseams_core&quot;)</span></code>.</p></li>
+</ol>
+<p>A host that loads only <code class="docutils literal notranslate"><span class="pre">luaopen_dseams_core</span></code> gets the compiled
+names. It does not get <code class="docutils literal notranslate"><span class="pre">dseams.read</span></code>. Keep <code class="docutils literal notranslate"><span class="pre">dseams.lua</span></code> on
+<code class="docutils literal notranslate"><span class="pre">package.path</span></code> unless you call <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code> yourself.</p>
+<p>Usertypes (<code class="docutils literal notranslate"><span class="pre">PointCloud</span></code>, <code class="docutils literal notranslate"><span class="pre">RingUpdater</span></code>, <code class="docutils literal notranslate"><span class="pre">AffiliationUpdater</span></code>)
+register on the Lua state when <code class="docutils literal notranslate"><span class="pre">dseams_core</span></code> loads.</p>
+</section>
+<section id="stock-lua">
+<h2>Stock lua<a class="headerlink" href="#stock-lua" title="Link to this heading">#</a></h2>
+<p>This is the same path as the <a class="reference internal" href="../quickstart.html"><span class="doc">Quickstart</span></a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PREFIX</span><span class="s2">/share/luadseams/lua/?.lua;;&quot;</span>
+</span><span data-line="2"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_CPATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PREFIX</span><span class="s2">/lib/?.so;;&quot;</span>
+</span><span data-line="3">lua<span class="w"> </span>your_script.lua
+</span></pre></div>
+</div>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">dseams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;dseams&quot;</span><span class="p">)</span>
+</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">&quot;water.lammpstrj&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
+</span></pre></div>
+</div>
+<p>In-tree, <code class="docutils literal notranslate"><span class="pre">$PREFIX/share/luadseams/lua</span></code> is <code class="docutils literal notranslate"><span class="pre">lua/</span></code> and
+<code class="docutils literal notranslate"><span class="pre">$PREFIX/lib</span></code> is the meson build directory (<code class="docutils literal notranslate"><span class="pre">bbdir/</span></code>).</p>
+</section>
+<section id="c-host-via-package-cpath">
+<h2>C host via package.cpath<a class="headerlink" href="#c-host-via-package-cpath" title="Link to this heading">#</a></h2>
+<p>Open a state, open the standard libraries, prepend the two
+search paths, then <code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code>. Lua’s <code class="docutils literal notranslate"><span class="pre">package.cpath</span></code>
+loader finds <code class="docutils literal notranslate"><span class="pre">luaopen_dseams_core</span></code> inside <code class="docutils literal notranslate"><span class="pre">dseams_core.so</span></code>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+</span><span data-line="2"><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;lua.h&gt;</span>
+</span><span data-line="3"><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;lauxlib.h&gt;</span>
+</span><span data-line="4"><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;lualib.h&gt;</span>
+</span><span data-line="5">
+</span><span data-line="6"><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span data-line="7"><span class="w">  </span><span class="n">lua_State</span><span class="w"> </span><span class="o">*</span><span class="n">L</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">luaL_newstate</span><span class="p">();</span>
+</span><span data-line="8"><span class="w">  </span><span class="n">luaL_openlibs</span><span class="p">(</span><span class="n">L</span><span class="p">);</span>
+</span><span data-line="9"><span class="w">  </span><span class="cm">/* Set package.path and package.cpath to the install layout.</span>
+</span><span data-line="10"><span class="cm">     See howto/install. */</span>
+</span><span data-line="11"><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">luaL_dostring</span><span class="p">(</span><span class="n">L</span><span class="p">,</span>
+</span><span data-line="12"><span class="w">        </span><span class="s">&quot;local dseams = require(&#39;dseams&#39;)</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span data-line="13"><span class="w">        </span><span class="s">&quot;assert(dseams.read ~= nil)</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span data-line="14"><span class="w">        </span><span class="s">&quot;assert(dseams.core ~= nil)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">LUA_OK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span data-line="15"><span class="w">    </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">lua_tostring</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">));</span>
+</span><span data-line="16"><span class="w">    </span><span class="n">lua_close</span><span class="p">(</span><span class="n">L</span><span class="p">);</span>
+</span><span data-line="17"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span data-line="18"><span class="w">  </span><span class="p">}</span>
+</span><span data-line="19"><span class="w">  </span><span class="n">lua_close</span><span class="p">(</span><span class="n">L</span><span class="p">);</span>
+</span><span data-line="20"><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span data-line="21"><span class="p">}</span>
+</span></pre></div>
+</div>
+<p>Set the paths from C with <code class="docutils literal notranslate"><span class="pre">lua_getglobal(L,</span> <span class="pre">&quot;package&quot;)</span></code> and
+<code class="docutils literal notranslate"><span class="pre">lua_setfield</span></code>, or inherit <code class="docutils literal notranslate"><span class="pre">LUA_PATH</span></code> / <code class="docutils literal notranslate"><span class="pre">LUA_CPATH</span></code> from the
+environment (<code class="docutils literal notranslate"><span class="pre">luaL_openlibs</span></code> honours both).</p>
+</section>
+<section id="c-host-via-lual-requiref">
+<h2>C host via luaL_requiref<a class="headerlink" href="#c-host-via-lual-requiref" title="Link to this heading">#</a></h2>
+<p>When you link <code class="docutils literal notranslate"><span class="pre">dseams_core</span></code> and do not want a filesystem search
+for the <code class="docutils literal notranslate"><span class="pre">.so</span></code>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;lua.h&gt;</span>
+</span><span data-line="2"><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;lauxlib.h&gt;</span>
+</span><span data-line="3">
+</span><span data-line="4"><span class="k">extern</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">luaopen_dseams_core</span><span class="p">(</span><span class="n">lua_State</span><span class="w"> </span><span class="o">*</span><span class="n">L</span><span class="p">);</span>
+</span><span data-line="5">
+</span><span data-line="6"><span class="cm">/* After luaL_openlibs(L): */</span>
+</span><span data-line="7"><span class="n">luaL_requiref</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;dseams_core&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">luaopen_dseams_core</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</span><span data-line="8"><span class="n">lua_pop</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+</span><span data-line="9"><span class="cm">/* package.loaded[&quot;dseams_core&quot;] is now set.</span>
+</span><span data-line="10"><span class="cm">   require(&quot;dseams&quot;) still needs lua/dseams.lua on package.path. */</span>
+</span></pre></div>
+</div>
+<p>sol2 exposes the same opener as
+<code class="docutils literal notranslate"><span class="pre">lua.require(&quot;dseams_core&quot;,</span> <span class="pre">luaopen_dseams_core,</span> <span class="pre">false)</span></code>. That
+<code class="docutils literal notranslate"><span class="pre">require</span></code> takes a C function, not a module-name string. After
+the opener is in <code class="docutils literal notranslate"><span class="pre">package.loaded</span></code>, load the helpers with
+<code class="docutils literal notranslate"><span class="pre">require_file</span></code> on <code class="docutils literal notranslate"><span class="pre">dseams.lua</span></code>, or set <code class="docutils literal notranslate"><span class="pre">package.path</span></code> and run
+<code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code> through the Lua VM.</p>
+</section>
+<section id="fennel-host">
+<h2>Fennel host<a class="headerlink" href="#fennel-host" title="Link to this heading">#</a></h2>
+<p>Load the vendored compiler, then <code class="docutils literal notranslate"><span class="pre">(require</span> <span class="pre">:dseams)</span></code>. The
+compiler is <code class="docutils literal notranslate"><span class="pre">src/include/external/fennel/fennel.lua</span></code> in the
+tree, or <code class="docutils literal notranslate"><span class="pre">$prefix/share/luadseams/fennel.lua</span></code> after install.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">fennel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;fennel&quot;</span><span class="p">)</span><span class="w">  </span><span class="c1">-- after fennel.lua is on package.path</span>
+</span><span data-line="2"><span class="c1">-- or: fennel = dofile(&quot;src/include/external/fennel/fennel.lua&quot;)</span>
+</span><span data-line="3"><span class="nb">print</span><span class="p">(</span><span class="nv">fennel</span><span class="p">.</span><span class="nf">eval</span><span class="p">([[</span>
+</span><span data-line="4"><span class="w">  </span><span class="p">(</span><span class="kd">local</span><span class="w"> </span><span class="nf">dseams</span><span class="w"> </span><span class="p">(</span><span class="nb">require</span><span class="w"> </span><span class="p">:</span><span class="nv">dseams</span><span class="p">))</span>
+</span><span data-line="5"><span class="w">  </span><span class="p">(</span><span class="nb">assert</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="py">read</span><span class="p">)</span>
+</span><span data-line="6"><span class="p">]]))</span>
+</span></pre></div>
+</div>
+<p>Kebab-case wrappers: <a class="reference internal" href="fennel.html"><span class="doc">Call dseams from Fennel</span></a>.</p>
+</section>
+<section id="what-not-to-do">
+<h2>What not to do<a class="headerlink" href="#what-not-to-do" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Do not look for a <code class="docutils literal notranslate"><span class="pre">yodaStruct</span></code> binary. meson does not emit one.</p></li>
+<li><p>Do not inject <code class="docutils literal notranslate"><span class="pre">readFrameOnlyOne</span></code> as a global unless you copy
+the seams-core CLI. Library scripts call names on the table
+that <code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code> returns, or on <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code>.</p></li>
+<li><p>Do not <code class="docutils literal notranslate"><span class="pre">require(&quot;dseams_core&quot;)</span></code> and expect <code class="docutils literal notranslate"><span class="pre">read</span></code> / <code class="docutils literal notranslate"><span class="pre">chill_plus</span></code>
+/ <code class="docutils literal notranslate"><span class="pre">cages</span></code>. Those helpers stay in Lua.</p></li>
+</ul>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="install.html"><span class="doc">Install the library</span></a> :: Where the <code class="docutils literal notranslate"><span class="pre">.so</span></code> lives</p></li>
+<li><p><a class="reference internal" href="../explanation/library-not-cli.html"><span class="doc">The library, not a second CLI</span></a></p></li>
+<li><p><a class="reference internal" href="../reference/lua.html"><span class="doc">require(“dseams”)</span></a></p></li>
+</ul>
+</section>
+</section>
+
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"><div class="navigation-prev">
+    <a href="fennel.html">
+      <i class="i-lucide chevron-left"></i>
+      <div class="page-info">
+        <span>Previous</span><div class="title">Call dseams from Fennel</div></div>
+    </a>
+  </div><div class="navigation-next">
+    <a href="faq.html">
+      <div class="page-info">
+        <span>Next</span>
+        <div class="title">Frequently Asked Questions</div>
+      </div>
+      <i class="i-lucide chevron-right"></i>
+    </a>
+  </div></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright"><p>2019--present, d-SEAMS core team</p>
+  
+  <p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+  <a href="https://github.com/d-SEAMS/yodaStruct" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div>
+    </div>
+  </div>
+</footer>
+      <script src="../_static/documentation_options.js?v=16656018"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/shibuya.js?v=50760d75"></script></body>
+</html>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en" data-accent-color="teal" data-content_root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Compiled registrations - dseams</title><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="require(“dseams”)" href="lua.html" />
+      <link rel="canonical" href="https://d-seams.github.io/yodaStruct/reference/lua-functions.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=e1a1ceaf" />
+    <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=2ceb65ce" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link media="print" rel="stylesheet" type="text/css" href="../_static/print.css?v=20ff2c19" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://d-seams.github.io/yodaStruct/reference/lua-functions.html"/>
+  <meta property="og:title" content="Compiled registrations"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../index.html">
+      
+      
+      <strong>dseams</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"><ul>
+      <li class="link"><button class="js-menu" type="button" id="nav-trigger-1" aria-controls="nav-children-1">
+            <span>Ecosystem</span>
+            <i class="i-lucide chevron-down"></i>
+          </button>
+        <ul id="nav-children-1" aria-labelledby="nav-trigger-1"><li><a href="https://docs.dseams.info">
+                <span>d-SEAMS engine</span>
+                <small>libyodaLib and the seams CLI</small>
+              </a></li><li><a href="https://d-seams.github.io/PydSEAMSlib/">
+                <span>pydseams</span>
+                <small>Python Frame API on yoda</small>
+              </a></li><li><a href="https://d-seams.github.io/yodaStruct/">
+                <span>dseams (Lua)</span>
+                <small>require("dseams") and Fennel</small>
+              </a></li></ul>
+      </li></ul></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/d-SEAMS/yodaStruct" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="1"><p class="caption" role="heading" aria-level="3"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../tutorials/read-and-classify.html">Tutorial: Read a dump and classify</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">How-to</span></p>
+<ul>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../howto/index.html">How-to Guides</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../howto/install.html">Install the library</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../howto/fennel.html">Call dseams from Fennel</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../howto/embed-lua.html">Embed in a Lua host</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../howto/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../howto/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Explanation</span></p>
+<ul>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/library-not-cli.html">The library, not a second CLI</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/frontends.html">Four front ends</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/citation.html">How to cite</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="lua.html">require(&#8220;dseams&#8221;)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Compiled registrations</a></li>
+</ul>
+</li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="lua.html">require(&#8220;dseams&#8221;)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Compiled registrations</a></li>
+</ul>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
+<li><a class="reference internal" href="#name-index">Name index</a><ul>
+<li><a class="reference internal" href="#i-o">I/O</a></li>
+<li><a class="reference internal" href="#neighbours">Neighbours</a></li>
+<li><a class="reference internal" href="#chill">CHILL</a></li>
+<li><a class="reference internal" href="#rings-and-cages">Rings and cages</a></li>
+<li><a class="reference internal" href="#descriptors">Descriptors</a></li>
+<li><a class="reference internal" href="#prism-and-topology">Prism and topology</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id1">I/O</a><ul>
+<li><a class="reference internal" href="#pointcloud">PointCloud</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id2">Neighbours</a></li>
+<li><a class="reference internal" href="#id3">CHILL</a></li>
+<li><a class="reference internal" href="#rings">Rings</a></li>
+<li><a class="reference internal" href="#cages">Cages</a></li>
+<li><a class="reference internal" href="#id4">Descriptors</a></li>
+<li><a class="reference internal" href="#prism">Prism</a></li>
+<li><a class="reference internal" href="#topology-ring-sheets-rdf-clusters-selection-bulk">Topology (ring sheets, RDF, clusters, selection, bulk)</a></li>
+</ul>
+</div><a class="js-repo-stats repo-stats flex items-center" href="https://github.com/d-SEAMS/yodaStruct"
+  data-type="github" data-user="d-SEAMS" data-repo="yodaStruct">
+  <span class="w-8 flex items-center justify-around shrink-0 text-3xl">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </span>
+  <span class="flex-grow px-2 break-all">
+    
+    
+      <span>yodaStruct</span>
+    
+    <span class="flex text-sm repo-stats-count">
+      <span class="flex items-center pr-3">
+        <iconify-icon icon="lucide:star"></iconify-icon>
+        <strong class="js-repo-stars ml-1">0</strong>
+      </span>
+      <span class="flex items-center">
+        <iconify-icon icon="lucide:git-fork"></iconify-icon>
+        <strong class="js-repo-forks ml-1">0</strong>
+      </span>
+    </span>
+  </span>
+</a><div class="edit-this-page">
+  <a href="https://github.com/d-SEAMS/yodaStruct/blob/main/docs/source/reference/lua-functions.rst">Edit this page</a>
+</div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../index.html"><span itemprop="name">dseams</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="index.html"><span itemprop="name">Reference</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="2" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">Compiled registrations</strong>
+        <meta itemprop="position" content="3" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="relative min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+  <div class="copy-page-wrapper relative pb-4 lg:absolute lg:top-8 lg:right-6 xl:right-12">
+  <div id="copy-page-trigger">
+    <button
+      type="button"
+      class="js-copy px-3 py-1 inline-flex items-center gap-1"
+      data-url="https://d-seams.github.io/yodaStruct/_sources/reference/lua-functions.rst.txt"
+    >
+      <i class="i-lucide" data-icon="copy"></i>
+      <span>Copy page</span>
+    </button>
+    <button class="js-menu px-2 py-1" type="button" aria-label="More actions"
+      aria-haspopup="menu" aria-expanded="false" aria-controls="copy-page-content">
+      <i class="i-lucide chevron-down"></i>
+    </button>
+  </div>
+  <div id="copy-page-content" role="menu" aria-orientation="vertical" aria-hidden="true">
+    <div role="presentation">
+      <div class="flex flex-col" role="group">
+        <button class="js-copy" type="button" role="menuitem"
+          data-url="https://d-seams.github.io/yodaStruct/_sources/reference/lua-functions.rst.txt">
+          <span class="iconify-icon">
+            <i class="i-lucide" data-icon="copy"></i>
+          </span>
+          <span>Copy page</span>
+        </button>
+        <a role="menuitem" href="https://d-seams.github.io/yodaStruct/_sources/reference/lua-functions.rst.txt" target="_blank" rel="nofollow"><iconify-icon icon="bi:code-slash"></iconify-icon>
+            <span>View Source</span></a><a role="menuitem" href="https://chatgpt.com/?hints=search&q=Read%20https%3A//d-seams.github.io/yodaStruct/_sources/reference/lua-functions.rst.txt%20so%20I%20can%20ask%20questions%20about%20it." target="_blank" rel="nofollow">
+          <iconify-icon icon="bi:openai"></iconify-icon>
+          <span>Open in ChatGPT</span>
+        </a><a role="menuitem" href="https://claude.ai/new?q=Read%20https%3A//d-seams.github.io/yodaStruct/_sources/reference/lua-functions.rst.txt%20so%20I%20can%20ask%20questions%20about%20it." target="_blank" rel="nofollow">
+          <iconify-icon icon="bi:claude"></iconify-icon>
+          <span>Open in Claude</span>
+        </a></div>
+    </div>
+  </div>
+</div><article class="yue dark-code" role="main">
+          <section id="compiled-registrations">
+<h1>Compiled registrations<a class="headerlink" href="#compiled-registrations" title="Link to this heading">#</a></h1>
+<p>Appendix: every name from <code class="docutils literal notranslate"><span class="pre">luaApi::registerAll</span></code> (<code class="docutils literal notranslate"><span class="pre">src/lua_api.cpp</span></code>).
+This is the compiled-registration list that <code class="docutils literal notranslate"><span class="pre">docs/luaFunctions.md</span></code>
+also carries. The public <code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code> helpers are in
+<a class="reference internal" href="lua.html"><span class="doc">require(“dseams”)</span></a>.</p>
+<p>Names below are on <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code>, or globals under the engine CLI.
+Optional backends are listed only when the matching <code class="docutils literal notranslate"><span class="pre">#ifdef</span></code> is on.
+Usertypes are registered on the Lua state, not on <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code>.</p>
+<p>Fennel call shape is in <a class="reference internal" href="../howto/fennel.html"><span class="doc">Call dseams from Fennel</span></a>.</p>
+<section id="name-index">
+<h2>Name index<a class="headerlink" href="#name-index" title="Link to this heading">#</a></h2>
+<p>58 functions (56 always, plus <code class="docutils literal notranslate"><span class="pre">readChemfiles</span></code> and <code class="docutils literal notranslate"><span class="pre">readCon</span></code> when
+linked) and 3 usertypes.</p>
+<section id="i-o">
+<h3>I/O<a class="headerlink" href="#i-o" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">readLammpsTrjO</span></code>, <code class="docutils literal notranslate"><span class="pre">readLammpsTrjreduced</span></code>, <code class="docutils literal notranslate"><span class="pre">readXYZ</span></code>, <code class="docutils literal notranslate"><span class="pre">readChemfiles</span></code>,
+<code class="docutils literal notranslate"><span class="pre">readCon</span></code>, <code class="docutils literal notranslate"><span class="pre">readFrame</span></code>, <code class="docutils literal notranslate"><span class="pre">readFrameOnlyOne</span></code>, <code class="docutils literal notranslate"><span class="pre">readFrameOnlyOneAllAtoms</span></code>,
+<code class="docutils literal notranslate"><span class="pre">writeDump</span></code>, <code class="docutils literal notranslate"><span class="pre">writeHistogram</span></code>, <code class="docutils literal notranslate"><span class="pre">PointCloud</span></code>.</p>
+</section>
+<section id="neighbours">
+<h3>Neighbours<a class="headerlink" href="#neighbours" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">neighListO</span></code>, <code class="docutils literal notranslate"><span class="pre">kNearestNeighbourList</span></code>, <code class="docutils literal notranslate"><span class="pre">shellSeparation</span></code>,
+<code class="docutils literal notranslate"><span class="pre">neighbourListByIndex</span></code>, <code class="docutils literal notranslate"><span class="pre">getNewNeighbourListByIndex</span></code>,
+<code class="docutils literal notranslate"><span class="pre">getHbondNetwork</span></code>, <code class="docutils literal notranslate"><span class="pre">getHbondNetworkFromClouds</span></code>, <code class="docutils literal notranslate"><span class="pre">neighborList</span></code>,
+<code class="docutils literal notranslate"><span class="pre">bondNetworkByIndex</span></code>.</p>
+</section>
+<section id="chill">
+<h3>CHILL<a class="headerlink" href="#chill" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">classifyBonds</span></code>, <code class="docutils literal notranslate"><span class="pre">registerBondClassifier</span></code>, <code class="docutils literal notranslate"><span class="pre">bondClassifierNames</span></code>,
+<code class="docutils literal notranslate"><span class="pre">getCorrelPlus</span></code>, <code class="docutils literal notranslate"><span class="pre">getIceTypePlus</span></code>, <code class="docutils literal notranslate"><span class="pre">getIceTypePlusNoPrint</span></code>,
+<code class="docutils literal notranslate"><span class="pre">getCorrel</span></code>, <code class="docutils literal notranslate"><span class="pre">getIceType</span></code>, <code class="docutils literal notranslate"><span class="pre">getIceTypeNoPrint</span></code>, <code class="docutils literal notranslate"><span class="pre">steinhardtQl</span></code>,
+<code class="docutils literal notranslate"><span class="pre">steinhardtQlVoronoi</span></code>, <code class="docutils literal notranslate"><span class="pre">voronoiFacetWeights</span></code>, <code class="docutils literal notranslate"><span class="pre">chillPlus_cij</span></code>,
+<code class="docutils literal notranslate"><span class="pre">chillPlus_iceType</span></code>, <code class="docutils literal notranslate"><span class="pre">chill_cij</span></code>, <code class="docutils literal notranslate"><span class="pre">chill_iceType</span></code>, <code class="docutils literal notranslate"><span class="pre">averageQ6</span></code>,
+<code class="docutils literal notranslate"><span class="pre">modifyChill</span></code>, <code class="docutils literal notranslate"><span class="pre">percentage_Ice</span></code>.</p>
+</section>
+<section id="rings-and-cages">
+<h3>Rings and cages<a class="headerlink" href="#rings-and-cages" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">ringNetwork</span></code>, <code class="docutils literal notranslate"><span class="pre">RingUpdater</span></code>, <code class="docutils literal notranslate"><span class="pre">getPrimitiveRings</span></code>, <code class="docutils literal notranslate"><span class="pre">cageAffiliation</span></code>,
+<code class="docutils literal notranslate"><span class="pre">AffiliationUpdater</span></code>, <code class="docutils literal notranslate"><span class="pre">seededCageAffiliation</span></code>.</p>
+</section>
+<section id="descriptors">
+<h3>Descriptors<a class="headerlink" href="#descriptors" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">classifyTemplates</span></code>, <code class="docutils literal notranslate"><span class="pre">soapSpectrum</span></code>, <code class="docutils literal notranslate"><span class="pre">soapSpectrumAll</span></code>,
+<code class="docutils literal notranslate"><span class="pre">voronoiFeatures</span></code>.</p>
+</section>
+<section id="prism-and-topology">
+<h3>Prism and topology<a class="headerlink" href="#prism-and-topology" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">prismAnalysis</span></code>, <code class="docutils literal notranslate"><span class="pre">ringAnalysis</span></code>, <code class="docutils literal notranslate"><span class="pre">calcRDF</span></code>, <code class="docutils literal notranslate"><span class="pre">clusterAnalysis</span></code>,
+<code class="docutils literal notranslate"><span class="pre">recenterCluster</span></code>, <code class="docutils literal notranslate"><span class="pre">getPointCloudAtomsOfOneAtomType</span></code>,
+<code class="docutils literal notranslate"><span class="pre">selectInSingleSlice</span></code>, <code class="docutils literal notranslate"><span class="pre">selectEdgeAtomsInRingsWithinSlice</span></code>,
+<code class="docutils literal notranslate"><span class="pre">selectAtomsInSliceWithRingEdgeAtoms</span></code>, <code class="docutils literal notranslate"><span class="pre">bulkRingNumberAnalysis</span></code>,
+<code class="docutils literal notranslate"><span class="pre">bulkTopologicalNetworkCriterion</span></code>, <code class="docutils literal notranslate"><span class="pre">bulkTopoUnitMatching</span></code>.</p>
+</section>
+</section>
+<section id="id1">
+<h2>I/O<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>New-style readers allocate a scratch cloud and return it. They do
+not take an inout <code class="docutils literal notranslate"><span class="pre">resCloud</span></code>.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">readLammpsTrjO</span></code> (filename, targetFrame, typeO[, isSlice, low, high])</dt><dd><p>One LAMMPS dump frame, one atom type. <code class="docutils literal notranslate"><span class="pre">isSlice</span></code> defaults to
+false; <code class="docutils literal notranslate"><span class="pre">low</span></code> / <code class="docutils literal notranslate"><span class="pre">high</span></code> default to <code class="docutils literal notranslate"><span class="pre">{0,0,0}</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">readLammpsTrjreduced</span></code> (filename, targetFrame, typeI[, isSlice, low, high])</dt><dd><p>Same, dropping atoms outside the slice when <code class="docutils literal notranslate"><span class="pre">isSlice</span></code> is true.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">readXYZ</span></code> (filename)</dt><dd><p>XYZ coordinates. Whole file.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">readChemfiles</span></code> (filename, targetFrame[, typeFilter])</dt><dd><p>Chemfiles formats. Registered only with <code class="docutils literal notranslate"><span class="pre">SEAMS_HAS_CHEMFILES</span></code>.
+<code class="docutils literal notranslate"><span class="pre">typeFilter</span></code> defaults to <code class="docutils literal notranslate"><span class="pre">-1</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">readCon</span></code> (filename, targetFrame)</dt><dd><p>eOn <code class="docutils literal notranslate"><span class="pre">.con</span></code>. Registered only with <code class="docutils literal notranslate"><span class="pre">SEAMS_HAS_READCON</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">writeDump</span></code> (yCloud, path, outFile)</dt><dd><p>Write a LAMMPS dump. Returns an int status.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">writeHistogram</span></code> (yCloud, nList, avgQ6)</dt><dd><p>Write <code class="docutils literal notranslate"><span class="pre">cij</span></code> / <code class="docutils literal notranslate"><span class="pre">q6</span></code> / <code class="docutils literal notranslate"><span class="pre">q3</span></code> columns. Returns an int status.</p>
+</dd>
+</dl>
+<p>Legacy readers take an inout <code class="docutils literal notranslate"><span class="pre">PointCloud</span></code> userdata and return it.
+<code class="docutils literal notranslate"><span class="pre">sol2</span></code> does not fill C++ defaults here; pass the slice arguments.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">readFrame</span></code> (filename, targetFrame, resCloud, typeO, isSlice, low, high)</dt><dd><p><code class="docutils literal notranslate"><span class="pre">sinp::readLammpsTrjO</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">readFrameOnlyOne</span></code> (filename, targetFrame, resCloud, typeI, isSlice, low, high)</dt><dd><p><code class="docutils literal notranslate"><span class="pre">sinp::readLammpsTrjreduced</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">readFrameOnlyOneAllAtoms</span></code> (filename, targetFrame, resCloud, isSlice, low, high)</dt><dd><p><code class="docutils literal notranslate"><span class="pre">sinp::readLammpsTrj</span></code> (every type).</p>
+</dd>
+</dl>
+<section id="pointcloud">
+<h3>PointCloud<a class="headerlink" href="#pointcloud" title="Link to this heading">#</a></h3>
+<p>Usertype. Fields <code class="docutils literal notranslate"><span class="pre">nop</span></code>, <code class="docutils literal notranslate"><span class="pre">currentFrame</span></code>. Methods <code class="docutils literal notranslate"><span class="pre">box()</span></code>, <code class="docutils literal notranslate"><span class="pre">boxLow()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">iceTypes()</span></code>. <code class="docutils literal notranslate"><span class="pre">PointCloud.new()</span></code> builds an empty cloud.</p>
+</section>
+</section>
+<section id="id2">
+<h2>Neighbours<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>New-style lists return nested Lua tables. Rows are by atom ID unless
+the name says “ByIndex”. ID rows lead with the self ID.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">neighListO</span></code> (rcutoff, yCloud, typeI)</dt><dd><p>Distance cutoff, one type, by atom ID.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">kNearestNeighbourList</span></code> (yCloud, k, candidateCutoff, typeI[, mutual])</dt><dd><p>k-nearest graph. <code class="docutils literal notranslate"><span class="pre">mutual</span></code> defaults to true (each nominates the
+other). <code class="docutils literal notranslate"><span class="pre">false</span></code> is the union graph. <code class="docutils literal notranslate"><span class="pre">candidateCutoff</span></code> must exceed
+the k-th neighbour distance.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">shellSeparation</span></code> (yCloud, k, typeI)</dt><dd><p>Two numbers: <code class="docutils literal notranslate"><span class="pre">max</span> <span class="pre">d_k</span></code>, <code class="docutils literal notranslate"><span class="pre">min</span> <span class="pre">d_{k+1}</span></code>. The cutoff and k-nearest
+graphs coincide when <code class="docutils literal notranslate"><span class="pre">max</span> <span class="pre">d_k</span> <span class="pre">&lt;=</span> <span class="pre">rcut</span> <span class="pre">&lt;=</span> <span class="pre">min</span> <span class="pre">d_{k+1}</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">neighbourListByIndex</span></code> (yCloud, nList)</dt><dd><p>ID list to index list. <code class="docutils literal notranslate"><span class="pre">nList</span></code> may be a Lua table.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">getNewNeighbourListByIndex</span></code> (yCloud, cutoff)</dt><dd><p>Index list built directly from the cloud.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">getHbondNetwork</span></code> (filename, yCloud, nList, targetFrame, Htype[, dist, angle])</dt><dd><p>Hydrogen-bond graph from a trajectory. <code class="docutils literal notranslate"><span class="pre">dist</span></code> defaults to 2.42,
+<code class="docutils literal notranslate"><span class="pre">angle</span></code> to 30.0 (water). Accepts a Lua-table <code class="docutils literal notranslate"><span class="pre">nList</span></code>; returns
+userdata.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">getHbondNetworkFromClouds</span></code> (yCloud, hCloud, nList[, dist, angle])</dt><dd><p>Same criterion, H atoms from <code class="docutils literal notranslate"><span class="pre">hCloud</span></code>. Same return convention.</p>
+</dd>
+</dl>
+<p>Legacy (userdata in and out):</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">neighborList</span></code> (rcutoff, yCloud, typeI)</dt><dd><p><code class="docutils literal notranslate"><span class="pre">nneigh::neighListO</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bondNetworkByIndex</span></code> (yCloud, nList)</dt><dd><p><code class="docutils literal notranslate"><span class="pre">nneigh::neighbourListByIndex</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h2>CHILL<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>New-style classifiers mutate the cloud. Name-returning calls also
+return a 1-based array of ice-state strings.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">classifyBonds</span></code> (yCloud, nList, rule[, isSlice])</dt><dd><p><code class="docutils literal notranslate"><span class="pre">rule</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;CHILL&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;CHILL+&quot;</span></code>, or a table
+<code class="docutils literal notranslate"><span class="pre">{staggeredMax,</span> <span class="pre">eclipsedMin,</span> <span class="pre">eclipsedMax,</span> <span class="pre">coordinationNumber}</span></code>.
+<code class="docutils literal notranslate"><span class="pre">isSlice</span></code> defaults to false.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">registerBondClassifier</span></code> (name, ruleTable)</dt><dd><p>Store or replace a named rule.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bondClassifierNames</span></code> ()</dt><dd><p>Array of registered names.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">getCorrelPlus</span></code> (yCloud, nList[, isSlice, coordinationNumber])</dt><dd><p>CHILL+ <code class="docutils literal notranslate"><span class="pre">c_ij</span></code>. <code class="docutils literal notranslate"><span class="pre">isSlice</span></code> defaults to false;
+<code class="docutils literal notranslate"><span class="pre">coordinationNumber</span></code> defaults to 4 (non-positive keeps each row).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">getIceTypePlus</span></code> (yCloud, nList, path, firstFrame[, isSlice, outputFileName])</dt><dd><p>Classify and write <code class="docutils literal notranslate"><span class="pre">path/bop/&lt;outputFileName&gt;</span></code>. File name
+defaults to <code class="docutils literal notranslate"><span class="pre">chillPlus.txt</span></code>. Returns state names.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">getIceTypePlusNoPrint</span></code> (yCloud, nList[, isSlice])</dt><dd><p>Classify only. Returns state names.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">getCorrel</span></code> (yCloud, nList[, isSlice, coordinationNumber])</dt><dd><p>CHILL <code class="docutils literal notranslate"><span class="pre">c_ij</span></code>. Same defaults as <code class="docutils literal notranslate"><span class="pre">getCorrelPlus</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">getIceType</span></code> (yCloud, nList, path, firstFrame[, isSlice, outputFileName])</dt><dd><p>Classify and write. File name defaults to <code class="docutils literal notranslate"><span class="pre">chill.txt</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">getIceTypeNoPrint</span></code> (yCloud, nList[, isSlice])</dt><dd><p>Classify only.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">steinhardtQl</span></code> (yCloud, nList, orderL)</dt><dd><p><code class="docutils literal notranslate"><span class="pre">{ql</span> <span class="pre">=</span> <span class="pre">...,</span> <span class="pre">qlBar</span> <span class="pre">=</span> <span class="pre">...}</span></code> arrays. <code class="docutils literal notranslate"><span class="pre">orderL</span></code> is 3, 4, or 6.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">steinhardtQlVoronoi</span></code> (yCloud, candidateCutoff, orderL)</dt><dd><p>Same table, Voronoi facet-area weights. <code class="docutils literal notranslate"><span class="pre">orderL</span></code> is 3, 4, 6, or 8.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">voronoiFacetWeights</span></code> (yCloud, candidateCutoff)</dt><dd><p>1-based array of <code class="docutils literal notranslate"><span class="pre">{neighbours,</span> <span class="pre">weights,</span> <span class="pre">certified}</span></code> per atom.
+<code class="docutils literal notranslate"><span class="pre">candidateCutoff</span></code> must exceed the largest facet-neighbour distance.</p>
+</dd>
+</dl>
+<p>Legacy (userdata <code class="docutils literal notranslate"><span class="pre">nList</span></code>, return the cloud or a C++ vector):</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">chillPlus_cij</span></code> (yCloud, nList, isSlice)</dt><dd><p><code class="docutils literal notranslate"><span class="pre">getCorrelPlus</span></code>; returns <code class="docutils literal notranslate"><span class="pre">yCloud</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">chillPlus_iceType</span></code> (yCloud, nList, path, firstFrame, isSlice, outName)</dt><dd><p><code class="docutils literal notranslate"><span class="pre">getIceTypePlus</span></code>; returns <code class="docutils literal notranslate"><span class="pre">yCloud</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">chill_cij</span></code> (yCloud, nList, isSlice)</dt><dd><p><code class="docutils literal notranslate"><span class="pre">getCorrel</span></code>; returns <code class="docutils literal notranslate"><span class="pre">yCloud</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">chill_iceType</span></code> (yCloud, nList, path, firstFrame, isSlice, outName)</dt><dd><p><code class="docutils literal notranslate"><span class="pre">getIceType</span></code>; returns <code class="docutils literal notranslate"><span class="pre">yCloud</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">averageQ6</span></code> (yCloud, nList, isSlice)</dt><dd><p>Per-atom averaged <code class="docutils literal notranslate"><span class="pre">q6</span></code> vector.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">modifyChill</span></code> (yCloud, q6)</dt><dd><p>Reclassify water from <code class="docutils literal notranslate"><span class="pre">q6</span></code>; returns <code class="docutils literal notranslate"><span class="pre">yCloud</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">percentage_Ice</span></code> (yCloud, path, firstFrame, isSlice, outputFileName)</dt><dd><p>Write ice-type percentages.</p>
+</dd>
+</dl>
+</section>
+<section id="rings">
+<h2>Rings<a class="headerlink" href="#rings" title="Link to this heading">#</a></h2>
+<p>Index neighbour lists (leading self entry). New-style <code class="docutils literal notranslate"><span class="pre">nList</span></code> may be
+a Lua table.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ringNetwork</span></code> (nList, maxDepth)</dt><dd><p>Primitive rings of every size up to <code class="docutils literal notranslate"><span class="pre">maxDepth</span></code>, each a table of
+atom indices. Returns a Lua table of rings.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RingUpdater</span></code></dt><dd><p>Usertype. <code class="docutils literal notranslate"><span class="pre">RingUpdater.new(maxDepth)</span></code>; <code class="docutils literal notranslate"><span class="pre">updater:update(nList)</span></code>
+returns the same ring table as <code class="docutils literal notranslate"><span class="pre">ringNetwork</span></code>. After a repeat call
+on an unchanged graph, <code class="docutils literal notranslate"><span class="pre">updater:lastRecomputedSources()</span></code> is 0.
+<code class="docutils literal notranslate"><span class="pre">updater:lastBallsRefreshed()</span></code> is the ball-refresh count.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">getPrimitiveRings</span></code> (nList, maxDepth)</dt><dd><p>Legacy spelling of <code class="docutils literal notranslate"><span class="pre">primitive::ringNetwork</span></code> (userdata).</p>
+</dd>
+</dl>
+</section>
+<section id="cages">
+<h2>Cages<a class="headerlink" href="#cages" title="Link to this heading">#</a></h2>
+<p>Six-membered rings, neighbour lists by index.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">cageAffiliation</span></code> (rings, nList)</dt><dd><p>Per-ring flags <code class="docutils literal notranslate"><span class="pre">{hc</span> <span class="pre">=</span> <span class="pre">...,</span> <span class="pre">ddc</span> <span class="pre">=</span> <span class="pre">...}</span></code>, same length as <code class="docutils literal notranslate"><span class="pre">rings</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">AffiliationUpdater</span></code></dt><dd><p>Usertype. <code class="docutils literal notranslate"><span class="pre">AffiliationUpdater.new()</span></code>;
+<code class="docutils literal notranslate"><span class="pre">updater:update(rings,</span> <span class="pre">nList)</span></code> returns the same table as
+<code class="docutils literal notranslate"><span class="pre">cageAffiliation</span></code>. <code class="docutils literal notranslate"><span class="pre">updater:lastReclassified()</span></code> is the dirty
+closure (every ring on the first call).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">seededCageAffiliation</span></code> (strictRings, strictNList, permRings, permNList)</dt><dd><p>Per-atom flags <code class="docutils literal notranslate"><span class="pre">{hc</span> <span class="pre">=</span> <span class="pre">...,</span> <span class="pre">ddc</span> <span class="pre">=</span> <span class="pre">...}</span></code>. Mutual-graph seeds,
+union-graph completion, component-gated acceptance.</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h2>Descriptors<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">classifyTemplates</span></code> (yCloud, nList, kNeigh)</dt><dd><p>Overlay each k-neighbour shell onto FCC, HCP, BCC, SC. Returns a
+1-based array of <code class="docutils literal notranslate"><span class="pre">{name,</span> <span class="pre">rmsd}</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">soapSpectrum</span></code> (yCloud, iatom, nList, nMax, lMax, rcut)</dt><dd><p>Bartok SOAP of one particle. Flat array of length
+<code class="docutils literal notranslate"><span class="pre">nMax</span> <span class="pre">*</span> <span class="pre">nMax</span> <span class="pre">*</span> <span class="pre">(lMax</span> <span class="pre">+</span> <span class="pre">1)</span></code>. <code class="docutils literal notranslate"><span class="pre">iatom</span></code> is 0-based.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">soapSpectrumAll</span></code> (yCloud, nList, nMax, lMax, rcut)</dt><dd><p>SOAP of every particle. Nested table, <code class="docutils literal notranslate"><span class="pre">nop</span></code> rows.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">voronoiFeatures</span></code> (yCloud, candidateCutoff)</dt><dd><p>Per-atom <code class="docutils literal notranslate"><span class="pre">{q4,</span> <span class="pre">q6,</span> <span class="pre">q8}</span></code> from one Voronoi pass per order.</p>
+</dd>
+</dl>
+</section>
+<section id="prism">
+<h2>Prism<a class="headerlink" href="#prism" title="Link to this heading">#</a></h2>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">prismAnalysis</span></code> (path, rings, nList, yCloud, maxDepth, atomID, firstFrame, currentFrame, doShapeMatching)</dt><dd><p>Quasi-one-dimensional prism assignment. <code class="docutils literal notranslate"><span class="pre">rings</span></code> and <code class="docutils literal notranslate"><span class="pre">nList</span></code> are
+index lists (userdata on this bind). <code class="docutils literal notranslate"><span class="pre">atomID</span></code> is the lowest atom ID
+used as a reference; it is passed by value from Lua. Returns an int
+status.</p>
+</dd>
+</dl>
+</section>
+<section id="topology-ring-sheets-rdf-clusters-selection-bulk">
+<h2>Topology (ring sheets, RDF, clusters, selection, bulk)<a class="headerlink" href="#topology-ring-sheets-rdf-clusters-selection-bulk" title="Link to this heading">#</a></h2>
+<p>These binds keep C++ reference semantics (userdata clouds and lists).</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ringAnalysis</span></code> (path, rings, nList, yCloud, maxDepth, sheetArea, firstFrame)</dt><dd><p>Quasi-two-dimensional polygon-ring analysis.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">calcRDF</span></code> (path, rdfValues, yCloud, cutoff, binwidth, firstFrame, finalFrame)</dt><dd><p>2-D RDF. <code class="docutils literal notranslate"><span class="pre">rdfValues</span></code> is an inout vector userdata.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">clusterAnalysis</span></code> (path, iceCloud, yCloud, nList, iceNeighbourList, cutoff, firstFrame[, bopAnalysis])</dt><dd><p>Largest ice cluster into <code class="docutils literal notranslate"><span class="pre">iceCloud</span></code>. <code class="docutils literal notranslate"><span class="pre">bopAnalysis</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;q6&quot;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">&quot;chill&quot;</span></code> (C++ default <code class="docutils literal notranslate"><span class="pre">&quot;q6&quot;</span></code> is not applied unless passed).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">recenterCluster</span></code> (iceCloud, nList)</dt><dd><p>Recenter the cluster cloud on the box.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">getPointCloudAtomsOfOneAtomType</span></code> (yCloud, outCloud, atomTypeI, isSlice, low, high)</dt><dd><p>Copy one type into <code class="docutils literal notranslate"><span class="pre">outCloud</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">selectInSingleSlice</span></code> (yCloud, clearPrevious, low, high)</dt><dd><p>Mark molecules that touch the slice.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">selectEdgeAtomsInRingsWithinSlice</span></code> (rings, oCloud, yCloud, low, high, identicalCloud)</dt><dd><p>Expand the slice to ring-edge molecules.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">selectAtomsInSliceWithRingEdgeAtoms</span></code> (path, rings, oCloud, yCloud, low, high, identicalCloud)</dt><dd><p>Same, and write IDs plus a LAMMPS data file.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bulkRingNumberAnalysis</span></code> (path, rings, nList, yCloud, maxDepth, firstFrame)</dt><dd><p>Bulk primitive-ring counts.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bulkTopologicalNetworkCriterion</span></code> (path, rings, nList, yCloud, firstFrame, onlyTetrahedral)</dt><dd><p>DDC / HC search on six-rings.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bulkTopoUnitMatching</span></code> (path, rings, nList, yCloud, firstFrame, printClusters, onlyTetrahedral[, templatePath])</dt><dd><p>Topological unit matching. <code class="docutils literal notranslate"><span class="pre">templatePath</span></code> defaults to
+<code class="docutils literal notranslate"><span class="pre">&quot;templates&quot;</span></code>. <code class="docutils literal notranslate"><span class="pre">rings</span></code> / <code class="docutils literal notranslate"><span class="pre">nList</span></code> may be Lua tables on this wrap.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"><div class="navigation-prev">
+    <a href="lua.html">
+      <i class="i-lucide chevron-left"></i>
+      <div class="page-info">
+        <span>Previous</span><div class="title">require(“dseams”)</div></div>
+    </a>
+  </div></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright"><p>2019--present, d-SEAMS core team</p>
+  
+  <p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+  <a href="https://github.com/d-SEAMS/yodaStruct" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div>
+    </div>
+  </div>
+</footer>
+      <script src="../_static/documentation_options.js?v=16656018"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/shibuya.js?v=50760d75"></script></body>
+</html>

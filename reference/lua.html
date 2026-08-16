@@ -2,12 +2,13 @@
 <html lang="en" data-accent-color="teal" data-content_root="../">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Lua surface - dseams</title><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="Quickstart" href="../quickstart.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>require(“dseams”) - dseams</title><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Compiled registrations" href="lua-functions.html" /><link rel="prev" title="Reference" href="index.html" />
       <link rel="canonical" href="https://d-seams.github.io/yodaStruct/reference/lua.html" /><script>
     function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
     setColorMode(localStorage._theme||"auto");
   </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=e1a1ceaf" />
     <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=2ceb65ce" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link media="print" rel="stylesheet" type="text/css" href="../_static/print.css?v=20ff2c19" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +22,7 @@
     
   <meta property="og:type" content="website"/>
   <meta property="og:url" content="https://d-seams.github.io/yodaStruct/reference/lua.html"/>
-  <meta property="og:title" content="Lua surface"/>
+  <meta property="og:title" content="require(“dseams”)"/>
     <meta name="twitter:card" content="summary"/>
   </head>
 <body><div class="sy-head">
@@ -33,13 +34,22 @@
       <strong>dseams</strong>
     </a>
     <div class="sy-head-nav" id="head-nav">
-      <nav class="sy-head-links"><ul><li class="link">
-          <a href="https://docs.dseams.info">
-            <span>Engine</span><i class="i-lucide external-link"></i></a>
-        </li><li class="link">
-          <a href="https://d-seams.github.io/PydSEAMSlib/">
-            <span>pydseams</span><i class="i-lucide external-link"></i></a>
-        </li></ul></nav>
+      <nav class="sy-head-links"><ul>
+      <li class="link"><button class="js-menu" type="button" id="nav-trigger-1" aria-controls="nav-children-1">
+            <span>Ecosystem</span>
+            <i class="i-lucide chevron-down"></i>
+          </button>
+        <ul id="nav-children-1" aria-labelledby="nav-trigger-1"><li><a href="https://docs.dseams.info">
+                <span>d-SEAMS engine</span>
+                <small>libyodaLib and the seams CLI</small>
+              </a></li><li><a href="https://d-seams.github.io/PydSEAMSlib/">
+                <span>pydseams</span>
+                <small>Python Frame API on yoda</small>
+              </a></li><li><a href="https://d-seams.github.io/yodaStruct/">
+                <span>dseams (Lua)</span>
+                <small>require("dseams") and Fennel</small>
+              </a></li></ul>
+      </li></ul></nav>
       <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../search.html" method="get">
   <input type="text" name="q" placeholder="Search" />
   <kbd>/</kbd>
@@ -67,15 +77,41 @@ data-aria-dark="Switch to auto color mode">
   <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
     <div class="sy-lside-inner md:sticky">
       <div class="sy-scrollbar p-6">
-        <div class="globaltoc" data-expand-depth="0"><p class="caption" role="heading" aria-level="3"><span class="caption-text">Getting Started</span></p>
+        <div class="globaltoc" data-expand-depth="1"><p class="caption" role="heading" aria-level="3"><span class="caption-text">Getting Started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../tutorials/read-and-classify.html">Tutorial: Read a dump and classify</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">How-to</span></p>
+<ul>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../howto/index.html">How-to Guides</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../howto/install.html">Install the library</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../howto/fennel.html">Call dseams from Fennel</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../howto/embed-lua.html">Embed in a Lua host</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../howto/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../howto/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Explanation</span></p>
+<ul>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/library-not-cli.html">The library, not a second CLI</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/frontends.html">Four front ends</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/citation.html">How to cite</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Lua surface</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">require(&#8220;dseams&#8221;)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lua-functions.html">Compiled registrations</a></li>
 </ul>
-
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">require(&#8220;dseams&#8221;)</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="lua-functions.html">Compiled registrations</a></li>
+</ul>
         </div>
       </div>
     </div>
@@ -86,10 +122,44 @@ data-aria-dark="Switch to auto color mode">
       <i class="i-lucide close"></i>
     </button>
     <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
-<li><a class="reference internal" href="#helpers-require-dseams">Helpers (<code class="docutils literal notranslate"><span class="pre">require("dseams")</span></code>)</a></li>
-<li><a class="reference internal" href="#compiled-registrations-dseams-core">Compiled registrations (<code class="docutils literal notranslate"><span class="pre">dseams_core</span></code>)</a></li>
+<li><a class="reference internal" href="#public-names">Public names</a></li>
+<li><a class="reference internal" href="#calling-conventions">Calling conventions</a><ul>
+<li><a class="reference internal" href="#pointcloud-userdata">PointCloud userdata</a></li>
+<li><a class="reference internal" href="#tables-vs-userdata">Tables vs userdata</a></li>
 </ul>
-</div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+</li>
+<li><a class="reference internal" href="#read-path-opts"><code class="docutils literal notranslate"><span class="pre">read(path[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#neighbors-cloud-opts"><code class="docutils literal notranslate"><span class="pre">neighbors(cloud[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#knn-cloud-opts"><code class="docutils literal notranslate"><span class="pre">knn(cloud[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#chill-plus-cloud-opts"><code class="docutils literal notranslate"><span class="pre">chill_plus(cloud[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#chill-cloud-opts"><code class="docutils literal notranslate"><span class="pre">chill(cloud[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#cages-cloud-opts"><code class="docutils literal notranslate"><span class="pre">cages(cloud[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#core"><code class="docutils literal notranslate"><span class="pre">core</span></code></a></li>
+</ul>
+</div><a class="js-repo-stats repo-stats flex items-center" href="https://github.com/d-SEAMS/yodaStruct"
+  data-type="github" data-user="d-SEAMS" data-repo="yodaStruct">
+  <span class="w-8 flex items-center justify-around shrink-0 text-3xl">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </span>
+  <span class="flex-grow px-2 break-all">
+    
+    
+      <span>yodaStruct</span>
+    
+    <span class="flex text-sm repo-stats-count">
+      <span class="flex items-center pr-3">
+        <iconify-icon icon="lucide:star"></iconify-icon>
+        <strong class="js-repo-stars ml-1">0</strong>
+      </span>
+      <span class="flex items-center">
+        <iconify-icon icon="lucide:git-fork"></iconify-icon>
+        <strong class="js-repo-forks ml-1">0</strong>
+      </span>
+    </span>
+  </span>
+</a><div class="edit-this-page">
+  <a href="https://github.com/d-SEAMS/yodaStruct/blob/main/docs/source/reference/lua.rst">Edit this page</a>
+</div></div>
   </aside>
   <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
   <main class="sy-main w-full max-sm:max-w-full print:pt-6">
@@ -105,8 +175,12 @@ data-aria-dark="Switch to auto color mode">
         <span>/</span>
         <meta itemprop="position" content="1" />
       </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-        <strong itemprop="name">Lua surface</strong>
+        <a itemprop="item" href="index.html"><span itemprop="name">Reference</span></a>
+        <span>/</span>
         <meta itemprop="position" content="2" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">require(“dseams”)</strong>
+        <meta itemprop="position" content="3" />
       </li></ol>
     <div class="xl:hidden ml-1">
       <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
@@ -122,7 +196,7 @@ data-aria-dark="Switch to auto color mode">
     <button
       type="button"
       class="js-copy px-3 py-1 inline-flex items-center gap-1"
-      data-url="https://d-seams.github.io/yodaStruct/_sources/reference/lua.md.txt"
+      data-url="https://d-seams.github.io/yodaStruct/_sources/reference/lua.rst.txt"
     >
       <i class="i-lucide" data-icon="copy"></i>
       <span>Copy page</span>
@@ -136,67 +210,246 @@ data-aria-dark="Switch to auto color mode">
     <div role="presentation">
       <div class="flex flex-col" role="group">
         <button class="js-copy" type="button" role="menuitem"
-          data-url="https://d-seams.github.io/yodaStruct/_sources/reference/lua.md.txt">
+          data-url="https://d-seams.github.io/yodaStruct/_sources/reference/lua.rst.txt">
           <span class="iconify-icon">
             <i class="i-lucide" data-icon="copy"></i>
           </span>
           <span>Copy page</span>
         </button>
-        <a role="menuitem" href="https://d-seams.github.io/yodaStruct/_sources/reference/lua.md.txt" target="_blank" rel="nofollow"><iconify-icon icon="bi:markdown"></iconify-icon>
-            <span>View as Markdown</span></a><a role="menuitem" href="https://chatgpt.com/?hints=search&q=Read%20https%3A//d-seams.github.io/yodaStruct/_sources/reference/lua.md.txt%20so%20I%20can%20ask%20questions%20about%20it." target="_blank" rel="nofollow">
+        <a role="menuitem" href="https://d-seams.github.io/yodaStruct/_sources/reference/lua.rst.txt" target="_blank" rel="nofollow"><iconify-icon icon="bi:code-slash"></iconify-icon>
+            <span>View Source</span></a><a role="menuitem" href="https://chatgpt.com/?hints=search&q=Read%20https%3A//d-seams.github.io/yodaStruct/_sources/reference/lua.rst.txt%20so%20I%20can%20ask%20questions%20about%20it." target="_blank" rel="nofollow">
           <iconify-icon icon="bi:openai"></iconify-icon>
           <span>Open in ChatGPT</span>
-        </a><a role="menuitem" href="https://claude.ai/new?q=Read%20https%3A//d-seams.github.io/yodaStruct/_sources/reference/lua.md.txt%20so%20I%20can%20ask%20questions%20about%20it." target="_blank" rel="nofollow">
+        </a><a role="menuitem" href="https://claude.ai/new?q=Read%20https%3A//d-seams.github.io/yodaStruct/_sources/reference/lua.rst.txt%20so%20I%20can%20ask%20questions%20about%20it." target="_blank" rel="nofollow">
           <iconify-icon icon="bi:claude"></iconify-icon>
           <span>Open in Claude</span>
         </a></div>
     </div>
   </div>
 </div><article class="yue dark-code" role="main">
-          <section id="lua-surface">
-<h1>Lua surface<a class="headerlink" href="#lua-surface" title="Link to this heading">#</a></h1>
-<p>Registered names live in <code class="docutils literal notranslate"><span class="pre">src/lua_api.cpp</span></code> (<code class="docutils literal notranslate"><span class="pre">luaApi::registerAll</span></code>).
-<code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code> loads <code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code> on <code class="docutils literal notranslate"><span class="pre">dseams_core</span></code>.</p>
-<section id="helpers-require-dseams">
-<h2>Helpers (<code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code>)<a class="headerlink" href="#helpers-require-dseams" title="Link to this heading">#</a></h2>
-<div class="table-wrapper colwidths-auto docutils container">
+          <section id="require-dseams">
+<h1>require(“dseams”)<a class="headerlink" href="#require-dseams" title="Link to this heading">#</a></h1>
+<p>Public table from <code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code> (<code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code> on
+<code class="docutils literal notranslate"><span class="pre">dseams_core</span></code>). <code class="docutils literal notranslate"><span class="pre">require(&quot;yoda&quot;)</span></code> is the same table.</p>
+<p>Fennel call shape is in <a class="reference internal" href="../howto/fennel.html"><span class="doc">Call dseams from Fennel</span></a>.
+Compiled names on <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code> are in <a class="reference internal" href="lua-functions.html"><span class="doc">Compiled registrations</span></a>.</p>
+<section id="public-names">
+<h2>Public names<a class="headerlink" href="#public-names" title="Link to this heading">#</a></h2>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">dseams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;dseams&quot;</span><span class="p">)</span>
+</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">&quot;water.lammpstrj&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
+</span><span data-line="3"><span class="kd">local</span><span class="w"> </span><span class="nv">types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">chill_plus</span><span class="p">(</span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nv">cutoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.5</span><span class="p">,</span><span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
+</span><span data-line="4"><span class="kd">local</span><span class="w"> </span><span class="nv">nl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="py">core</span><span class="p">.</span><span class="nf">neighListO</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span><span class="w"> </span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="table-wrapper docutils container">
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>kind</p></th>
 <th class="head"><p>role</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">read</span></code></p></td>
+<td><p>function</p></td>
 <td><p>suffix-dispatching loader</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">neighbors</span></code> / <code class="docutils literal notranslate"><span class="pre">knn</span></code></p></td>
-<td><p>bonded graphs</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">neighbors</span></code></p></td>
+<td><p>function</p></td>
+<td><p>cutoff neighbour list by atom ID</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">chill_plus</span></code> / <code class="docutils literal notranslate"><span class="pre">chill</span></code></p></td>
-<td><p>four-neighbour labels</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">knn</span></code></p></td>
+<td><p>function</p></td>
+<td><p>k-nearest graph by atom ID</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">chill_plus</span></code></p></td>
+<td><p>function</p></td>
+<td><p>CHILL+ state names; no file</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">chill</span></code></p></td>
+<td><p>function</p></td>
+<td><p>CHILL state names; no file</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cages</span></code></p></td>
-<td><p>HC/DDC membership</p></td>
+<td><p>function</p></td>
+<td><p>seeded HC/DDC per-atom flags</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">core</span></code></p></td>
+<td><p>table</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">require(&quot;dseams_core&quot;)</span></code>; compiled registrations</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>These seven names are the public surface. Locals in <code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code>
+(<code class="docutils literal notranslate"><span class="pre">suffix</span></code>, <code class="docutils literal notranslate"><span class="pre">opts</span></code>) are not exported. Option tables may be omitted.
+Defaults are those of <code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code>.</p>
+<p>The engine CLI injects compiled names as globals. Library scripts
+call them on <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code>.</p>
 </section>
-<section id="compiled-registrations-dseams-core">
-<h2>Compiled registrations (<code class="docutils literal notranslate"><span class="pre">dseams_core</span></code>)<a class="headerlink" href="#compiled-registrations-dseams-core" title="Link to this heading">#</a></h2>
+<section id="calling-conventions">
+<h2>Calling conventions<a class="headerlink" href="#calling-conventions" title="Link to this heading">#</a></h2>
+<section id="pointcloud-userdata">
+<h3>PointCloud userdata<a class="headerlink" href="#pointcloud-userdata" title="Link to this heading">#</a></h3>
+<p>Readers return a <code class="docutils literal notranslate"><span class="pre">PointCloud</span></code> userdata, not a table. The usertype is
+registered on the Lua state when <code class="docutils literal notranslate"><span class="pre">dseams_core</span></code> loads, so
+<code class="docutils literal notranslate"><span class="pre">PointCloud.new()</span></code> is a global after <code class="docutils literal notranslate"><span class="pre">require</span></code>. Workflow scripts pass
+that scratch object into the legacy readers.</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>member</p></th>
+<th class="head"><p>kind</p></th>
+<th class="head"><p>meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nop</span></code></p></td>
+<td><p>field</p></td>
+<td><p>particle count</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">currentFrame</span></code></p></td>
+<td><p>field</p></td>
+<td><p>frame index just read</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">box()</span></code></p></td>
+<td><p>method</p></td>
+<td><p>box lengths, 3-number table</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">boxLow()</span></code></p></td>
+<td><p>method</p></td>
+<td><p>box origin, 3-number table</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">iceTypes()</span></code></p></td>
+<td><p>method</p></td>
+<td><p>per-particle state name strings</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Ice-state strings: <code class="docutils literal notranslate"><span class="pre">cubic</span></code>, <code class="docutils literal notranslate"><span class="pre">hexagonal</span></code>, <code class="docutils literal notranslate"><span class="pre">water</span></code>, <code class="docutils literal notranslate"><span class="pre">interfacial</span></code>,
+<code class="docutils literal notranslate"><span class="pre">clathrate</span></code>, <code class="docutils literal notranslate"><span class="pre">interClathrate</span></code>, <code class="docutils literal notranslate"><span class="pre">reCubic</span></code>, <code class="docutils literal notranslate"><span class="pre">reHex</span></code>, <code class="docutils literal notranslate"><span class="pre">unclassified</span></code>.</p>
+</section>
+<section id="tables-vs-userdata">
+<h3>Tables vs userdata<a class="headerlink" href="#tables-vs-userdata" title="Link to this heading">#</a></h3>
+<p>New-style compiled names take neighbour lists and ring lists <em>by
+value</em>. sol2 builds a C++ container from a plain Lua table of
+tables. Those names return <code class="docutils literal notranslate"><span class="pre">sol::as_nested</span></code> or <code class="docutils literal notranslate"><span class="pre">sol::as_table</span></code>, so
+the result is a Lua table.</p>
+<p>Legacy names take C++ container <em>references</em>. They bind only
+container userdata (the object another C++ bind already put on the
+stack). A freshly written Lua table is not accepted.</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>style</p></th>
+<th class="head"><p>examples</p></th>
+<th class="head"><p>nList / rings in</p></th>
+<th class="head"><p>result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>new</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">neighListO</span></code>, <code class="docutils literal notranslate"><span class="pre">neighbourListByIndex</span></code>, <code class="docutils literal notranslate"><span class="pre">kNearestNeighbourList</span></code>, <code class="docutils literal notranslate"><span class="pre">ringNetwork</span></code>, <code class="docutils literal notranslate"><span class="pre">cageAffiliation</span></code>, <code class="docutils literal notranslate"><span class="pre">getCorrelPlus</span></code></p></td>
+<td><p>Lua table</p></td>
+<td><p>Lua table (or void / name table)</p></td>
+</tr>
+<tr class="row-odd"><td><p>new, userdata out</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">getHbondNetwork</span></code>, <code class="docutils literal notranslate"><span class="pre">getHbondNetworkFromClouds</span></code></p></td>
+<td><p>Lua table</p></td>
+<td><p>C++ vector userdata</p></td>
+</tr>
+<tr class="row-even"><td><p>legacy</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">neighborList</span></code>, <code class="docutils literal notranslate"><span class="pre">bondNetworkByIndex</span></code>, <code class="docutils literal notranslate"><span class="pre">getPrimitiveRings</span></code>, <code class="docutils literal notranslate"><span class="pre">readFrame*</span></code>, <code class="docutils literal notranslate"><span class="pre">chillPlus_*</span></code>, <code class="docutils literal notranslate"><span class="pre">chill_*</span></code></p></td>
+<td><p>userdata</p></td>
+<td><p>userdata</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">sol2</span></code> does not apply C++ default arguments on a raw bind. Wrapped
+names spell optionals in Lua (<code class="docutils literal notranslate"><span class="pre">sol::optional</span></code>). Legacy names need
+every argument the bound C++ signature requires.</p>
+</section>
+</section>
+<section id="read-path-opts">
+<h2><code class="docutils literal notranslate"><span class="pre">read(path[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#read-path-opts" title="Link to this heading">#</a></h2>
+<p>Suffix-dispatching loader. Returns a <code class="docutils literal notranslate"><span class="pre">PointCloud</span></code>.</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>suffix</p></th>
+<th class="head"><p>backend</p></th>
+<th class="head"><p>notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">.xyz</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">readXYZ</span></code></p></td>
+<td><p>whole file; <code class="docutils literal notranslate"><span class="pre">opts.frame</span></code> unused</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">.con</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">readCon</span></code></p></td>
+<td><p>errors if this build has no readcon</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">.pdb</span></code> / <code class="docutils literal notranslate"><span class="pre">.gro</span></code> / <code class="docutils literal notranslate"><span class="pre">.dcd</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">readChemfiles</span></code></p></td>
+<td><p>errors if this build has no chemfiles; <code class="docutils literal notranslate"><span class="pre">opts.type</span></code> defaults to <code class="docutils literal notranslate"><span class="pre">-1</span></code> (keep all)</p></td>
+</tr>
+<tr class="row-odd"><td><p>other (LAMMPS dump)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">readLammpsTrjO</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">opts.frame</span></code> defaults to 1. If <code class="docutils literal notranslate"><span class="pre">opts.type</span></code> is nil, tries type 2 then type 1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">opts.frame</span></code> is the 1-based frame index (default 1). <code class="docutils literal notranslate"><span class="pre">opts.type</span></code> is
+the LAMMPS type ID to keep.</p>
+</section>
+<section id="neighbors-cloud-opts">
+<h2><code class="docutils literal notranslate"><span class="pre">neighbors(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#neighbors-cloud-opts" title="Link to this heading">#</a></h2>
+<p>Cutoff neighbour list by atom ID. Calls
+<code class="docutils literal notranslate"><span class="pre">core.neighListO(opts.cutoff</span> <span class="pre">or</span> <span class="pre">3.5,</span> <span class="pre">cloud,</span> <span class="pre">opts.type</span> <span class="pre">or</span> <span class="pre">1)</span></code>.
+Returns a Lua table of rows (self ID first).</p>
+</section>
+<section id="knn-cloud-opts">
+<h2><code class="docutils literal notranslate"><span class="pre">knn(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#knn-cloud-opts" title="Link to this heading">#</a></h2>
+<p>k-nearest graph by atom ID. Calls <code class="docutils literal notranslate"><span class="pre">core.kNearestNeighbourList</span></code>.</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">kNearestNeighbourList(cloud,</span> <span class="pre">k,</span> <span class="pre">candidateCutoff,</span> <span class="pre">typeI[,</span> <span class="pre">mutual])</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">shellSeparation(cloud,</span> <span class="pre">k,</span> <span class="pre">typeI)</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">seededCageAffiliation(strictRings,</span> <span class="pre">strictNList,</span> <span class="pre">permRings,</span> <span class="pre">permNList)</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cageAffiliation</span></code> / <code class="docutils literal notranslate"><span class="pre">AffiliationUpdater</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">classifyTemplates</span></code>, <code class="docutils literal notranslate"><span class="pre">soapSpectrum</span></code>, <code class="docutils literal notranslate"><span class="pre">soapSpectrumAll</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">steinhardtQl</span></code> / <code class="docutils literal notranslate"><span class="pre">steinhardtQlVoronoi</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">voronoiFeatures</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">prismAnalysis</span></code>, <code class="docutils literal notranslate"><span class="pre">ringAnalysis</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opts.k</span></code> defaults to 4</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code> (candidate cutoff) defaults to 5.0</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opts.type</span></code> defaults to 1</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opts.mutual</span></code> defaults to true; only the boolean <code class="docutils literal notranslate"><span class="pre">false</span></code> selects the union graph</p></li>
 </ul>
-<p>Legacy workflow names keep container-userdata semantics. New-style
-names take and return tables.</p>
+</section>
+<section id="chill-plus-cloud-opts">
+<h2><code class="docutils literal notranslate"><span class="pre">chill_plus(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#chill-plus-cloud-opts" title="Link to this heading">#</a></h2>
+<p>Builds <code class="docutils literal notranslate"><span class="pre">neighbors(cloud,</span> <span class="pre">opts)</span></code>, runs
+<code class="docutils literal notranslate"><span class="pre">core.getCorrelPlus(cloud,</span> <span class="pre">nl,</span> <span class="pre">false)</span></code>, returns
+<code class="docutils literal notranslate"><span class="pre">core.getIceTypePlusNoPrint(cloud,</span> <span class="pre">nl,</span> <span class="pre">false)</span></code> (1-based array of
+state names). Does not write a file. Mutates <code class="docutils literal notranslate"><span class="pre">cloud</span></code>.</p>
+</section>
+<section id="chill-cloud-opts">
+<h2><code class="docutils literal notranslate"><span class="pre">chill(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#chill-cloud-opts" title="Link to this heading">#</a></h2>
+<p>Same pipeline with <code class="docutils literal notranslate"><span class="pre">core.getCorrel</span></code> and <code class="docutils literal notranslate"><span class="pre">core.getIceTypeNoPrint</span></code>.
+Mutates <code class="docutils literal notranslate"><span class="pre">cloud</span></code>. Does not write a file.</p>
+</section>
+<section id="cages-cloud-opts">
+<h2><code class="docutils literal notranslate"><span class="pre">cages(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#cages-cloud-opts" title="Link to this heading">#</a></h2>
+<p>Seeded HC/DDC membership. Builds mutual and union k-nearest graphs
+(<code class="docutils literal notranslate"><span class="pre">opts.k</span></code> 4, <code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code> 5.0, <code class="docutils literal notranslate"><span class="pre">opts.type</span></code> 1), converts each to an
+index list, keeps six-membered rings, and returns
+<code class="docutils literal notranslate"><span class="pre">core.seededCageAffiliation(...)</span></code>: a table <code class="docutils literal notranslate"><span class="pre">{hc</span> <span class="pre">=</span> <span class="pre">...,</span> <span class="pre">ddc</span> <span class="pre">=</span> <span class="pre">...}</span></code>
+of per-atom flags.</p>
+</section>
+<section id="core">
+<h2><code class="docutils literal notranslate"><span class="pre">core</span></code><a class="headerlink" href="#core" title="Link to this heading">#</a></h2>
+<p>The table returned by <code class="docutils literal notranslate"><span class="pre">require(&quot;dseams_core&quot;)</span></code>. Every name from
+<code class="docutils literal notranslate"><span class="pre">luaApi::registerAll</span></code> (<code class="docutils literal notranslate"><span class="pre">src/lua_api.cpp</span></code>) lives here.</p>
+<p>Usertypes (<code class="docutils literal notranslate"><span class="pre">PointCloud</span></code>, <code class="docutils literal notranslate"><span class="pre">RingUpdater</span></code>, <code class="docutils literal notranslate"><span class="pre">AffiliationUpdater</span></code>) are
+registered on the Lua state, not on this table.
+<code class="docutils literal notranslate"><span class="pre">RingUpdater.new(6)</span></code> works after <code class="docutils literal notranslate"><span class="pre">require</span></code>.</p>
+<p>Signatures for every compiled name are in <a class="reference internal" href="lua-functions.html"><span class="doc">Compiled registrations</span></a>.</p>
 </section>
 </section>
 
@@ -206,10 +459,18 @@ names take and return tables.</p>
   </svg>
   <span>Back to top</span>
 </button><div class="navigation flex print:hidden"><div class="navigation-prev">
-    <a href="../quickstart.html">
+    <a href="index.html">
       <i class="i-lucide chevron-left"></i>
       <div class="page-info">
-        <span>Previous</span><div class="title">Quickstart</div></div>
+        <span>Previous</span><div class="title">Reference</div></div>
+    </a>
+  </div><div class="navigation-next">
+    <a href="lua-functions.html">
+      <div class="page-info">
+        <span>Next</span>
+        <div class="title">Compiled registrations</div>
+      </div>
+      <i class="i-lucide chevron-right"></i>
     </a>
   </div></div></div>
     </div>
@@ -238,5 +499,6 @@ names take and return tables.</p>
       <script src="../_static/documentation_options.js?v=16656018"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
       <script src="../_static/shibuya.js?v=50760d75"></script></body>
 </html>
