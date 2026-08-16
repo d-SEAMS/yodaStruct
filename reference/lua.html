@@ -105,7 +105,7 @@ data-aria-dark="Switch to auto color mode">
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/library-not-cli.html">The library, not a second CLI</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/frontends.html">Four front ends</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/frontends.html">Three products</a></li>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/citation.html">How to cite</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
@@ -134,12 +134,12 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#tables-vs-userdata">Tables vs userdata</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#read-path-opts"><code class="docutils literal notranslate"><span class="pre">read(path[,</span> <span class="pre">opts])</span></code></a></li>
-<li><a class="reference internal" href="#neighbors-cloud-opts"><code class="docutils literal notranslate"><span class="pre">neighbors(cloud[,</span> <span class="pre">opts])</span></code></a></li>
-<li><a class="reference internal" href="#knn-cloud-opts"><code class="docutils literal notranslate"><span class="pre">knn(cloud[,</span> <span class="pre">opts])</span></code></a></li>
-<li><a class="reference internal" href="#chill-plus-cloud-opts"><code class="docutils literal notranslate"><span class="pre">chill_plus(cloud[,</span> <span class="pre">opts])</span></code></a></li>
-<li><a class="reference internal" href="#chill-cloud-opts"><code class="docutils literal notranslate"><span class="pre">chill(cloud[,</span> <span class="pre">opts])</span></code></a></li>
-<li><a class="reference internal" href="#cages-cloud-opts"><code class="docutils literal notranslate"><span class="pre">cages(cloud[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#read-path-opts">~read~(path[, opts])</a></li>
+<li><a class="reference internal" href="#neighbors-cloud-opts">~neighbors~(cloud[, opts])</a></li>
+<li><a class="reference internal" href="#knn-cloud-opts">~knn~(cloud[, opts])</a></li>
+<li><a class="reference internal" href="#chillplus-cloud-opts">~chill<sub>plus</sub>~(cloud[, opts])</a></li>
+<li><a class="reference internal" href="#chill-cloud-opts">~chill~(cloud[, opts])</a></li>
+<li><a class="reference internal" href="#cages-cloud-opts">~cages~(cloud[, opts])</a></li>
 <li><a class="reference internal" href="#core"><code class="docutils literal notranslate"><span class="pre">core</span></code></a></li>
 </ul>
 </div><a class="js-repo-stats repo-stats flex items-center" href="https://github.com/d-SEAMS/yodaStruct"
@@ -237,8 +237,9 @@ data-aria-dark="Switch to auto color mode">
 <h1>require(“dseams”)<a class="headerlink" href="#require-dseams" title="Link to this heading">#</a></h1>
 <p>Public table from <code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code> (<code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code> on
 <code class="docutils literal notranslate"><span class="pre">dseams_core</span></code>). <code class="docutils literal notranslate"><span class="pre">require(&quot;yoda&quot;)</span></code> is the same table.</p>
-<p>Fennel call shape is in <a class="reference internal" href="../howto/fennel.html"><span class="doc">Call dseams from Fennel</span></a>.
-Compiled names on <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code> are in <a class="reference internal" href="lua-functions.html"><span class="doc">Compiled registrations</span></a>.</p>
+<p>Fennel call shape is in <a class="reference external" href="../howto/fennel.rst">Fennel</a>.
+Compiled names on <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code> are in
+<a class="reference external" href="lua-functions.rst">Compiled registrations</a>.</p>
 <section id="public-names">
 <h2>Public names<a class="headerlink" href="#public-names" title="Link to this heading">#</a></h2>
 <div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">dseams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;dseams&quot;</span><span class="p">)</span>
@@ -338,11 +339,10 @@ that scratch object into the legacy readers.</p>
 </section>
 <section id="tables-vs-userdata">
 <h3>Tables vs userdata<a class="headerlink" href="#tables-vs-userdata" title="Link to this heading">#</a></h3>
-<p>New-style compiled names take neighbour lists and ring lists <em>by
-value</em>. sol2 builds a C++ container from a plain Lua table of
+<p>New-style compiled names take neighbour lists and ring lists <strong>by value</strong>. sol2 builds a C++ container from a plain Lua table of
 tables. Those names return <code class="docutils literal notranslate"><span class="pre">sol::as_nested</span></code> or <code class="docutils literal notranslate"><span class="pre">sol::as_table</span></code>, so
 the result is a Lua table.</p>
-<p>Legacy names take C++ container <em>references</em>. They bind only
+<p>Legacy names take C++ container <strong>references</strong>. They bind only
 container userdata (the object another C++ bind already put on the
 stack). A freshly written Lua table is not accepted.</p>
 <div class="table-wrapper docutils container">
@@ -379,7 +379,7 @@ every argument the bound C++ signature requires.</p>
 </section>
 </section>
 <section id="read-path-opts">
-<h2><code class="docutils literal notranslate"><span class="pre">read(path[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#read-path-opts" title="Link to this heading">#</a></h2>
+<h2>~read~(path[, opts])<a class="headerlink" href="#read-path-opts" title="Link to this heading">#</a></h2>
 <p>Suffix-dispatching loader. Returns a <code class="docutils literal notranslate"><span class="pre">PointCloud</span></code>.</p>
 <div class="table-wrapper docutils container">
 <table class="docutils align-default">
@@ -413,13 +413,13 @@ every argument the bound C++ signature requires.</p>
 the LAMMPS type ID to keep.</p>
 </section>
 <section id="neighbors-cloud-opts">
-<h2><code class="docutils literal notranslate"><span class="pre">neighbors(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#neighbors-cloud-opts" title="Link to this heading">#</a></h2>
+<h2>~neighbors~(cloud[, opts])<a class="headerlink" href="#neighbors-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Cutoff neighbour list by atom ID. Calls
 <code class="docutils literal notranslate"><span class="pre">core.neighListO(opts.cutoff</span> <span class="pre">or</span> <span class="pre">3.5,</span> <span class="pre">cloud,</span> <span class="pre">opts.type</span> <span class="pre">or</span> <span class="pre">1)</span></code>.
 Returns a Lua table of rows (self ID first).</p>
 </section>
 <section id="knn-cloud-opts">
-<h2><code class="docutils literal notranslate"><span class="pre">knn(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#knn-cloud-opts" title="Link to this heading">#</a></h2>
+<h2>~knn~(cloud[, opts])<a class="headerlink" href="#knn-cloud-opts" title="Link to this heading">#</a></h2>
 <p>k-nearest graph by atom ID. Calls <code class="docutils literal notranslate"><span class="pre">core.kNearestNeighbourList</span></code>.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">opts.k</span></code> defaults to 4</p></li>
@@ -428,20 +428,20 @@ Returns a Lua table of rows (self ID first).</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">opts.mutual</span></code> defaults to true; only the boolean <code class="docutils literal notranslate"><span class="pre">false</span></code> selects the union graph</p></li>
 </ul>
 </section>
-<section id="chill-plus-cloud-opts">
-<h2><code class="docutils literal notranslate"><span class="pre">chill_plus(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#chill-plus-cloud-opts" title="Link to this heading">#</a></h2>
+<section id="chillplus-cloud-opts">
+<h2>~chill<sub>plus</sub>~(cloud[, opts])<a class="headerlink" href="#chillplus-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Builds <code class="docutils literal notranslate"><span class="pre">neighbors(cloud,</span> <span class="pre">opts)</span></code>, runs
 <code class="docutils literal notranslate"><span class="pre">core.getCorrelPlus(cloud,</span> <span class="pre">nl,</span> <span class="pre">false)</span></code>, returns
 <code class="docutils literal notranslate"><span class="pre">core.getIceTypePlusNoPrint(cloud,</span> <span class="pre">nl,</span> <span class="pre">false)</span></code> (1-based array of
 state names). Does not write a file. Mutates <code class="docutils literal notranslate"><span class="pre">cloud</span></code>.</p>
 </section>
 <section id="chill-cloud-opts">
-<h2><code class="docutils literal notranslate"><span class="pre">chill(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#chill-cloud-opts" title="Link to this heading">#</a></h2>
+<h2>~chill~(cloud[, opts])<a class="headerlink" href="#chill-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Same pipeline with <code class="docutils literal notranslate"><span class="pre">core.getCorrel</span></code> and <code class="docutils literal notranslate"><span class="pre">core.getIceTypeNoPrint</span></code>.
 Mutates <code class="docutils literal notranslate"><span class="pre">cloud</span></code>. Does not write a file.</p>
 </section>
 <section id="cages-cloud-opts">
-<h2><code class="docutils literal notranslate"><span class="pre">cages(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#cages-cloud-opts" title="Link to this heading">#</a></h2>
+<h2>~cages~(cloud[, opts])<a class="headerlink" href="#cages-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Seeded HC/DDC membership. Builds mutual and union k-nearest graphs
 (<code class="docutils literal notranslate"><span class="pre">opts.k</span></code> 4, <code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code> 5.0, <code class="docutils literal notranslate"><span class="pre">opts.type</span></code> 1), converts each to an
 index list, keeps six-membered rings, and returns
@@ -455,7 +455,8 @@ of per-atom flags.</p>
 <p>Usertypes (<code class="docutils literal notranslate"><span class="pre">PointCloud</span></code>, <code class="docutils literal notranslate"><span class="pre">RingUpdater</span></code>, <code class="docutils literal notranslate"><span class="pre">AffiliationUpdater</span></code>) are
 registered on the Lua state, not on this table.
 <code class="docutils literal notranslate"><span class="pre">RingUpdater.new(6)</span></code> works after <code class="docutils literal notranslate"><span class="pre">require</span></code>.</p>
-<p>Signatures for every compiled name are in <a class="reference internal" href="lua-functions.html"><span class="doc">Compiled registrations</span></a>.</p>
+<p>Signatures for every compiled name are in
+<a class="reference external" href="lua-functions.rst">Compiled registrations</a>.</p>
 </section>
 </section>
 

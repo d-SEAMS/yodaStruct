@@ -105,7 +105,7 @@ data-aria-dark="Switch to auto color mode">
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/library-not-cli.html">The library, not a second CLI</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/frontends.html">Four front ends</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/frontends.html">Three products</a></li>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/citation.html">How to cite</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
@@ -124,9 +124,12 @@ data-aria-dark="Switch to auto color mode">
       <i class="i-lucide close"></i>
     </button>
     <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
+<li><a class="reference internal" href="#id1">How-to Guides</a><ul>
 <li><a class="reference internal" href="#available-how-tos">Available How-tos</a></li>
 <li><a class="reference internal" href="#structure">Structure</a></li>
 <li><a class="reference internal" href="#getting-help">Getting Help</a></li>
+</ul>
+</li>
 </ul>
 </div><a class="js-repo-stats repo-stats flex items-center" href="https://github.com/d-SEAMS/yodaStruct"
   data-type="github" data-user="d-SEAMS" data-repo="yodaStruct">
@@ -217,9 +220,11 @@ data-aria-dark="Switch to auto color mode">
 </div><article class="yue dark-code" role="main">
           <section id="how-to-guides">
 <h1>How-to Guides<a class="headerlink" href="#how-to-guides" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2>How-to Guides<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <p>How-to guides are goal-oriented. Use them to solve specific problems.</p>
 <section id="available-how-tos">
-<h2>Available How-tos<a class="headerlink" href="#available-how-tos" title="Link to this heading">#</a></h2>
+<h3>Available How-tos<a class="headerlink" href="#available-how-tos" title="Link to this heading">#</a></h3>
 <div class="table-wrapper docutils container">
 <table class="docutils align-default">
 <thead>
@@ -228,19 +233,19 @@ data-aria-dark="Switch to auto color mode">
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="install.html"><span class="doc">Install the library</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference external" href="install.rst">Install the library</a></p></td>
 <td><p>Build <code class="docutils literal notranslate"><span class="pre">dseams_core.so</span></code> and put it on <code class="docutils literal notranslate"><span class="pre">LUA_CPATH</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="fennel.html"><span class="doc">Call dseams from Fennel</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="fennel.rst">Call dseams from Fennel</a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">(require</span> <span class="pre">:dseams)</span></code> and kebab-case wrappers</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="embed-lua.html"><span class="doc">Embed in a Lua host</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference external" href="embed-lua.rst">Embed in a Lua host</a></p></td>
 <td><p>Load the module from a process that owns <code class="docutils literal notranslate"><span class="pre">main</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="faq.html"><span class="doc">Frequently Asked Questions</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="faq.rst">FAQ</a></p></td>
 <td><p>Short answers</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference external" href="troubleshooting.rst">Troubleshooting</a></p></td>
 <td><p>Common failures and fixes</p></td>
 </tr>
 </tbody>
@@ -248,7 +253,7 @@ data-aria-dark="Switch to auto color mode">
 </div>
 </section>
 <section id="structure">
-<h2>Structure<a class="headerlink" href="#structure" title="Link to this heading">#</a></h2>
+<h3>Structure<a class="headerlink" href="#structure" title="Link to this heading">#</a></h3>
 <p>Each how-to guide follows this structure:</p>
 <ol class="arabic simple">
 <li><p>Problem statement</p></li>
@@ -257,12 +262,13 @@ data-aria-dark="Switch to auto color mode">
 </ol>
 </section>
 <section id="getting-help">
-<h2>Getting Help<a class="headerlink" href="#getting-help" title="Link to this heading">#</a></h2>
+<h3>Getting Help<a class="headerlink" href="#getting-help" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p><a class="reference internal" href="../tutorials/index.html"><span class="doc">Tutorials</span></a> :: Learn from scratch</p></li>
-<li><p><a class="reference internal" href="../reference/lua.html"><span class="doc">require(“dseams”)</span></a> :: API documentation</p></li>
-<li><p><a class="reference internal" href="../explanation/index.html"><span class="doc">Explanation</span></a> :: Understand concepts</p></li>
+<li><p><a class="reference external" href="../tutorials/index.rst">Tutorials</a> - Learn from scratch</p></li>
+<li><p><a class="reference external" href="../reference/lua.rst">Lua surface</a> - API documentation</p></li>
+<li><p><a class="reference external" href="../explanation/index.rst">Explanation</a> - Understand concepts</p></li>
 </ul>
+</section>
 </section>
 </section>
 

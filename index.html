@@ -105,7 +105,7 @@ data-aria-dark="Switch to auto color mode">
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="explanation/index.html">Explanation</a></li>
 <li class="toctree-l1 _expand"><a class="reference internal" href="explanation/library-not-cli.html">The library, not a second CLI</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="explanation/frontends.html">Four front ends</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="explanation/frontends.html">Three products</a></li>
 <li class="toctree-l1 _expand"><a class="reference internal" href="explanation/citation.html">How to cite</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
@@ -131,7 +131,8 @@ data-aria-dark="Switch to auto color mode">
 </li>
 <li><a class="reference internal" href="#related-projects">Related projects</a></li>
 <li><a class="reference internal" href="#license">License</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+<li><a class="reference internal" href="#ref-genindex">:ref:`genindex`</a></li>
+<li><a class="reference internal" href="#ref-search">:ref:`search`</a></li>
 </ul>
 </div><a class="js-repo-stats repo-stats flex items-center" href="https://github.com/d-SEAMS/yodaStruct"
   data-type="github" data-user="d-SEAMS" data-repo="yodaStruct">
@@ -265,7 +266,7 @@ Embed</div>
 </div>
 <section id="about">
 <h2>About<a class="headerlink" href="#about" title="Link to this heading">#</a></h2>
-<p>This repository is a <em>library</em>. There is no <code class="docutils literal notranslate"><span class="pre">yodaStruct</span></code> executable.
+<p>This repository is a <strong>library</strong>. There is no <code class="docutils literal notranslate"><span class="pre">yodaStruct</span></code> executable.
 Call <code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code> from Lua, or <code class="docutils literal notranslate"><span class="pre">(require</span> <span class="pre">:dseams)</span></code> from Fennel.
 The engine CLI is <code class="docutils literal notranslate"><span class="pre">seams</span></code> in
 <a class="reference external" href="https://github.com/d-SEAMS/seams-core">seams-core</a>.
@@ -328,7 +329,10 @@ relate:</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/read-and-classify.html">Tutorial: Read a dump and classify</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/read-and-classify.html">Tutorial: Read a dump and classify</a></li>
 </ul>
 </div>
@@ -348,7 +352,7 @@ relate:</p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="explanation/index.html">Explanation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="explanation/library-not-cli.html">The library, not a second CLI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="explanation/frontends.html">Four front ends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanation/frontends.html">Three products</a></li>
 <li class="toctree-l1"><a class="reference internal" href="explanation/citation.html">How to cite</a></li>
 </ul>
 </div>
@@ -364,29 +368,37 @@ relate:</p>
 <li class="toctree-l1"><a class="reference internal" href="reference/lua-functions.html">Compiled registrations</a></li>
 </ul>
 </div>
-<p>The compiled-registration appendix is <a class="reference internal" href="reference/lua-functions.html"><span class="doc">Compiled registrations</span></a>,
-generated from Doxygen of <code class="docutils literal notranslate"><span class="pre">lua_api.hpp</span></code>.</p>
+<p>The compiled-registration appendix is <a class="reference external" href="reference/lua-functions.rst">Compiled registrations</a>,
+from Doxygen of <code class="docutils literal notranslate"><span class="pre">lua_api.hpp</span></code>.</p>
 </section>
 <section id="related-projects">
 <h2>Related projects<a class="headerlink" href="#related-projects" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><a class="reference external" href="https://github.com/d-SEAMS/seams-core">seams-core</a> :: C++ engine and <code class="docutils literal notranslate"><span class="pre">seams</span></code> CLI</p></li>
-<li><p><a class="reference external" href="https://github.com/d-SEAMS/PydSEAMSlib">pydseams</a> :: Python Frame API on the same engine</p></li>
-<li><p><a class="reference external" href="https://github.com/d-SEAMS/linkcell">linkcell</a> :: periodic linked-cell k-nearest neighbours</p></li>
-<li><p><a class="reference external" href="https://dseams.info">dseams.info</a> :: Project site</p></li>
-</ul>
+<dl class="simple">
+<dt><a class="reference external" href="https://github.com/d-SEAMS/seams-core">seams-core</a></dt><dd><p>C++ engine and <code class="docutils literal notranslate"><span class="pre">seams</span></code> CLI</p>
+</dd>
+<dt><a class="reference external" href="https://github.com/d-SEAMS/PydSEAMSlib">pydseams</a></dt><dd><p>Python Frame API on the same engine</p>
+</dd>
+<dt><a class="reference external" href="https://github.com/d-SEAMS/linkcell">linkcell</a></dt><dd><p>periodic linked-cell k-nearest neighbours</p>
+</dd>
+<dt><a class="reference external" href="https://dseams.info">dseams.info</a></dt><dd><p>Project site</p>
+</dd>
+</dl>
 </section>
 <section id="license">
 <h2>License<a class="headerlink" href="#license" title="Link to this heading">#</a></h2>
 <p>MIT. Cite the <a class="reference external" href="https://doi.org/10.1021/acs.jcim.0c00031">2020 JCIM paper</a>
-and the <code class="docutils literal notranslate"><span class="pre">CITATION.cff</span></code> in this tree. See <a class="reference internal" href="explanation/citation.html"><span class="doc">How to cite</span></a>.</p>
+and the <code class="docutils literal notranslate"><span class="pre">CITATION.cff</span></code> in this tree. See
+<a class="reference external" href="explanation/citation.rst">How to cite</a>.</p>
+<p>#+begin_export rst
+Indices and tables
+<code class="docutils literal notranslate"><span class="pre">================</span></code></p>
 </section>
-<section id="indices-and-tables">
-<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
+<section id="ref-genindex">
+<h2>:ref:`genindex`<a class="headerlink" href="#ref-genindex" title="Link to this heading">#</a></h2>
+</section>
+<section id="ref-search">
+<h2>:ref:`search`<a class="headerlink" href="#ref-search" title="Link to this heading">#</a></h2>
+<p>#+end_export</p>
 </section>
 </section>
 

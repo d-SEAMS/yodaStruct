@@ -105,7 +105,7 @@ data-aria-dark="Switch to auto color mode">
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="explanation/index.html">Explanation</a></li>
 <li class="toctree-l1 _expand"><a class="reference internal" href="explanation/library-not-cli.html">The library, not a second CLI</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="explanation/frontends.html">Four front ends</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="explanation/frontends.html">Three products</a></li>
 <li class="toctree-l1 _expand"><a class="reference internal" href="explanation/citation.html">How to cite</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
@@ -232,7 +232,7 @@ for the engine CLI, in
 <li><p>Work from the repository root so the shipped dump path resolves</p></li>
 </ul>
 <p>How meson emits <code class="docutils literal notranslate"><span class="pre">dseams_core.so</span></code>, and where an install puts it, is
-in <a class="reference internal" href="howto/install.html"><span class="doc">Install the library</span></a>.</p>
+in <a class="reference external" href="howto/install.rst">Install the library</a>.</p>
 </section>
 <section id="meson">
 <h2>Meson<a class="headerlink" href="#meson" title="Link to this heading">#</a></h2>
@@ -252,7 +252,7 @@ in <a class="reference internal" href="howto/install.html"><span class="doc">Ins
 </span></pre></div>
 </div>
 <p>You should see:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span><span data-line="1">dseams_lib nop=250
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">dseams_lib</span> <span class="n">nop</span><span class="o">=</span><span class="mi">250</span>
 </span></pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">dseams.read</span></code> keeps one atom type. This dump stores oxygen as
@@ -277,15 +277,18 @@ library.</p>
 </span></pre></div>
 </div>
 <p>How to invoke the vendored compiler and the kebab-case wrappers in
-<code class="docutils literal notranslate"><span class="pre">lua/dseams.fnl</span></code> is in <a class="reference internal" href="howto/fennel.html"><span class="doc">Call dseams from Fennel</span></a>.</p>
+<code class="docutils literal notranslate"><span class="pre">lua/dseams.fnl</span></code> is in <a class="reference external" href="howto/fennel.rst">Fennel</a>.</p>
 </section>
 <section id="next-steps">
 <h2>Next steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><a class="reference internal" href="tutorials/read-and-classify.html"><span class="doc">Tutorial: Read a dump and classify</span></a> :: CHILL+ labels and cage flags on the same cloud</p></li>
-<li><p><a class="reference internal" href="howto/install.html"><span class="doc">Install the library</span></a> :: How the <code class="docutils literal notranslate"><span class="pre">.so</span></code> is built and found</p></li>
-<li><p><a class="reference internal" href="howto/embed-lua.html"><span class="doc">Embed in a Lua host</span></a> :: Load <code class="docutils literal notranslate"><span class="pre">dseams_core</span></code> from a process that already owns <code class="docutils literal notranslate"><span class="pre">main</span></code></p></li>
-</ul>
+<dl class="simple">
+<dt><a class="reference external" href="tutorials/read-and-classify.rst">Read a dump and classify</a></dt><dd><p>CHILL+ labels and cage flags on the same cloud</p>
+</dd>
+<dt><a class="reference external" href="howto/install.rst">Install the library</a></dt><dd><p>How the <code class="docutils literal notranslate"><span class="pre">.so</span></code> is built and found</p>
+</dd>
+<dt><a class="reference external" href="howto/embed-lua.rst">Embed in a host</a></dt><dd><p>Load <code class="docutils literal notranslate"><span class="pre">dseams_core</span></code> from a process that already owns <code class="docutils literal notranslate"><span class="pre">main</span></code></p>
+</dd>
+</dl>
 </section>
 </section>
 

@@ -89,7 +89,10 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
-<li class="toctree-l1 _expand"><a class="reference internal" href="index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial: Read a dump and classify</a></li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial: Read a dump and classify</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">How-to</span></p>
@@ -105,7 +108,7 @@ data-aria-dark="Switch to auto color mode">
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/library-not-cli.html">The library, not a second CLI</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/frontends.html">Four front ends</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/frontends.html">Three products</a></li>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/citation.html">How to cite</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
@@ -135,10 +138,10 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#fennel">Fennel</a></li>
 <li><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
 <li><a class="reference internal" href="#module-dseams-not-found">module &#8216;dseams&#8217; not found</a></li>
-<li><a class="reference internal" href="#module-dseams-core-not-found">module &#8216;dseams_core&#8217; not found</a></li>
-<li><a class="reference internal" href="#empty-cloud-or-nop-0">empty cloud, or nop=0</a></li>
+<li><a class="reference internal" href="#module-dseamscore-not-found">module &#8216;dseams<sub>core</sub>' not found</a></li>
+<li><a class="reference internal" href="#empty-cloud-or-nop-0">empty cloud, or <code class="docutils literal notranslate"><span class="pre">nop=0</span></code></a></li>
 <li><a class="reference internal" href="#cages-hc-0-ddc-0">cages hc=0 ddc=0</a></li>
-<li><a class="reference internal" href="#import-style-globals-readframeonlyone-is-nil">Import-style globals (readFrameOnlyOne is nil)</a></li>
+<li><a class="reference internal" href="#import-style-globals-readframeonlyone-is-nil">Import-style globals (<code class="docutils literal notranslate"><span class="pre">readFrameOnlyOne</span></code> is nil)</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#next-steps">Next Steps</a></li>
@@ -183,8 +186,12 @@ data-aria-dark="Switch to auto color mode">
         <span>/</span>
         <meta itemprop="position" content="1" />
       </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-        <strong itemprop="name">Tutorial: Read a dump and classify</strong>
+        <a itemprop="item" href="index.html"><span itemprop="name">Tutorials</span></a>
+        <span>/</span>
         <meta itemprop="position" content="2" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">Tutorial: Read a dump and classify</strong>
+        <meta itemprop="position" content="3" />
       </li></ol>
     <div class="xl:hidden ml-1">
       <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
@@ -233,6 +240,13 @@ data-aria-dark="Switch to auto color mode">
 </div><article class="yue dark-code" role="main">
           <section id="tutorial-read-a-dump-and-classify">
 <h1>Tutorial: Read a dump and classify<a class="headerlink" href="#tutorial-read-a-dump-and-classify" title="Link to this heading">#</a></h1>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">Author<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://rgoswami.me">Rohit Goswami</a></p>
+</dd>
+</dl>
+</div></blockquote>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
 <ul class="simple">
@@ -240,7 +254,8 @@ data-aria-dark="Switch to auto color mode">
 <li><p>meson &gt;= 1.3, ninja, a C++20 compiler, pkg-config</p></li>
 <li><p>This repository, with work from the repository root so the dump
 path resolves</p></li>
-<li><p>The <a class="reference internal" href="../quickstart.html"><span class="doc">Quickstart</span></a> build, or the meson / Nix steps in Step 1</p></li>
+<li><p>The <a class="reference external" href="../quickstart.rst">Quickstart</a> build, or the meson / Nix
+steps in Step 1</p></li>
 </ul>
 </section>
 <section id="learning-objectives">
@@ -272,8 +287,8 @@ you get. Do not treat a <code class="docutils literal notranslate"><span class="
 </span><span data-line="2">nix<span class="w"> </span>develop
 </span></pre></div>
 </div>
-<p>If you already ran the <a class="reference internal" href="../quickstart.html"><span class="doc">Quickstart</span></a>, the exports (or the Nix
-shell) are enough. Skip the compile.</p>
+<p>If you already ran the <a class="reference external" href="../quickstart.rst">Quickstart</a>, the
+exports (or the Nix shell) are enough. Skip the compile.</p>
 </section>
 <section id="step-2-require-and-read">
 <h2>Step 2: Require and read<a class="headerlink" href="#step-2-require-and-read" title="Link to this heading">#</a></h2>
@@ -291,7 +306,7 @@ helpers classify oxygen.</p>
 </span></pre></div>
 </div>
 <p>You should see:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span><span data-line="1">dseams_lib nop=250
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">dseams_lib</span> <span class="n">nop</span><span class="o">=</span><span class="mi">250</span>
 </span></pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">dseams.read</span></code> keeps one atom type. Pass <code class="docutils literal notranslate"><span class="pre">{type</span> <span class="pre">=</span> <span class="pre">2}</span></code> on this dump.
@@ -397,7 +412,8 @@ membership. A cubic oxygen need not sit in a DDC. An HC oxygen
 need not be labeled hexagonal. Read both tables; do not expect
 them to match.</p>
 <p>The helpers live in <code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code>. The compiled names they
-call are on <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code>; see <a class="reference internal" href="../reference/lua.html"><span class="doc">require(“dseams”)</span></a>.</p>
+call are on <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code>; see
+<a class="reference external" href="../reference/lua.rst">Lua surface</a>.</p>
 </section>
 <section id="complete-example-script">
 <h2>Complete Example Script<a class="headerlink" href="#complete-example-script" title="Link to this heading">#</a></h2>
@@ -408,7 +424,7 @@ with <code class="docutils literal notranslate"><span class="pre">LUA_PATH</span
 <section id="fennel">
 <h2>Fennel<a class="headerlink" href="#fennel" title="Link to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">(require</span> <span class="pre">:dseams)</span></code> is the same Lua table. Names stay
-snake_case. The vendored compiler is
+snake<sub>case</sub>. The vendored compiler is
 <code class="docutils literal notranslate"><span class="pre">src/include/external/fennel/fennel.lua</span></code>.</p>
 <div class="highlight-fennel notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="p">(</span><span class="kd">local </span><span class="nv">dseams</span><span class="w"> </span><span class="p">(</span><span class="nb">require </span><span class="ss">:dseams</span><span class="p">))</span>
 </span><span data-line="2"><span class="p">(</span><span class="kd">local </span><span class="nv">cloud</span><span class="w"> </span><span class="p">(</span><span class="nv">dseams.read</span><span class="w"> </span><span class="s">&quot;input/traj/exampleTraj.lammpstrj&quot;</span><span class="w"> </span><span class="p">{</span><span class="ss">:type</span><span class="w"> </span><span class="mi">2</span><span class="p">}))</span>
@@ -427,7 +443,7 @@ after <code class="docutils literal notranslate"><span class="pre">chill_plus</s
 </span></pre></div>
 </div>
 <p>How Fennel finds <code class="docutils literal notranslate"><span class="pre">dseams</span></code>, and how <code class="docutils literal notranslate"><span class="pre">lua/dseams.fnl</span></code> adds
-<code class="docutils literal notranslate"><span class="pre">chill-plus</span></code>, is in <a class="reference internal" href="../howto/fennel.html"><span class="doc">Call dseams from Fennel</span></a>.</p>
+<code class="docutils literal notranslate"><span class="pre">chill-plus</span></code>, is in <a class="reference external" href="../howto/fennel.rst">Fennel</a>.</p>
 </section>
 <section id="troubleshooting">
 <h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">#</a></h2>
@@ -439,8 +455,8 @@ root:</p>
 </span></pre></div>
 </div>
 </section>
-<section id="module-dseams-core-not-found">
-<h3>module ‘dseams_core’ not found<a class="headerlink" href="#module-dseams-core-not-found" title="Link to this heading">#</a></h3>
+<section id="module-dseamscore-not-found">
+<h3>module ‘dseams<sub>core</sub>' not found<a class="headerlink" href="#module-dseamscore-not-found" title="Link to this heading">#</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">LUA_CPATH</span></code> does not contain the build directory that holds
 <code class="docutils literal notranslate"><span class="pre">dseams_core.so</span></code>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_CPATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/bbdir/?.so;;&quot;</span>
@@ -448,7 +464,7 @@ root:</p>
 </div>
 </section>
 <section id="empty-cloud-or-nop-0">
-<h3>empty cloud, or nop=0<a class="headerlink" href="#empty-cloud-or-nop-0" title="Link to this heading">#</a></h3>
+<h3>empty cloud, or <code class="docutils literal notranslate"><span class="pre">nop=0</span></code><a class="headerlink" href="#empty-cloud-or-nop-0" title="Link to this heading">#</a></h3>
 <p>You omitted <code class="docutils literal notranslate"><span class="pre">{type</span> <span class="pre">=</span> <span class="pre">2}</span></code> on a dump whose oxygens are type 2, or
 you ran the script from a directory where
 <code class="docutils literal notranslate"><span class="pre">input/traj/exampleTraj.lammpstrj</span></code> does not exist. Work from the
@@ -460,19 +476,20 @@ repository root.</p>
 contain an accepted hexagonal cage or double-diamond cage.</p>
 </section>
 <section id="import-style-globals-readframeonlyone-is-nil">
-<h3>Import-style globals (readFrameOnlyOne is nil)<a class="headerlink" href="#import-style-globals-readframeonlyone-is-nil" title="Link to this heading">#</a></h3>
+<h3>Import-style globals (<code class="docutils literal notranslate"><span class="pre">readFrameOnlyOne</span></code> is nil)<a class="headerlink" href="#import-style-globals-readframeonlyone-is-nil" title="Link to this heading">#</a></h3>
 <p>Scripts that mention <code class="docutils literal notranslate"><span class="pre">readFrameOnlyOne</span></code>, <code class="docutils literal notranslate"><span class="pre">functionScript</span></code>, or
 <code class="docutils literal notranslate"><span class="pre">trajectory</span></code> as a global expect the 2020 driver. Rewrite them to
-<code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code>. See <a class="reference internal" href="../explanation/library-not-cli.html"><span class="doc">The library, not a second CLI</span></a>.</p>
+<code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code>. See
+<a class="reference external" href="../explanation/library-not-cli.rst">The library, not a second CLI</a>.</p>
 </section>
 </section>
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference internal" href="../howto/fennel.html"><span class="doc">Call dseams from Fennel</span></a> :: Lisp syntax on the same table</p></li>
-<li><p><a class="reference internal" href="../howto/embed-lua.html"><span class="doc">Embed in a Lua host</span></a> :: Load the <code class="docutils literal notranslate"><span class="pre">.so</span></code> from your own process</p></li>
-<li><p><a class="reference internal" href="../reference/lua.html"><span class="doc">require(“dseams”)</span></a> :: Helpers and <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code> names</p></li>
-<li><p><a class="reference internal" href="../howto/install.html"><span class="doc">Install the library</span></a> :: How the <code class="docutils literal notranslate"><span class="pre">.so</span></code> is built and found</p></li>
+<li><p><a class="reference external" href="../howto/fennel.rst">Call dseams from Fennel</a> - Lisp syntax on the same table</p></li>
+<li><p><a class="reference external" href="../howto/embed-lua.rst">Embed in a Lua host</a> - Load the <code class="docutils literal notranslate"><span class="pre">.so</span></code> from your own process</p></li>
+<li><p><a class="reference external" href="../reference/lua.rst">Lua surface</a> - Helpers and <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code> names</p></li>
+<li><p><a class="reference external" href="../howto/install.rst">Install the library</a> - How the <code class="docutils literal notranslate"><span class="pre">.so</span></code> is built and found</p></li>
 </ul>
 </section>
 <section id="summary">

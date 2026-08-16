@@ -89,7 +89,10 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="read-and-classify.html">Tutorial: Read a dump and classify</a></li>
+</ul>
+</li>
 <li class="toctree-l1 _expand"><a class="reference internal" href="read-and-classify.html">Tutorial: Read a dump and classify</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">How-to</span></p>
@@ -105,7 +108,7 @@ data-aria-dark="Switch to auto color mode">
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/library-not-cli.html">The library, not a second CLI</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/frontends.html">Four front ends</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/frontends.html">Three products</a></li>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/citation.html">How to cite</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
@@ -124,9 +127,8 @@ data-aria-dark="Switch to auto color mode">
       <i class="i-lucide close"></i>
     </button>
     <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
-<li><a class="reference internal" href="#available-tutorials">Available Tutorials</a></li>
-<li><a class="reference internal" href="#what-makes-a-good-tutorial">What Makes a Good Tutorial?</a></li>
-<li><a class="reference internal" href="#getting-help">Getting Help</a></li>
+<li><a class="reference internal" href="#available-tutorials">Available tutorials</a></li>
+<li><a class="reference internal" href="#getting-help">Getting help</a></li>
 </ul>
 </div><a class="js-repo-stats repo-stats flex items-center" href="https://github.com/d-SEAMS/yodaStruct"
   data-type="github" data-user="d-SEAMS" data-repo="yodaStruct">
@@ -217,10 +219,10 @@ data-aria-dark="Switch to auto color mode">
 </div><article class="yue dark-code" role="main">
           <section id="tutorials">
 <h1>Tutorials<a class="headerlink" href="#tutorials" title="Link to this heading">#</a></h1>
-<p>Tutorials are learning-oriented. Follow them step by step to learn
-<code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code>.</p>
+<p>Tutorials are learning-oriented. The flagship path is
+<code class="docutils literal notranslate"><span class="pre">dseams.read</span></code> to <code class="docutils literal notranslate"><span class="pre">dseams.chill_plus</span></code> to <code class="docutils literal notranslate"><span class="pre">dseams.cages</span></code>.</p>
 <section id="available-tutorials">
-<h2>Available Tutorials<a class="headerlink" href="#available-tutorials" title="Link to this heading">#</a></h2>
+<h2>Available tutorials<a class="headerlink" href="#available-tutorials" title="Link to this heading">#</a></h2>
 <div class="table-wrapper docutils container">
 <table class="docutils align-default">
 <thead>
@@ -229,31 +231,30 @@ data-aria-dark="Switch to auto color mode">
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="read-and-classify.html"><span class="doc">Tutorial: Read a dump and classify</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference external" href="read-and-classify.rst">Read a dump and classify</a></p></td>
 <td><p>Load the shipped LAMMPS dump, run CHILL+, and flag HC / DDC cages</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-</section>
-<section id="what-makes-a-good-tutorial">
-<h2>What Makes a Good Tutorial?<a class="headerlink" href="#what-makes-a-good-tutorial" title="Link to this heading">#</a></h2>
-<p>Following <a class="reference external" href="https://onegoodtutorial.org/">One Good Tutorial</a> principles:</p>
-<ul class="simple">
-<li><p>Clear learning objectives</p></li>
-<li><p>Step-by-step instructions</p></li>
-<li><p>Working code examples</p></li>
-<li><p>Troubleshooting section</p></li>
-<li><p>Summary of what you learned</p></li>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="read-and-classify.html">Tutorial: Read a dump and classify</a></li>
 </ul>
+</div>
+<p>How-tos solve a goal you already have. Reference names the Lua
+table. Explanation is why this tree is a library.</p>
 </section>
 <section id="getting-help">
-<h2>Getting Help<a class="headerlink" href="#getting-help" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><a class="reference internal" href="../howto/index.html"><span class="doc">How-to Guides</span></a> :: Solve specific problems</p></li>
-<li><p><a class="reference internal" href="../reference/lua.html"><span class="doc">require(“dseams”)</span></a> :: API documentation</p></li>
-<li><p><a class="reference internal" href="../explanation/index.html"><span class="doc">Explanation</span></a> :: Understand concepts</p></li>
-</ul>
+<h2>Getting help<a class="headerlink" href="#getting-help" title="Link to this heading">#</a></h2>
+<dl class="simple">
+<dt><a class="reference external" href="../howto/index.rst">How-to guides</a></dt><dd><p>solve a specific task</p>
+</dd>
+<dt><a class="reference external" href="../reference/lua.rst">Lua surface</a></dt><dd><p>live names</p>
+</dd>
+<dt><a class="reference external" href="../explanation/index.rst">Explanation</a></dt><dd><p>why there is no second CLI</p>
+</dd>
+</dl>
 </section>
 </section>
 

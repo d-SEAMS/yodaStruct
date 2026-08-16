@@ -105,7 +105,7 @@ data-aria-dark="Switch to auto color mode">
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/library-not-cli.html">The library, not a second CLI</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/frontends.html">Four front ends</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/frontends.html">Three products</a></li>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/citation.html">How to cite</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
@@ -128,7 +128,7 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#what-to-load">What to load</a></li>
 <li><a class="reference internal" href="#stock-lua">Stock lua</a></li>
 <li><a class="reference internal" href="#c-host-via-package-cpath">C host via package.cpath</a></li>
-<li><a class="reference internal" href="#c-host-via-lual-requiref">C host via luaL_requiref</a></li>
+<li><a class="reference internal" href="#c-host-via-lualrequiref">C host via luaL<sub>requiref</sub></a></li>
 <li><a class="reference internal" href="#fennel-host">Fennel host</a></li>
 <li><a class="reference internal" href="#what-not-to-do">What not to do</a></li>
 <li><a class="reference internal" href="#see-also">See also</a></li>
@@ -232,9 +232,9 @@ Load the shared module.</p>
 <h2>What to load<a class="headerlink" href="#what-to-load" title="Link to this heading">#</a></h2>
 <p>Two layers:</p>
 <ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">dseams_core.so</span></code> : compiled registrations. C entry
+<li><p><code class="docutils literal notranslate"><span class="pre">dseams_core.so</span></code> :: compiled registrations. C entry
 <code class="docutils literal notranslate"><span class="pre">luaopen_dseams_core</span></code>. This is <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code> : helpers (<code class="docutils literal notranslate"><span class="pre">read</span></code>, <code class="docutils literal notranslate"><span class="pre">neighbors</span></code>, <code class="docutils literal notranslate"><span class="pre">knn</span></code>,
+<li><p><code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code> :: helpers (<code class="docutils literal notranslate"><span class="pre">read</span></code>, <code class="docutils literal notranslate"><span class="pre">neighbors</span></code>, <code class="docutils literal notranslate"><span class="pre">knn</span></code>,
 <code class="docutils literal notranslate"><span class="pre">chill_plus</span></code>, <code class="docutils literal notranslate"><span class="pre">chill</span></code>, <code class="docutils literal notranslate"><span class="pre">cages</span></code>). This file calls
 <code class="docutils literal notranslate"><span class="pre">require(&quot;dseams_core&quot;)</span></code>.</p></li>
 </ol>
@@ -246,7 +246,7 @@ register on the Lua state when <code class="docutils literal notranslate"><span 
 </section>
 <section id="stock-lua">
 <h2>Stock lua<a class="headerlink" href="#stock-lua" title="Link to this heading">#</a></h2>
-<p>This is the same path as the <a class="reference internal" href="../quickstart.html"><span class="doc">Quickstart</span></a>:</p>
+<p>This is the same path as the <a class="reference external" href="../quickstart.rst">Quickstart</a>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PREFIX</span><span class="s2">/share/luadseams/lua/?.lua;;&quot;</span>
 </span><span data-line="2"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_CPATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PREFIX</span><span class="s2">/lib/?.so;;&quot;</span>
 </span><span data-line="3">lua<span class="w"> </span>your_script.lua
@@ -291,8 +291,8 @@ loader finds <code class="docutils literal notranslate"><span class="pre">luaope
 <code class="docutils literal notranslate"><span class="pre">lua_setfield</span></code>, or inherit <code class="docutils literal notranslate"><span class="pre">LUA_PATH</span></code> / <code class="docutils literal notranslate"><span class="pre">LUA_CPATH</span></code> from the
 environment (<code class="docutils literal notranslate"><span class="pre">luaL_openlibs</span></code> honours both).</p>
 </section>
-<section id="c-host-via-lual-requiref">
-<h2>C host via luaL_requiref<a class="headerlink" href="#c-host-via-lual-requiref" title="Link to this heading">#</a></h2>
+<section id="c-host-via-lualrequiref">
+<h2>C host via luaL<sub>requiref</sub><a class="headerlink" href="#c-host-via-lualrequiref" title="Link to this heading">#</a></h2>
 <p>When you link <code class="docutils literal notranslate"><span class="pre">dseams_core</span></code> and do not want a filesystem search
 for the <code class="docutils literal notranslate"><span class="pre">.so</span></code>:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;lua.h&gt;</span>
@@ -327,7 +327,7 @@ tree, or <code class="docutils literal notranslate"><span class="pre">$prefix/sh
 </span><span data-line="6"><span class="p">]]))</span>
 </span></pre></div>
 </div>
-<p>Kebab-case wrappers: <a class="reference internal" href="fennel.html"><span class="doc">Call dseams from Fennel</span></a>.</p>
+<p>Kebab-case wrappers: <a class="reference external" href="fennel.rst">Fennel</a>.</p>
 </section>
 <section id="what-not-to-do">
 <h2>What not to do<a class="headerlink" href="#what-not-to-do" title="Link to this heading">#</a></h2>
@@ -343,9 +343,9 @@ that <code class="docutils literal notranslate"><span class="pre">require(&quot;
 <section id="see-also">
 <h2>See also<a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference internal" href="install.html"><span class="doc">Install the library</span></a> :: Where the <code class="docutils literal notranslate"><span class="pre">.so</span></code> lives</p></li>
-<li><p><a class="reference internal" href="../explanation/library-not-cli.html"><span class="doc">The library, not a second CLI</span></a></p></li>
-<li><p><a class="reference internal" href="../reference/lua.html"><span class="doc">require(“dseams”)</span></a></p></li>
+<li><p><a class="reference external" href="install.rst">Install the library</a> - Where the <code class="docutils literal notranslate"><span class="pre">.so</span></code> lives</p></li>
+<li><p><a class="reference external" href="../explanation/library-not-cli.rst">The library, not a second CLI</a></p></li>
+<li><p><a class="reference external" href="../reference/lua.rst">Lua surface</a></p></li>
 </ul>
 </section>
 </section>

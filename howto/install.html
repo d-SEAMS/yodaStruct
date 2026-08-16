@@ -105,7 +105,7 @@ data-aria-dark="Switch to auto color mode">
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/library-not-cli.html">The library, not a second CLI</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/frontends.html">Four front ends</a></li>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/frontends.html">Three products</a></li>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../explanation/citation.html">How to cite</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
@@ -221,9 +221,26 @@ data-aria-dark="Switch to auto color mode">
   </div>
 </div><article class="yue dark-code" role="main">
           <section id="install-the-library">
-<h1>Install the library<a class="headerlink" href="#install-the-library" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id1" role="doc-backlink">Install the library</a><a class="headerlink" href="#install-the-library" title="Link to this heading">#</a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#install-the-library" id="id1">Install the library</a></p>
+<ul>
+<li><p><a class="reference internal" href="#problem" id="id2">Problem</a></p></li>
+<li><p><a class="reference internal" href="#what-meson-emits" id="id3">What meson emits</a></p></li>
+<li><p><a class="reference internal" href="#in-tree-build" id="id4">In-tree build</a></p></li>
+<li><p><a class="reference internal" href="#meson-install" id="id5">meson install</a></p></li>
+<li><p><a class="reference internal" href="#nix" id="id6">Nix</a></p></li>
+<li><p><a class="reference internal" href="#how-require-finds-the-module" id="id7">How require finds the module</a></p></li>
+<li><p><a class="reference internal" href="#verification" id="id8">Verification</a></p></li>
+<li><p><a class="reference internal" href="#next-steps" id="id9">Next steps</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
 <section id="problem">
-<h2>Problem<a class="headerlink" href="#problem" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Problem</a><a class="headerlink" href="#problem" title="Link to this heading">#</a></h2>
 <p>You need <code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code> to resolve in a <code class="docutils literal notranslate"><span class="pre">lua</span></code> process. That
 takes two files: the helpers (<code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code>) and the compiled
 module (<code class="docutils literal notranslate"><span class="pre">dseams_core.so</span></code>). This page is how meson builds the
@@ -232,7 +249,7 @@ module (<code class="docutils literal notranslate"><span class="pre">dseams_core
 <code class="docutils literal notranslate"><span class="pre">seams</span></code> in <a class="reference external" href="https://github.com/d-SEAMS/seams-core">seams-core</a>.</p>
 </section>
 <section id="what-meson-emits">
-<h2>What meson emits<a class="headerlink" href="#what-meson-emits" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">What meson emits</a><a class="headerlink" href="#what-meson-emits" title="Link to this heading">#</a></h2>
 <p>The meson project name is <code class="docutils literal notranslate"><span class="pre">luadseams</span></code>. The only compile target is
 the shared module <code class="docutils literal notranslate"><span class="pre">dseams_core</span></code> (<code class="docutils literal notranslate"><span class="pre">src/lua_api.cpp</span></code> and
 <code class="docutils literal notranslate"><span class="pre">src/luaopen.cpp</span></code>), with <code class="docutils literal notranslate"><span class="pre">name_prefix</span></code> empty, so the file on disk
@@ -241,9 +258,9 @@ is <code class="docutils literal notranslate"><span class="pre">dseams_core.so</
 <code class="docutils literal notranslate"><span class="pre">with_python=false</span></code>, <code class="docutils literal notranslate"><span class="pre">with_tests=false</span></code>, <code class="docutils literal notranslate"><span class="pre">with_cli=false</span></code>, and
 <code class="docutils literal notranslate"><span class="pre">with_lua=disabled</span></code>. This library does not grow a second engine
 CLI.</p>
-<p>Lua is resolved as pkg-config <code class="docutils literal notranslate"><span class="pre">lua</span></code>, then <code class="docutils literal notranslate"><span class="pre">lua-5.4</span></code>, then a wrap
-fallback. <code class="docutils literal notranslate"><span class="pre">--wrap-mode=nofallback</span></code> keeps the fallback off when a
-system Lua is present.</p>
+<p>Lua is probed as <code class="docutils literal notranslate"><span class="pre">lua-5.4</span></code>, <code class="docutils literal notranslate"><span class="pre">lua5.4</span></code>, <code class="docutils literal notranslate"><span class="pre">lua-5.3</span></code>, <code class="docutils literal notranslate"><span class="pre">lua5.3</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">lua</span></code>, each <code class="docutils literal notranslate"><span class="pre">&gt;=5.3,&lt;5.5</span></code> and with a visible <code class="docutils literal notranslate"><span class="pre">lua.h</span></code>. The wrap
+(<code class="docutils literal notranslate"><span class="pre">lua-5.4</span></code>) is last. <code class="docutils literal notranslate"><span class="pre">--wrap-mode=nofallback</span></code> disables that wrap.</p>
 <p>Installed data (meson <code class="docutils literal notranslate"><span class="pre">install:</span> <span class="pre">true</span></code> on the module, plus
 <code class="docutils literal notranslate"><span class="pre">install_data</span></code>):</p>
 <div class="table-wrapper docutils container">
@@ -271,7 +288,7 @@ system Lua is present.</p>
 tree.</p>
 </section>
 <section id="in-tree-build">
-<h2>In-tree build<a class="headerlink" href="#in-tree-build" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">In-tree build</a><a class="headerlink" href="#in-tree-build" title="Link to this heading">#</a></h2>
 <p>From the repository root:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">meson<span class="w"> </span>setup<span class="w"> </span>bbdir<span class="w"> </span>--wrap-mode<span class="o">=</span>nofallback
 </span><span data-line="2">meson<span class="w"> </span>compile<span class="w"> </span>-C<span class="w"> </span>bbdir
@@ -285,7 +302,7 @@ same way and runs <code class="docutils literal notranslate"><span class="pre">e
 <code class="docutils literal notranslate"><span class="pre">workdir</span></code> at the source root.</p>
 </section>
 <section id="meson-install">
-<h2>meson install<a class="headerlink" href="#meson-install" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">meson install</a><a class="headerlink" href="#meson-install" title="Link to this heading">#</a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">meson<span class="w"> </span>setup<span class="w"> </span>bbdir<span class="w"> </span>--wrap-mode<span class="o">=</span>nofallback<span class="w"> </span>--prefix<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/prefix&quot;</span>
 </span><span data-line="2">meson<span class="w"> </span>compile<span class="w"> </span>-C<span class="w"> </span>bbdir
 </span><span data-line="3">meson<span class="w"> </span>install<span class="w"> </span>-C<span class="w"> </span>bbdir
@@ -301,7 +318,7 @@ same way and runs <code class="docutils literal notranslate"><span class="pre">e
 <code class="docutils literal notranslate"><span class="pre">$prefix/lib/dseams_core.so</span></code> unless you add a symlink.</p>
 </section>
 <section id="nix">
-<h2>Nix<a class="headerlink" href="#nix" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Nix</a><a class="headerlink" href="#nix" title="Link to this heading">#</a></h2>
 <p>The flake package installs the meson layout, then:</p>
 <ul class="simple">
 <li><p>symlinks <code class="docutils literal notranslate"><span class="pre">dseams.lua</span></code> and <code class="docutils literal notranslate"><span class="pre">yoda.lua</span></code> into
@@ -320,10 +337,10 @@ when the file exists</p></li>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">dseams.fnl</span></code> is installed under <code class="docutils literal notranslate"><span class="pre">share/luadseams/lua/</span></code>. It is not
 on the versioned <code class="docutils literal notranslate"><span class="pre">share/lua/</span></code> path. Load kebab-case wrappers with
-<code class="docutils literal notranslate"><span class="pre">fennel.dofile</span></code> on that file; see <a class="reference internal" href="fennel.html"><span class="doc">Call dseams from Fennel</span></a>.</p>
+<code class="docutils literal notranslate"><span class="pre">fennel.dofile</span></code> on that file; see <a class="reference external" href="fennel.rst">Fennel</a>.</p>
 </section>
 <section id="how-require-finds-the-module">
-<h2>How require finds the module<a class="headerlink" href="#how-require-finds-the-module" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">How require finds the module</a><a class="headerlink" href="#how-require-finds-the-module" title="Link to this heading">#</a></h2>
 <div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">dseams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;dseams&quot;</span><span class="p">)</span><span class="w">  </span><span class="c1">-- lua/dseams.lua via LUA_PATH</span>
 </span><span data-line="2"><span class="c1">-- that file does:</span>
 </span><span data-line="3"><span class="c1">--   local core = require(&quot;dseams_core&quot;)  -- dseams_core.so via LUA_CPATH</span>
@@ -341,7 +358,7 @@ on the versioned <code class="docutils literal notranslate"><span class="pre">sh
 dumps and <code class="docutils literal notranslate"><span class="pre">.xyz</span></code> do not need those backends.</p>
 </section>
 <section id="verification">
-<h2>Verification<a class="headerlink" href="#verification" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Verification</a><a class="headerlink" href="#verification" title="Link to this heading">#</a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">lua<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;print(require(&quot;dseams&quot;).read ~= nil)&#39;</span>
 </span><span data-line="2">lua<span class="w"> </span>example_lua/library/read.lua
 </span></pre></div>
@@ -350,12 +367,12 @@ dumps and <code class="docutils literal notranslate"><span class="pre">.xyz</spa
 dump path resolves.</p>
 </section>
 <section id="next-steps">
-<h2>Next steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Next steps</a><a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference internal" href="../quickstart.html"><span class="doc">Quickstart</span></a> :: First <code class="docutils literal notranslate"><span class="pre">require</span></code></p></li>
-<li><p><a class="reference internal" href="../tutorials/read-and-classify.html"><span class="doc">Tutorial: Read a dump and classify</span></a> :: CHILL+ and cages</p></li>
-<li><p><a class="reference internal" href="embed-lua.html"><span class="doc">Embed in a Lua host</span></a> :: Load the <code class="docutils literal notranslate"><span class="pre">.so</span></code> from C</p></li>
-<li><p><a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a> :: <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">not</span> <span class="pre">found</span></code> and empty clouds</p></li>
+<li><p><a class="reference external" href="../quickstart.rst">Quickstart</a> - First <code class="docutils literal notranslate"><span class="pre">require</span></code></p></li>
+<li><p><a class="reference external" href="../tutorials/read-and-classify.rst">Read a dump and classify</a> - CHILL+ and cages</p></li>
+<li><p><a class="reference external" href="embed-lua.rst">Embed in a Lua host</a> - Load the <code class="docutils literal notranslate"><span class="pre">.so</span></code> from C</p></li>
+<li><p><a class="reference external" href="troubleshooting.rst">Troubleshooting</a> - <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">not</span> <span class="pre">found</span></code> and empty clouds</p></li>
 </ul>
 </section>
 </section>
