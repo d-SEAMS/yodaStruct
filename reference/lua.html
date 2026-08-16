@@ -136,6 +136,8 @@ data-aria-dark="Switch to auto color mode">
 </li>
 <li><a class="reference internal" href="#read-path-opts">~read~(path[, opts])</a></li>
 <li><a class="reference internal" href="#neighbors-cloud-opts">~neighbors~(cloud[, opts])</a></li>
+<li><a class="reference internal" href="#neighbors-pair-cloud-opts">~neighbors_pair~(cloud[, opts])</a></li>
+<li><a class="reference internal" href="#cn-cloud-opts">~cn~(cloud[, opts])</a></li>
 <li><a class="reference internal" href="#knn-cloud-opts">~knn~(cloud[, opts])</a></li>
 <li><a class="reference internal" href="#chillplus-cloud-opts">~chill<sub>plus</sub>~(cloud[, opts])</a></li>
 <li><a class="reference internal" href="#chill-cloud-opts">~chill~(cloud[, opts])</a></li>
@@ -265,6 +267,14 @@ Compiled names on <code class="docutils literal notranslate"><span class="pre">d
 <td><p>function</p></td>
 <td><p>cutoff neighbour list by atom ID</p></td>
 </tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">neighbors_pair</span></code></p></td>
+<td><p>function</p></td>
+<td><p>I-J cutoff neighbour list</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cn</span></code></p></td>
+<td><p>function</p></td>
+<td><p>site-site coordination number</p></td>
+</tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">knn</span></code></p></td>
 <td><p>function</p></td>
 <td><p>k-nearest graph by atom ID</p></td>
@@ -288,7 +298,7 @@ Compiled names on <code class="docutils literal notranslate"><span class="pre">d
 </tbody>
 </table>
 </div>
-<p>These seven names are the public surface. Locals in <code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code>
+<p>These names are the public surface. Locals in <code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code>
 (<code class="docutils literal notranslate"><span class="pre">suffix</span></code>, <code class="docutils literal notranslate"><span class="pre">opts</span></code>) are not exported. Option tables may be omitted.
 Defaults are those of <code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code>.</p>
 <p>The engine CLI injects compiled names as globals. Library scripts
@@ -345,34 +355,6 @@ the result is a Lua table.</p>
 <p>Legacy names take C++ container <strong>references</strong>. They bind only
 container userdata (the object another C++ bind already put on the
 stack). A freshly written Lua table is not accepted.</p>
-<div class="table-wrapper docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>style</p></th>
-<th class="head"><p>examples</p></th>
-<th class="head"><p>nList / rings in</p></th>
-<th class="head"><p>result</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>new</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">neighListO</span></code>, <code class="docutils literal notranslate"><span class="pre">neighbourListByIndex</span></code>, <code class="docutils literal notranslate"><span class="pre">kNearestNeighbourList</span></code>, <code class="docutils literal notranslate"><span class="pre">ringNetwork</span></code>, <code class="docutils literal notranslate"><span class="pre">cageAffiliation</span></code>, <code class="docutils literal notranslate"><span class="pre">getCorrelPlus</span></code></p></td>
-<td><p>Lua table</p></td>
-<td><p>Lua table (or void / name table)</p></td>
-</tr>
-<tr class="row-odd"><td><p>new, userdata out</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">getHbondNetwork</span></code>, <code class="docutils literal notranslate"><span class="pre">getHbondNetworkFromClouds</span></code></p></td>
-<td><p>Lua table</p></td>
-<td><p>C++ vector userdata</p></td>
-</tr>
-<tr class="row-even"><td><p>legacy</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">neighborList</span></code>, <code class="docutils literal notranslate"><span class="pre">bondNetworkByIndex</span></code>, <code class="docutils literal notranslate"><span class="pre">getPrimitiveRings</span></code>, <code class="docutils literal notranslate"><span class="pre">readFrame*</span></code>, <code class="docutils literal notranslate"><span class="pre">chillPlus_*</span></code>, <code class="docutils literal notranslate"><span class="pre">chill_*</span></code></p></td>
-<td><p>userdata</p></td>
-<td><p>userdata</p></td>
-</tr>
-</tbody>
-</table>
-</div>
 <p><code class="docutils literal notranslate"><span class="pre">sol2</span></code> does not apply C++ default arguments on a raw bind. Wrapped
 names spell optionals in Lua (<code class="docutils literal notranslate"><span class="pre">sol::optional</span></code>). Legacy names need
 every argument the bound C++ signature requires.</p>
@@ -417,6 +399,20 @@ the LAMMPS type ID to keep.</p>
 <p>Cutoff neighbour list by atom ID. Calls
 <code class="docutils literal notranslate"><span class="pre">core.neighListO(opts.cutoff</span> <span class="pre">or</span> <span class="pre">3.5,</span> <span class="pre">cloud,</span> <span class="pre">opts.type</span> <span class="pre">or</span> <span class="pre">1)</span></code>.
 Returns a Lua table of rows (self ID first).</p>
+</section>
+<section id="neighbors-pair-cloud-opts">
+<h2>~neighbors_pair~(cloud[, opts])<a class="headerlink" href="#neighbors-pair-cloud-opts" title="Link to this heading">#</a></h2>
+<p>I-J cutoff neighbour list. Calls
+<code class="docutils literal notranslate"><span class="pre">core.neighListPair(opts.cutoff</span> <span class="pre">or</span> <span class="pre">3.5,</span> <span class="pre">cloud,</span> <span class="pre">opts.type_i</span> <span class="pre">or</span> <span class="pre">1,</span>
+<span class="pre">opts.type_j</span> <span class="pre">or</span> <span class="pre">2)</span></code>. Like-type pairs reuse <code class="docutils literal notranslate"><span class="pre">neighListO</span></code>.</p>
+</section>
+<section id="cn-cloud-opts">
+<h2>~cn~(cloud[, opts])<a class="headerlink" href="#cn-cloud-opts" title="Link to this heading">#</a></h2>
+<p>Site-site coordination number. Calls <code class="docutils literal notranslate"><span class="pre">core.calcCN</span></code> with
+<code class="docutils literal notranslate"><span class="pre">opts.type_i</span></code> (default 1), <code class="docutils literal notranslate"><span class="pre">opts.type_j</span></code> (default 2),
+<code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code> (default 4.5), and <code class="docutils literal notranslate"><span class="pre">opts.bins</span></code> (default
+<code class="docutils literal notranslate"><span class="pre">floor(cutoff</span> <span class="pre">/</span> <span class="pre">0.1)</span></code>). <code class="docutils literal notranslate"><span class="pre">rhoJ</span></code> is <code class="docutils literal notranslate"><span class="pre">nJ</span> <span class="pre">/</span> <span class="pre">volume</span></code> from the
+partial RDF.</p>
 </section>
 <section id="knn-cloud-opts">
 <h2>~knn~(cloud[, opts])<a class="headerlink" href="#knn-cloud-opts" title="Link to this heading">#</a></h2>
@@ -639,7 +635,7 @@ registered on the Lua state, not on this table.
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=4d935f96"></script>
+      <script src="../_static/documentation_options.js?v=e9ebdb8f"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/design-tabs.js?v=f930bc37"></script>

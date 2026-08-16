@@ -260,7 +260,9 @@ is <code class="docutils literal notranslate"><span class="pre">dseams_core.so</
 CLI.</p>
 <p>Lua is probed as <code class="docutils literal notranslate"><span class="pre">lua-5.4</span></code>, <code class="docutils literal notranslate"><span class="pre">lua5.4</span></code>, <code class="docutils literal notranslate"><span class="pre">lua-5.3</span></code>, <code class="docutils literal notranslate"><span class="pre">lua5.3</span></code>, then
 <code class="docutils literal notranslate"><span class="pre">lua</span></code>, each <code class="docutils literal notranslate"><span class="pre">&gt;=5.3,&lt;5.5</span></code> and with a visible <code class="docutils literal notranslate"><span class="pre">lua.h</span></code>. The wrap
-(<code class="docutils literal notranslate"><span class="pre">lua-5.4</span></code>) is last. <code class="docutils literal notranslate"><span class="pre">--wrap-mode=nofallback</span></code> disables that wrap.</p>
+(<code class="docutils literal notranslate"><span class="pre">lua-5.4</span></code>) is last. <code class="docutils literal notranslate"><span class="pre">--wrap-mode=nofallback</span></code> disables that wrap.
+The build writes a <code class="docutils literal notranslate"><span class="pre">lua.hpp</span></code> that includes those headers by
+absolute path so sol does not pick a distro 5.5 <code class="docutils literal notranslate"><span class="pre">lua.hpp</span></code>.</p>
 <p>Installed data (meson <code class="docutils literal notranslate"><span class="pre">install:</span> <span class="pre">true</span></code> on the module, plus
 <code class="docutils literal notranslate"><span class="pre">install_data</span></code>):</p>
 <div class="table-wrapper docutils container">
@@ -556,7 +558,7 @@ dump path resolves.</p>
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=4d935f96"></script>
+      <script src="../_static/documentation_options.js?v=e9ebdb8f"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/design-tabs.js?v=f930bc37"></script>
