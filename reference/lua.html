@@ -393,7 +393,15 @@ every argument the bound C++ signature requires.</p>
 </table>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">opts.frame</span></code> is the 1-based frame index (default 1). <code class="docutils literal notranslate"><span class="pre">opts.type</span></code> is
-the LAMMPS type ID to keep.</p>
+the LAMMPS type ID to keep. There is no region. <code class="docutils literal notranslate"><span class="pre">dseams.read</span></code> calls
+<code class="docutils literal notranslate"><span class="pre">core.readLammpsTrjO</span></code>, which keeps every atom of that type.</p>
+<p>A dump slice that shrinks <code class="docutils literal notranslate"><span class="pre">nop</span></code> is
+<code class="docutils literal notranslate"><span class="pre">dseams.core.readLammpsTrjreduced(path,</span> <span class="pre">frame,</span> <span class="pre">type,</span> <span class="pre">true,</span> <span class="pre">lo,</span> <span class="pre">hi)</span></code>.
+<code class="docutils literal notranslate"><span class="pre">core.readLammpsTrjO</span></code> takes the same five arguments after the path
+and only sets <code class="docutils literal notranslate"><span class="pre">inSlice</span></code>. An axis with <code class="docutils literal notranslate"><span class="pre">lo</span> <span class="pre">==</span> <span class="pre">hi</span></code> is unconstrained,
+so <code class="docutils literal notranslate"><span class="pre">{0,0,0}</span></code> / <code class="docutils literal notranslate"><span class="pre">{50,0,0}</span></code> is <code class="docutils literal notranslate"><span class="pre">x</span></code> in <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">50]</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code> and <code class="docutils literal notranslate"><span class="pre">z</span></code>
+open. The <code class="docutils literal notranslate"><span class="pre">O</span></code> in <code class="docutils literal notranslate"><span class="pre">readLammpsTrjO</span></code> is historical; the type argument
+is any LAMMPS type.</p>
 </section>
 <section id="neighbors-cloud-opts">
 <h2>~neighbors~(cloud[, opts])<a class="headerlink" href="#neighbors-cloud-opts" title="Link to this heading">#</a></h2>
