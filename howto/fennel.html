@@ -229,8 +229,8 @@ data-aria-dark="Switch to auto color mode">
 <p>Meson, from the repository root:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">meson<span class="w"> </span>setup<span class="w"> </span>bbdir<span class="w"> </span>--wrap-mode<span class="o">=</span>nofallback
 </span><span data-line="2">meson<span class="w"> </span>compile<span class="w"> </span>-C<span class="w"> </span>bbdir
-</span><span data-line="3"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/lua/?.lua;;&quot;</span>
-</span><span data-line="4"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_CPATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/bbdir/?.so;;&quot;</span>
+</span><span data-line="3"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/lua/?.lua;;"</span>
+</span><span data-line="4"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_CPATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/bbdir/?.so;;"</span>
 </span></pre></div>
 </div>
 <p>Nix sets the same two variables to the installed library:</p>
@@ -246,10 +246,10 @@ script. It already puts <code class="docutils literal notranslate"><span class="
 <h2><code class="docutils literal notranslate"><span class="pre">(require</span> <span class="pre">:dseams)</span></code><a class="headerlink" href="#require-dseams" title="Link to this heading">#</a></h2>
 <p>The library example lives at <code class="docutils literal notranslate"><span class="pre">example_lua/library/chill.fnl</span></code>:</p>
 <div class="highlight-fennel notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="p">(</span><span class="kd">local </span><span class="nv">dseams</span><span class="w"> </span><span class="p">(</span><span class="nb">require </span><span class="ss">:dseams</span><span class="p">))</span>
-</span><span data-line="2"><span class="p">(</span><span class="kd">local </span><span class="nv">cloud</span><span class="w"> </span><span class="p">(</span><span class="nv">dseams.read</span><span class="w"> </span><span class="s">&quot;input/traj/exampleTraj.lammpstrj&quot;</span><span class="w"> </span><span class="p">{</span><span class="ss">:type</span><span class="w"> </span><span class="mi">2</span><span class="p">}))</span>
+</span><span data-line="2"><span class="p">(</span><span class="kd">local </span><span class="nv">cloud</span><span class="w"> </span><span class="p">(</span><span class="nv">dseams.read</span><span class="w"> </span><span class="s">"input/traj/exampleTraj.lammpstrj"</span><span class="w"> </span><span class="p">{</span><span class="ss">:type</span><span class="w"> </span><span class="mi">2</span><span class="p">}))</span>
 </span><span data-line="3"><span class="p">(</span><span class="nb">assert </span><span class="p">(</span><span class="k">&gt; </span><span class="nv">cloud.nop</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span>
 </span><span data-line="4"><span class="p">(</span><span class="kd">local </span><span class="nv">types</span><span class="w"> </span><span class="p">(</span><span class="nv">dseams.chill_plus</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="p">{</span><span class="ss">:cutoff</span><span class="w"> </span><span class="mf">3.5</span><span class="w"> </span><span class="ss">:type</span><span class="w"> </span><span class="mi">2</span><span class="p">}))</span>
-</span><span data-line="5"><span class="p">(</span><span class="nb">print </span><span class="p">(</span><span class="nv">string.format</span><span class="w"> </span><span class="s">&quot;dseams_fnl nop=%d ntypes=%d&quot;</span><span class="w"> </span><span class="nv">cloud.nop</span><span class="w"> </span><span class="p">(</span><span class="k">length </span><span class="nv">types</span><span class="p">)))</span>
+</span><span data-line="5"><span class="p">(</span><span class="nb">print </span><span class="p">(</span><span class="nv">string.format</span><span class="w"> </span><span class="s">"dseams_fnl nop=%d ntypes=%d"</span><span class="w"> </span><span class="nv">cloud.nop</span><span class="w"> </span><span class="p">(</span><span class="k">length </span><span class="nv">types</span><span class="p">)))</span>
 </span></pre></div>
 </div>
 <p>Run it from the repository root:</p>
@@ -272,8 +272,8 @@ shape.</p>
 under a name that is not <code class="docutils literal notranslate"><span class="pre">dseams</span></code>, so the inner <code class="docutils literal notranslate"><span class="pre">(require</span> <span class="pre">:dseams)</span></code>
 still hits the Lua module:</p>
 <div class="highlight-fennel notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="p">(</span><span class="kd">local </span><span class="nv">fennel</span><span class="w"> </span><span class="p">(</span><span class="nb">require </span><span class="ss">:fennel</span><span class="p">))</span>
-</span><span data-line="2"><span class="p">(</span><span class="kd">local </span><span class="nv">dseams</span><span class="w"> </span><span class="p">(</span><span class="nv">fennel.dofile</span><span class="w"> </span><span class="s">&quot;lua/dseams.fnl&quot;</span><span class="p">))</span>
-</span><span data-line="3"><span class="p">(</span><span class="kd">local </span><span class="nv">cloud</span><span class="w"> </span><span class="p">(</span><span class="nv">dseams.read</span><span class="w"> </span><span class="s">&quot;input/traj/exampleTraj.lammpstrj&quot;</span><span class="w"> </span><span class="p">{</span><span class="ss">:type</span><span class="w"> </span><span class="mi">2</span><span class="p">}))</span>
+</span><span data-line="2"><span class="p">(</span><span class="kd">local </span><span class="nv">dseams</span><span class="w"> </span><span class="p">(</span><span class="nv">fennel.dofile</span><span class="w"> </span><span class="s">"lua/dseams.fnl"</span><span class="p">))</span>
+</span><span data-line="3"><span class="p">(</span><span class="kd">local </span><span class="nv">cloud</span><span class="w"> </span><span class="p">(</span><span class="nv">dseams.read</span><span class="w"> </span><span class="s">"input/traj/exampleTraj.lammpstrj"</span><span class="w"> </span><span class="p">{</span><span class="ss">:type</span><span class="w"> </span><span class="mi">2</span><span class="p">}))</span>
 </span><span data-line="4"><span class="p">(</span><span class="nb">print </span><span class="p">(</span><span class="nv">dseams.chill-plus</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="p">{</span><span class="ss">:cutoff</span><span class="w"> </span><span class="mf">3.5</span><span class="w"> </span><span class="ss">:type</span><span class="w"> </span><span class="mi">2</span><span class="p">}))</span>
 </span></pre></div>
 </div>
@@ -475,7 +475,7 @@ to <code class="docutils literal notranslate"><span class="pre">fennel.dofile</s
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=3c4615cf"></script>
+      <script src="../_static/documentation_options.js?v=ae39cb24"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/design-tabs.js?v=f930bc37"></script>

@@ -296,10 +296,10 @@ data-aria-dark="Switch to auto color mode">
 <p><strong>**Cause:**</strong> <code class="docutils literal notranslate"><span class="pre">package.path</span></code> does not contain <code class="docutils literal notranslate"><span class="pre">dseams.lua</span></code>.</p>
 <p><strong>**Solution:**</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># In-tree</span>
-</span><span data-line="2"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/lua/?.lua;;&quot;</span>
+</span><span data-line="2"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/lua/?.lua;;"</span>
 </span><span data-line="3">
 </span><span data-line="4"><span class="c1"># After meson install</span>
-</span><span data-line="5"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PREFIX</span><span class="s2">/share/luadseams/lua/?.lua;;&quot;</span>
+</span><span data-line="5"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PREFIX</span><span class="s2">/share/luadseams/lua/?.lua;;"</span>
 </span><span data-line="6">
 </span><span data-line="7"><span class="c1"># Nix</span>
 </span><span data-line="8">nix<span class="w"> </span>develop
@@ -310,7 +310,7 @@ data-aria-dark="Switch to auto color mode">
 Lua/Fennel roots are <code class="docutils literal notranslate"><span class="pre">YODA_LUA_PATH</span></code> / <code class="docutils literal notranslate"><span class="pre">YODA_FENNEL_PATH</span></code>. Those
 keys do not replace <code class="docutils literal notranslate"><span class="pre">LUA_PATH</span></code> / <code class="docutils literal notranslate"><span class="pre">LUA_CPATH</span></code> for <code class="docutils literal notranslate"><span class="pre">require</span></code>.</p>
 <p>Confirm the file exists at that path, then:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">lua<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;print(package.path)&#39;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">lua<span class="w"> </span>-e<span class="w"> </span><span class="s1">'print(package.path)'</span>
 </span></pre></div>
 </div>
 </section>
@@ -319,10 +319,10 @@ keys do not replace <code class="docutils literal notranslate"><span class="pre"
 <p><strong>**Cause:**</strong> <code class="docutils literal notranslate"><span class="pre">package.cpath</span></code> does not contain <code class="docutils literal notranslate"><span class="pre">dseams_core.so</span></code>.</p>
 <p><strong>**Solution:**</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># In-tree meson build directory</span>
-</span><span data-line="2"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_CPATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/bbdir/?.so;;&quot;</span>
+</span><span data-line="2"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_CPATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/bbdir/?.so;;"</span>
 </span><span data-line="3">
 </span><span data-line="4"><span class="c1"># After meson install (note: lib/?.so, not lib/lua/5.4/?.so)</span>
-</span><span data-line="5"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_CPATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PREFIX</span><span class="s2">/lib/?.so;;&quot;</span>
+</span><span data-line="5"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_CPATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PREFIX</span><span class="s2">/lib/?.so;;"</span>
 </span></pre></div>
 </div>
 <p>The file name is <code class="docutils literal notranslate"><span class="pre">dseams_core.so</span></code>, not <code class="docutils literal notranslate"><span class="pre">libdseams_core.so</span></code>. A
@@ -349,7 +349,7 @@ not resolve from the current working directory.</p>
 <li><p>Work from the repository root for shipped examples.</p></li>
 <li><p>Pass the oxygen type:</p></li>
 </ol>
-<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">&quot;input/traj/exampleTraj.lammpstrj&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">"input/traj/exampleTraj.lammpstrj"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
 </span></pre></div>
 </div>
 <ol class="arabic simple">
@@ -667,7 +667,7 @@ under a name that is not <code class="docutils literal notranslate"><span class=
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=3c4615cf"></script>
+      <script src="../_static/documentation_options.js?v=ae39cb24"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/design-tabs.js?v=f930bc37"></script>

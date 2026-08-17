@@ -271,8 +271,8 @@ Call <code class="docutils literal notranslate"><span class="pre">require(&quot;
 The engine CLI is <code class="docutils literal notranslate"><span class="pre">seams</span></code> in
 <a class="reference external" href="https://github.com/d-SEAMS/seams-core">seams-core</a>.
 Python is <a class="reference external" href="https://github.com/d-SEAMS/PydSEAMSlib">pydseams</a>.</p>
-<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">dseams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;dseams&quot;</span><span class="p">)</span>
-</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">&quot;water.lammpstrj&quot;</span><span class="p">)</span>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">dseams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">"dseams"</span><span class="p">)</span>
+</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">"water.lammpstrj"</span><span class="p">)</span>
 </span><span data-line="3"><span class="nb">print</span><span class="p">(</span><span class="nv">dseams</span><span class="p">.</span><span class="nf">chill_plus</span><span class="p">(</span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nv">cutoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.5</span><span class="p">}))</span>
 </span></pre></div>
 </div>
@@ -575,7 +575,7 @@ Indices and tables
     </div>
   </div>
 </footer>
-      <script src="_static/documentation_options.js?v=3c4615cf"></script>
+      <script src="_static/documentation_options.js?v=ae39cb24"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/design-tabs.js?v=f930bc37"></script>

@@ -247,13 +247,13 @@ register on the Lua state when <code class="docutils literal notranslate"><span 
 <section id="stock-lua">
 <h2>Stock lua<a class="headerlink" href="#stock-lua" title="Link to this heading">#</a></h2>
 <p>This is the same path as the <a class="reference external" href="../quickstart.rst">Quickstart</a>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PREFIX</span><span class="s2">/share/luadseams/lua/?.lua;;&quot;</span>
-</span><span data-line="2"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_CPATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PREFIX</span><span class="s2">/lib/?.so;;&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PREFIX</span><span class="s2">/share/luadseams/lua/?.lua;;"</span>
+</span><span data-line="2"><span class="nb">export</span><span class="w"> </span><span class="nv">LUA_CPATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PREFIX</span><span class="s2">/lib/?.so;;"</span>
 </span><span data-line="3">lua<span class="w"> </span>your_script.lua
 </span></pre></div>
 </div>
-<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">dseams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;dseams&quot;</span><span class="p">)</span>
-</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">&quot;water.lammpstrj&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">dseams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">"dseams"</span><span class="p">)</span>
+</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">"water.lammpstrj"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
 </span></pre></div>
 </div>
 <p>In-tree, <code class="docutils literal notranslate"><span class="pre">$PREFIX/share/luadseams/lua</span></code> is <code class="docutils literal notranslate"><span class="pre">lua/</span></code> and
@@ -275,10 +275,10 @@ loader finds <code class="docutils literal notranslate"><span class="pre">luaope
 </span><span data-line="9"><span class="w">  </span><span class="cm">/* Set package.path and package.cpath to the install layout.</span>
 </span><span data-line="10"><span class="cm">     See howto/install. */</span>
 </span><span data-line="11"><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">luaL_dostring</span><span class="p">(</span><span class="n">L</span><span class="p">,</span>
-</span><span data-line="12"><span class="w">        </span><span class="s">&quot;local dseams = require(&#39;dseams&#39;)</span><span class="se">\n</span><span class="s">&quot;</span>
-</span><span data-line="13"><span class="w">        </span><span class="s">&quot;assert(dseams.read ~= nil)</span><span class="se">\n</span><span class="s">&quot;</span>
-</span><span data-line="14"><span class="w">        </span><span class="s">&quot;assert(dseams.core ~= nil)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">LUA_OK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span data-line="15"><span class="w">    </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">lua_tostring</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">));</span>
+</span><span data-line="12"><span class="w">        </span><span class="s">"local dseams = require('dseams')</span><span class="se">\n</span><span class="s">"</span>
+</span><span data-line="13"><span class="w">        </span><span class="s">"assert(dseams.read ~= nil)</span><span class="se">\n</span><span class="s">"</span>
+</span><span data-line="14"><span class="w">        </span><span class="s">"assert(dseams.core ~= nil)</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">LUA_OK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span data-line="15"><span class="w">    </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">lua_tostring</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">));</span>
 </span><span data-line="16"><span class="w">    </span><span class="n">lua_close</span><span class="p">(</span><span class="n">L</span><span class="p">);</span>
 </span><span data-line="17"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 </span><span data-line="18"><span class="w">  </span><span class="p">}</span>
@@ -301,10 +301,10 @@ for the <code class="docutils literal notranslate"><span class="pre">.so</span><
 </span><span data-line="4"><span class="k">extern</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">luaopen_dseams_core</span><span class="p">(</span><span class="n">lua_State</span><span class="w"> </span><span class="o">*</span><span class="n">L</span><span class="p">);</span>
 </span><span data-line="5">
 </span><span data-line="6"><span class="cm">/* After luaL_openlibs(L): */</span>
-</span><span data-line="7"><span class="n">luaL_requiref</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;dseams_core&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">luaopen_dseams_core</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</span><span data-line="7"><span class="n">luaL_requiref</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="s">"dseams_core"</span><span class="p">,</span><span class="w"> </span><span class="n">luaopen_dseams_core</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
 </span><span data-line="8"><span class="n">lua_pop</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
-</span><span data-line="9"><span class="cm">/* package.loaded[&quot;dseams_core&quot;] is now set.</span>
-</span><span data-line="10"><span class="cm">   require(&quot;dseams&quot;) still needs lua/dseams.lua on package.path. */</span>
+</span><span data-line="9"><span class="cm">/* package.loaded["dseams_core"] is now set.</span>
+</span><span data-line="10"><span class="cm">   require("dseams") still needs lua/dseams.lua on package.path. */</span>
 </span></pre></div>
 </div>
 <p>sol2 exposes the same opener as
@@ -319,8 +319,8 @@ the opener is in <code class="docutils literal notranslate"><span class="pre">pa
 <p>Load the vendored compiler, then <code class="docutils literal notranslate"><span class="pre">(require</span> <span class="pre">:dseams)</span></code>. The
 compiler is <code class="docutils literal notranslate"><span class="pre">src/include/external/fennel/fennel.lua</span></code> in the
 tree, or <code class="docutils literal notranslate"><span class="pre">$prefix/share/luadseams/fennel.lua</span></code> after install.</p>
-<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">fennel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;fennel&quot;</span><span class="p">)</span><span class="w">  </span><span class="c1">-- after fennel.lua is on package.path</span>
-</span><span data-line="2"><span class="c1">-- or: fennel = dofile(&quot;src/include/external/fennel/fennel.lua&quot;)</span>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">fennel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">"fennel"</span><span class="p">)</span><span class="w">  </span><span class="c1">-- after fennel.lua is on package.path</span>
+</span><span data-line="2"><span class="c1">-- or: fennel = dofile("src/include/external/fennel/fennel.lua")</span>
 </span><span data-line="3"><span class="nb">print</span><span class="p">(</span><span class="nv">fennel</span><span class="p">.</span><span class="nf">eval</span><span class="p">([[</span>
 </span><span data-line="4"><span class="w">  </span><span class="p">(</span><span class="kd">local</span><span class="w"> </span><span class="nf">dseams</span><span class="w"> </span><span class="p">(</span><span class="nb">require</span><span class="w"> </span><span class="p">:</span><span class="nv">dseams</span><span class="p">))</span>
 </span><span data-line="5"><span class="w">  </span><span class="p">(</span><span class="nb">assert</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="py">read</span><span class="p">)</span>
@@ -529,7 +529,7 @@ that <code class="docutils literal notranslate"><span class="pre">require(&quot;
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=3c4615cf"></script>
+      <script src="../_static/documentation_options.js?v=ae39cb24"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/design-tabs.js?v=f930bc37"></script>

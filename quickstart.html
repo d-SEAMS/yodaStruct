@@ -240,15 +240,15 @@ in <a class="reference external" href="howto/install.rst">Install the library</a
 <code class="docutils literal notranslate"><span class="pre">LUA_CPATH</span></code> finds <code class="docutils literal notranslate"><span class="pre">dseams_core.so</span></code> in the build directory.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">meson<span class="w"> </span>setup<span class="w"> </span>bbdir<span class="w"> </span>--wrap-mode<span class="o">=</span>nofallback
 </span><span data-line="2">meson<span class="w"> </span>compile<span class="w"> </span>-C<span class="w"> </span>bbdir
-</span><span data-line="3"><span class="nv">LUA_PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/lua/?.lua;;&quot;</span><span class="w"> </span><span class="nv">LUA_CPATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/bbdir/?.so;;&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span data-line="3"><span class="nv">LUA_PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/lua/?.lua;;"</span><span class="w"> </span><span class="nv">LUA_CPATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/bbdir/?.so;;"</span><span class="w"> </span><span class="se">\</span>
 </span><span data-line="4"><span class="w">  </span>lua<span class="w"> </span>example_lua/library/read.lua
 </span></pre></div>
 </div>
 <p>That script is:</p>
-<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">dseams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;dseams&quot;</span><span class="p">)</span>
-</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">&quot;input/traj/exampleTraj.lammpstrj&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
-</span><span data-line="3"><span class="nb">assert</span><span class="p">(</span><span class="nv">cloud</span><span class="p">.</span><span class="py">nop</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;empty cloud&quot;</span><span class="p">)</span>
-</span><span data-line="4"><span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;dseams_lib nop=%d&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">cloud</span><span class="p">.</span><span class="py">nop</span><span class="p">))</span>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">dseams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">"dseams"</span><span class="p">)</span>
+</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">"input/traj/exampleTraj.lammpstrj"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
+</span><span data-line="3"><span class="nb">assert</span><span class="p">(</span><span class="nv">cloud</span><span class="p">.</span><span class="py">nop</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">"empty cloud"</span><span class="p">)</span>
+</span><span data-line="4"><span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">"dseams_lib nop=%d"</span><span class="p">,</span><span class="w"> </span><span class="nv">cloud</span><span class="p">.</span><span class="py">nop</span><span class="p">))</span>
 </span></pre></div>
 </div>
 <p>You should see:</p>
@@ -272,7 +272,7 @@ library.</p>
 <h2>Fennel<a class="headerlink" href="#fennel" title="Link to this heading">#</a></h2>
 <p>Fennel loads the same Lua module:</p>
 <div class="highlight-fennel notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="p">(</span><span class="kd">local </span><span class="nv">dseams</span><span class="w"> </span><span class="p">(</span><span class="nb">require </span><span class="ss">:dseams</span><span class="p">))</span>
-</span><span data-line="2"><span class="p">(</span><span class="kd">local </span><span class="nv">cloud</span><span class="w"> </span><span class="p">(</span><span class="nv">dseams.read</span><span class="w"> </span><span class="s">&quot;input/traj/exampleTraj.lammpstrj&quot;</span><span class="w"> </span><span class="p">{</span><span class="ss">:type</span><span class="w"> </span><span class="mi">2</span><span class="p">}))</span>
+</span><span data-line="2"><span class="p">(</span><span class="kd">local </span><span class="nv">cloud</span><span class="w"> </span><span class="p">(</span><span class="nv">dseams.read</span><span class="w"> </span><span class="s">"input/traj/exampleTraj.lammpstrj"</span><span class="w"> </span><span class="p">{</span><span class="ss">:type</span><span class="w"> </span><span class="mi">2</span><span class="p">}))</span>
 </span><span data-line="3"><span class="p">(</span><span class="nb">print </span><span class="p">(</span><span class="nv">dseams.chill_plus</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="p">{</span><span class="ss">:cutoff</span><span class="w"> </span><span class="mf">3.5</span><span class="w"> </span><span class="ss">:type</span><span class="w"> </span><span class="mi">2</span><span class="p">}))</span>
 </span></pre></div>
 </div>
@@ -471,7 +471,7 @@ library.</p>
     </div>
   </div>
 </footer>
-      <script src="_static/documentation_options.js?v=3c4615cf"></script>
+      <script src="_static/documentation_options.js?v=ae39cb24"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/design-tabs.js?v=f930bc37"></script>
