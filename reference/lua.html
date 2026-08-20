@@ -141,7 +141,7 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#rdf-cloud-opts">~rdf~(cloud[, opts])</a></li>
 <li><a class="reference internal" href="#running-coordination-number">Running coordination number</a></li>
 <li><a class="reference internal" href="#knn-cloud-opts">~knn~(cloud[, opts])</a></li>
-<li><a class="reference internal" href="#chillplus-cloud-opts">~chill<sub>plus</sub>~(cloud[, opts])</a></li>
+<li><a class="reference internal" href="#chill">CHILL+</a></li>
 <li><a class="reference internal" href="#chill-cloud-opts">~chill~(cloud[, opts])</a></li>
 <li><a class="reference internal" href="#cages-cloud-opts">~cages~(cloud[, opts])</a></li>
 <li><a class="reference internal" href="#hbonds-cloud-opts">~hbonds~(cloud[, opts])</a></li>
@@ -504,9 +504,9 @@ defaults as <code class="docutils literal notranslate"><span class="pre">rdf</sp
 <li><p><code class="docutils literal notranslate"><span class="pre">opts.mutual</span></code> defaults to true; only the boolean <code class="docutils literal notranslate"><span class="pre">false</span></code> selects the union graph</p></li>
 </ul>
 </section>
-<section id="chillplus-cloud-opts">
-<h2>~chill<sub>plus</sub>~(cloud[, opts])<a class="headerlink" href="#chillplus-cloud-opts" title="Link to this heading">#</a></h2>
-<p>Builds <code class="docutils literal notranslate"><span class="pre">neighbors(cloud,</span> <span class="pre">opts)</span></code>, runs
+<section id="chill">
+<h2>CHILL+<a class="headerlink" href="#chill" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">chill_plus(cloud[,</span> <span class="pre">opts])</span></code> builds <code class="docutils literal notranslate"><span class="pre">neighbors(cloud,</span> <span class="pre">opts)</span></code>, runs
 <code class="docutils literal notranslate"><span class="pre">core.getCorrelPlus(cloud,</span> <span class="pre">nl,</span> <span class="pre">false)</span></code>, returns
 <code class="docutils literal notranslate"><span class="pre">core.getIceTypePlusNoPrint(cloud,</span> <span class="pre">nl,</span> <span class="pre">false)</span></code> (1-based array of
 state names). Does not write a file. Mutates <code class="docutils literal notranslate"><span class="pre">cloud</span></code>.</p>
