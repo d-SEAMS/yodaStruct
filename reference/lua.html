@@ -144,6 +144,8 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#chill">CHILL+</a></li>
 <li><a class="reference internal" href="#chill-cloud-opts">~chill~(cloud[, opts])</a></li>
 <li><a class="reference internal" href="#cages-cloud-opts">~cages~(cloud[, opts])</a></li>
+<li><a class="reference internal" href="#seededcageaffiliation-strictrings-strictnlist-permrings-permnlist-ringadjacentcompletion">~seededCageAffiliation~(strictRings, strictNList, permRings, permNList[, ringAdjacentCompletion])</a></li>
+<li><a class="reference internal" href="#worked-example-the-legacy-ring-chain">Worked example: the legacy ring chain</a></li>
 <li><a class="reference internal" href="#hbonds-cloud-opts">~hbonds~(cloud[, opts])</a></li>
 <li><a class="reference internal" href="#density-cloud-opts">~density~(cloud[, opts])</a></li>
 <li><a class="reference internal" href="#site-mapping-table">Site mapping table</a></li>
@@ -244,10 +246,13 @@ data-aria-dark="Switch to auto color mode">
 </div><article class="yue dark-code" role="main">
           <section id="require-dseams">
 <h1>require(“dseams”)<a class="headerlink" href="#require-dseams" title="Link to this heading">#</a></h1>
-<p>Public table from <code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code> (<code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code> on
-<code class="docutils literal notranslate"><span class="pre">dseams_core</span></code>). <code class="docutils literal notranslate"><span class="pre">require(&quot;yoda&quot;)</span></code> is the same table.</p>
-<p>Fennel call shape is in <a class="reference external" href="../howto/fennel.rst">Fennel</a>.
-Compiled names on <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code> are in
+<p><code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code> loads <code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code> on <code class="docutils literal notranslate"><span class="pre">dseams_core</span></code>.
+<code class="docutils literal notranslate"><span class="pre">require(&quot;yoda&quot;)</span></code> loads the same table.</p>
+<p>Cage flags are hexagonal cage (HC) and double-diamond cage (DDC).
+The chill bond-order classifier (CHILL) and CHILL+ return state
+names. Pair correlation here means a radial distribution function (RDF).</p>
+<p>Fennel call shape lives in <a class="reference external" href="../howto/fennel.rst">Fennel</a>.
+Compiled names on <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code> live in
 <a class="reference external" href="lua-functions.rst">Compiled registrations</a>.</p>
 <section id="public-names">
 <h2>Public names<a class="headerlink" href="#public-names" title="Link to this heading">#</a></h2>
@@ -257,165 +262,106 @@ Compiled names on <code class="docutils literal notranslate"><span class="pre">d
 </span><span data-line="4"><span class="kd">local</span><span class="w"> </span><span class="nv">nl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="py">core</span><span class="p">.</span><span class="nf">neighListO</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span><span class="w"> </span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
 </span></pre></div>
 </div>
-<div class="table-wrapper docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>name</p></th>
-<th class="head"><p>kind</p></th>
-<th class="head"><p>role</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">read</span></code></p></td>
-<td><p>function</p></td>
-<td><p>suffix-dispatching loader</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">neighbors</span></code></p></td>
-<td><p>function</p></td>
-<td><p>cutoff neighbour list by atom ID</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">neighbors_pair</span></code></p></td>
-<td><p>function</p></td>
-<td><p>I-J cutoff neighbour list</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cn</span></code></p></td>
-<td><p>function</p></td>
-<td><p>site-site coordination number</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rdf</span></code></p></td>
-<td><p>function</p></td>
-<td><p>partial three-dimensional RDF</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">running_cn</span></code></p></td>
-<td><p>function</p></td>
-<td><p>running site-site coordination number</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">knn</span></code></p></td>
-<td><p>function</p></td>
-<td><p>k-nearest graph by atom ID</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">chill_plus</span></code></p></td>
-<td><p>function</p></td>
-<td><p>CHILL+ state names; no file</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">chill</span></code></p></td>
-<td><p>function</p></td>
-<td><p>CHILL state names; no file</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cages</span></code></p></td>
-<td><p>function</p></td>
-<td><p>seeded HC/DDC per-atom flags</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">hbonds</span></code></p></td>
-<td><p>function</p></td>
-<td><p>hydrogen-bond adjacency table</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">density</span></code></p></td>
-<td><p>function</p></td>
-<td><p>Cartesian number-density profile</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">site_table</span></code></p></td>
-<td><p>function</p></td>
-<td><p>parse a type-to-site mapping</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pairs</span></code></p></td>
-<td><p>function</p></td>
-<td><p>mutual nearest cation-anion pairs</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">domain</span></code></p></td>
-<td><p>function</p></td>
-<td><p>largest mapped-site domain statistics</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">core</span></code></p></td>
-<td><p>table</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">require(&quot;dseams_core&quot;)</span></code>; compiled registrations</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>These names are the public surface. Locals in <code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code>
-(<code class="docutils literal notranslate"><span class="pre">suffix</span></code>, <code class="docutils literal notranslate"><span class="pre">opts</span></code>) are not exported. Option tables may be omitted.
-Defaults are those of <code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code>.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">read</span></code></dt><dd><p>suffix-dispatching loader.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">neighbors</span></code></dt><dd><p>cutoff neighbour list by atom ID.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">neighbors_pair</span></code></dt><dd><p>I-J cutoff neighbour list.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cn</span></code></dt><dd><p>site-site coordination number.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rdf</span></code></dt><dd><p>partial three-dimensional RDF.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">running_cn</span></code></dt><dd><p>running integral of that pair correlation.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">knn</span></code></dt><dd><p>k-nearest graph by atom ID.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">chill_plus</span></code></dt><dd><p>CHILL+ state names, no output file.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">chill</span></code></dt><dd><p>CHILL labels, no dump on disk.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cages</span></code></dt><dd><p>seeded HC/DDC per-atom flags.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hbonds</span></code></dt><dd><p>hydrogen-bond adjacency table.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">density</span></code></dt><dd><p>Cartesian number-density profile.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">site_table</span></code></dt><dd><p>parse a type-to-site mapping.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">pairs</span></code></dt><dd><p>mutual nearest cation-anion pairs.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">domain</span></code></dt><dd><p>largest mapped-site domain statistics.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">core</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">require(&quot;dseams_core&quot;)</span></code>; compiled registrations.</p>
+</dd>
+</dl>
+<p>These names form the public surface. Locals in <code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code>
+(<code class="docutils literal notranslate"><span class="pre">suffix</span></code>, <code class="docutils literal notranslate"><span class="pre">opts</span></code>) stay private. Callers may drop the option
+table. Defaults match <code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code>.</p>
 <p>The engine CLI injects compiled names as globals. Library scripts
-call them on <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code>.</p>
+call those names on <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code>.</p>
 </section>
 <section id="calling-conventions">
 <h2>Calling conventions<a class="headerlink" href="#calling-conventions" title="Link to this heading">#</a></h2>
 <section id="pointcloud-userdata">
 <h3>PointCloud userdata<a class="headerlink" href="#pointcloud-userdata" title="Link to this heading">#</a></h3>
-<p>Readers return a <code class="docutils literal notranslate"><span class="pre">PointCloud</span></code> userdata, not a table. The usertype is
-registered on the Lua state when <code class="docutils literal notranslate"><span class="pre">dseams_core</span></code> loads, so
-<code class="docutils literal notranslate"><span class="pre">PointCloud.new()</span></code> is a global after <code class="docutils literal notranslate"><span class="pre">require</span></code>. Workflow scripts pass
-that scratch object into the legacy readers.</p>
-<div class="table-wrapper docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>member</p></th>
-<th class="head"><p>kind</p></th>
-<th class="head"><p>meaning</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nop</span></code></p></td>
-<td><p>field</p></td>
-<td><p>particle count</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">currentFrame</span></code></p></td>
-<td><p>field</p></td>
-<td><p>frame index just read</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">box()</span></code></p></td>
-<td><p>method</p></td>
-<td><p>box lengths, 3-number table</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">boxLow()</span></code></p></td>
-<td><p>method</p></td>
-<td><p>box origin, 3-number table</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">iceTypes()</span></code></p></td>
-<td><p>method</p></td>
-<td><p>per-particle state name strings</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Ice-state strings: <code class="docutils literal notranslate"><span class="pre">cubic</span></code>, <code class="docutils literal notranslate"><span class="pre">hexagonal</span></code>, <code class="docutils literal notranslate"><span class="pre">water</span></code>, <code class="docutils literal notranslate"><span class="pre">interfacial</span></code>,
-<code class="docutils literal notranslate"><span class="pre">clathrate</span></code>, <code class="docutils literal notranslate"><span class="pre">interClathrate</span></code>, <code class="docutils literal notranslate"><span class="pre">reCubic</span></code>, <code class="docutils literal notranslate"><span class="pre">reHex</span></code>, <code class="docutils literal notranslate"><span class="pre">unclassified</span></code>.</p>
+<p>Readers return a <code class="docutils literal notranslate"><span class="pre">PointCloud</span></code> userdata. Loading <code class="docutils literal notranslate"><span class="pre">dseams_core</span></code>
+registers the usertype, so <code class="docutils literal notranslate"><span class="pre">PointCloud.new()</span></code> is a global after
+<code class="docutils literal notranslate"><span class="pre">require</span></code>. Workflow scripts pass that scratch object into the
+legacy readers.
+PointCloud userdata fields:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">nop</span></code></dt><dd><p>particle count.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">currentFrame</span></code></dt><dd><p>frame index just read.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">box()</span></code></dt><dd><p>box lengths, 3-number table.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">boxLow()</span></code></dt><dd><p>box origin, 3-number table.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">iceTypes()</span></code></dt><dd><p>per-particle state name strings.</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">iceTypes()</span></code> yields one of <code class="docutils literal notranslate"><span class="pre">cubic</span></code>, <code class="docutils literal notranslate"><span class="pre">hexagonal</span></code>, <code class="docutils literal notranslate"><span class="pre">water</span></code>,
+<code class="docutils literal notranslate"><span class="pre">interfacial</span></code>, <code class="docutils literal notranslate"><span class="pre">clathrate</span></code>, <code class="docutils literal notranslate"><span class="pre">interClathrate</span></code>, <code class="docutils literal notranslate"><span class="pre">reCubic</span></code>, <code class="docutils literal notranslate"><span class="pre">reHex</span></code>,
+<code class="docutils literal notranslate"><span class="pre">unclassified</span></code>.</p>
 </section>
 <section id="tables-vs-userdata">
 <h3>Tables vs userdata<a class="headerlink" href="#tables-vs-userdata" title="Link to this heading">#</a></h3>
-<p>New-style compiled names take neighbour lists and ring lists <strong>by value</strong>. sol2 builds a C++ container from a plain Lua table of
-tables. Those names return <code class="docutils literal notranslate"><span class="pre">sol::as_nested</span></code> or <code class="docutils literal notranslate"><span class="pre">sol::as_table</span></code>, so
-the result is a Lua table.</p>
-<p>Legacy names take C++ container <strong>references</strong>. They bind only
-container userdata (the object another C++ bind already put on the
-stack). A freshly written Lua table is not accepted.</p>
-<div class="table-wrapper docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>style</p></th>
-<th class="head"><p>examples</p></th>
-<th class="head"><p>nList / rings in</p></th>
-<th class="head"><p>result</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>new</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">neighListO</span></code>, <code class="docutils literal notranslate"><span class="pre">neighListPair</span></code>, <code class="docutils literal notranslate"><span class="pre">neighbourListByIndex</span></code>, <code class="docutils literal notranslate"><span class="pre">kNearestNeighbourList</span></code>, <code class="docutils literal notranslate"><span class="pre">ringNetwork</span></code>, <code class="docutils literal notranslate"><span class="pre">cageAffiliation</span></code>, <code class="docutils literal notranslate"><span class="pre">getCorrelPlus</span></code>, <code class="docutils literal notranslate"><span class="pre">calcCN</span></code>, <code class="docutils literal notranslate"><span class="pre">calcRDF3D</span></code>, <code class="docutils literal notranslate"><span class="pre">calcRunningCN</span></code>, <code class="docutils literal notranslate"><span class="pre">getHbondNetwork*</span></code>, <code class="docutils literal notranslate"><span class="pre">densityByType</span></code>, <code class="docutils literal notranslate"><span class="pre">densityByKind</span></code>, <code class="docutils literal notranslate"><span class="pre">contactPairs</span></code>, <code class="docutils literal notranslate"><span class="pre">domainStats</span></code></p></td>
-<td><p>Lua table</p></td>
-<td><p>Lua table (or void / name table)</p></td>
-</tr>
-<tr class="row-odd"><td><p>legacy</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">neighborList</span></code>, <code class="docutils literal notranslate"><span class="pre">bondNetworkByIndex</span></code>, <code class="docutils literal notranslate"><span class="pre">getPrimitiveRings</span></code>, <code class="docutils literal notranslate"><span class="pre">readFrame*</span></code>, <code class="docutils literal notranslate"><span class="pre">chillPlus_*</span></code>, <code class="docutils literal notranslate"><span class="pre">chill_*</span></code></p></td>
-<td><p>userdata</p></td>
-<td><p>userdata</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">sol2</span></code> does not apply C++ default arguments on a raw bind. Wrapped
-names spell optionals in Lua (<code class="docutils literal notranslate"><span class="pre">sol::optional</span></code>). Legacy names need
-every argument the bound C++ signature requires.</p>
+<p>Compiled names that take a neighbour list or a ring list take that
+container <strong>by value</strong>. sol2 builds a C++ <code class="docutils literal notranslate"><span class="pre">vector&lt;vector&lt;int&gt;&gt;</span></code> from
+either a nested Lua table or a container userdata already on the
+stack.</p>
+<p><code class="docutils literal notranslate"><span class="pre">sol::as_nested</span></code> and <code class="docutils literal notranslate"><span class="pre">sol::as_table</span></code> wrappers hand back a Lua
+table. A raw bind of a C++ vector hands back container userdata.
+Both shapes accept <code class="docutils literal notranslate"><span class="pre">#</span></code> and <code class="docutils literal notranslate"><span class="pre">ipairs</span></code>.</p>
+<p>A C++ reference parameter accepts userdata and treats a fresh
+Lua table as garbage. The nested-table getters below take the
+list by value, so both shapes bind.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">bondNetworkByIndex</span></code></dt><dd><p>neighbour list in; Lua table out.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">getPrimitiveRings</span></code></dt><dd><p>neighbour list in; container userdata out.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">prismAnalysis</span></code></dt><dd><p>rings plus nList in; integer out.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bulkRingNumberAnalysis</span></code></dt><dd><p>ring list plus nList in; writes a histogram.</p>
+</dd>
+</dl>
+<p>A Lua table from <code class="docutils literal notranslate"><span class="pre">dseams.neighbors</span></code> or <code class="docutils literal notranslate"><span class="pre">getHbondNetwork</span></code> feeds
+those names directly. <code class="docutils literal notranslate"><span class="pre">neighborList</span></code> userdata binds the same way.</p>
+<p>New-style names (<code class="docutils literal notranslate"><span class="pre">neighListO</span></code>, <code class="docutils literal notranslate"><span class="pre">ringNetwork</span></code>,
+<code class="docutils literal notranslate"><span class="pre">seededCageAffiliation</span></code>, <code class="docutils literal notranslate"><span class="pre">getHbondNetwork*</span></code>, and the rest on
+<code class="docutils literal notranslate"><span class="pre">dseams.core</span></code>) take a table or userdata and hand back a Lua table.
+<code class="docutils literal notranslate"><span class="pre">readFrame*</span></code>, <code class="docutils literal notranslate"><span class="pre">chillPlus_*</span></code>, and <code class="docutils literal notranslate"><span class="pre">chill_*</span></code> stay userdata in and
+userdata out.</p>
+<p><code class="docutils literal notranslate"><span class="pre">neighborList</span></code> is the spelling of <code class="docutils literal notranslate"><span class="pre">neighListO</span></code> that returns
+container userdata. That spelling takes a cutoff, a <code class="docutils literal notranslate"><span class="pre">PointCloud</span></code>,
+and a type. Those compiled names skip C++ default arguments on a
+raw bind. Wrapped names spell optionals in Lua (<code class="docutils literal notranslate"><span class="pre">sol::optional</span></code>).
+Names without a Lua wrapper need every argument the bound C++
+signature requires.</p>
 </section>
 </section>
 <section id="read-path-opts">
@@ -432,15 +378,15 @@ every argument the bound C++ signature requires.</p>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">.xyz</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">readXYZ</span></code></p></td>
-<td><p>whole file; <code class="docutils literal notranslate"><span class="pre">opts.frame</span></code> unused</p></td>
+<td><p>the file; <code class="docutils literal notranslate"><span class="pre">opts.frame</span></code> unused</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">.con</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">readCon</span></code></p></td>
-<td><p>errors if this build has no readcon</p></td>
+<td><p>missing unless this tree compiled readcon</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">.pdb</span></code> / <code class="docutils literal notranslate"><span class="pre">.gro</span></code> / <code class="docutils literal notranslate"><span class="pre">.dcd</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">readChemfiles</span></code></p></td>
-<td><p>errors if this build has no chemfiles; <code class="docutils literal notranslate"><span class="pre">opts.type</span></code> defaults to <code class="docutils literal notranslate"><span class="pre">-1</span></code> (keep all)</p></td>
+<td><p>absent without chemfiles; <code class="docutils literal notranslate"><span class="pre">opts.type</span></code> defaults to <code class="docutils literal notranslate"><span class="pre">-1</span></code> (keep all)</p></td>
 </tr>
 <tr class="row-odd"><td><p>other (LAMMPS dump)</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">readLammpsTrj</span></code> or <code class="docutils literal notranslate"><span class="pre">readLammpsTrjO</span></code></p></td>
@@ -451,21 +397,20 @@ every argument the bound C++ signature requires.</p>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">opts.frame</span></code> is the 1-based frame index (default 1). <code class="docutils literal notranslate"><span class="pre">opts.all</span> <span class="pre">=</span> <span class="pre">true</span></code>
 calls <code class="docutils literal notranslate"><span class="pre">core.readLammpsTrj</span></code> and keeps every atom. Otherwise
-<code class="docutils literal notranslate"><span class="pre">opts.type</span></code> is the LAMMPS type ID to keep. There is no region in the
-high-level helper.</p>
+<code class="docutils literal notranslate"><span class="pre">opts.type</span></code> is the LAMMPS type ID to keep. The helper has no
+region filter.</p>
 <p>A dump slice that shrinks <code class="docutils literal notranslate"><span class="pre">nop</span></code> is
 <code class="docutils literal notranslate"><span class="pre">dseams.core.readLammpsTrjreduced(path,</span> <span class="pre">frame,</span> <span class="pre">type,</span> <span class="pre">true,</span> <span class="pre">lo,</span> <span class="pre">hi)</span></code>.
 <code class="docutils literal notranslate"><span class="pre">core.readLammpsTrjO</span></code> takes the same five arguments after the path
-and only sets <code class="docutils literal notranslate"><span class="pre">inSlice</span></code>. An axis with <code class="docutils literal notranslate"><span class="pre">lo</span> <span class="pre">==</span> <span class="pre">hi</span></code> is unconstrained,
-so <code class="docutils literal notranslate"><span class="pre">{0,0,0}</span></code> / <code class="docutils literal notranslate"><span class="pre">{50,0,0}</span></code> is <code class="docutils literal notranslate"><span class="pre">x</span></code> in <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">50]</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code> and <code class="docutils literal notranslate"><span class="pre">z</span></code> open.
-The <code class="docutils literal notranslate"><span class="pre">O</span></code> in <code class="docutils literal notranslate"><span class="pre">readLammpsTrjO</span></code> is historical; the type argument is any
-LAMMPS type.</p>
+and sets <code class="docutils literal notranslate"><span class="pre">inSlice</span></code>. <code class="docutils literal notranslate"><span class="pre">lo</span> <span class="pre">==</span> <span class="pre">hi</span></code> leaves that direction open.
+<code class="docutils literal notranslate"><span class="pre">{0,0,0}</span></code> / <code class="docutils literal notranslate"><span class="pre">{50,0,0}</span></code> is <code class="docutils literal notranslate"><span class="pre">x</span></code> in <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">50]</span></code>, with <code class="docutils literal notranslate"><span class="pre">y</span></code> and <code class="docutils literal notranslate"><span class="pre">z</span></code> open.
+The type argument is any LAMMPS type (the <code class="docutils literal notranslate"><span class="pre">O</span></code> is historical).</p>
 </section>
 <section id="neighbors-cloud-opts">
 <h2>~neighbors~(cloud[, opts])<a class="headerlink" href="#neighbors-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Cutoff neighbour list by atom ID. Calls
 <code class="docutils literal notranslate"><span class="pre">core.neighListO(opts.cutoff</span> <span class="pre">or</span> <span class="pre">3.5,</span> <span class="pre">cloud,</span> <span class="pre">opts.type</span> <span class="pre">or</span> <span class="pre">1)</span></code>.
-Returns a Lua table of rows (self ID first).</p>
+Hands back a Lua table of rows (self ID first).</p>
 </section>
 <section id="pair-neighbours">
 <h2>Pair neighbours<a class="headerlink" href="#pair-neighbours" title="Link to this heading">#</a></h2>
@@ -485,14 +430,14 @@ partial RDF.</p>
 <p>Partial three-dimensional radial distribution function. Calls
 <code class="docutils literal notranslate"><span class="pre">core.calcRDF3D</span></code> with <code class="docutils literal notranslate"><span class="pre">opts.type_i</span></code> (default 1), <code class="docutils literal notranslate"><span class="pre">opts.type_j</span></code>
 (default 2), <code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code> (default 12.0), and <code class="docutils literal notranslate"><span class="pre">opts.bins</span></code> (default
-<code class="docutils literal notranslate"><span class="pre">floor(cutoff</span> <span class="pre">/</span> <span class="pre">0.05)</span></code>). Returns <code class="docutils literal notranslate"><span class="pre">{r</span> <span class="pre">=</span> <span class="pre">{...},</span> <span class="pre">g</span> <span class="pre">=</span> <span class="pre">{...}}</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">floor(cutoff</span> <span class="pre">/</span> <span class="pre">0.05)</span></code>). Hands back <code class="docutils literal notranslate"><span class="pre">{r</span> <span class="pre">=</span> <span class="pre">r,</span> <span class="pre">g</span> <span class="pre">=</span> <span class="pre">g}</span></code>.</p>
 </section>
 <section id="running-coordination-number">
 <h2>Running coordination number<a class="headerlink" href="#running-coordination-number" title="Link to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">running_cn(cloud[,</span> <span class="pre">opts])</span></code> is the running integral of the partial
-<code class="docutils literal notranslate"><span class="pre">g_IJ</span></code>. Uses the same options and
-defaults as <code class="docutils literal notranslate"><span class="pre">rdf</span></code> and calls <code class="docutils literal notranslate"><span class="pre">core.calcRunningCN</span></code>. Returns
-<code class="docutils literal notranslate"><span class="pre">{r</span> <span class="pre">=</span> <span class="pre">{...},</span> <span class="pre">cn</span> <span class="pre">=</span> <span class="pre">{...}}</span></code>, with <code class="docutils literal notranslate"><span class="pre">rhoJ</span> <span class="pre">=</span> <span class="pre">nJ</span> <span class="pre">/</span> <span class="pre">volume</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">running_cn(cloud[,</span> <span class="pre">opts])</span></code> integrates the partial <code class="docutils literal notranslate"><span class="pre">g_IJ</span></code>.
+Shared options and defaults match <code class="docutils literal notranslate"><span class="pre">rdf</span></code>. The call is
+<code class="docutils literal notranslate"><span class="pre">core.calcRunningCN</span></code>. Hands back <code class="docutils literal notranslate"><span class="pre">{r</span> <span class="pre">=</span> <span class="pre">r,</span> <span class="pre">cn</span> <span class="pre">=</span> <span class="pre">cn}</span></code>, with
+<code class="docutils literal notranslate"><span class="pre">rhoJ</span> <span class="pre">=</span> <span class="pre">nJ</span> <span class="pre">/</span> <span class="pre">volume</span></code>.</p>
 </section>
 <section id="knn-cloud-opts">
 <h2>~knn~(cloud[, opts])<a class="headerlink" href="#knn-cloud-opts" title="Link to this heading">#</a></h2>
@@ -501,28 +446,83 @@ defaults as <code class="docutils literal notranslate"><span class="pre">rdf</sp
 <li><p><code class="docutils literal notranslate"><span class="pre">opts.k</span></code> defaults to 4</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code> (candidate cutoff) defaults to 5.0</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">opts.type</span></code> defaults to 1</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">opts.mutual</span></code> defaults to true; only the boolean <code class="docutils literal notranslate"><span class="pre">false</span></code> selects the union graph</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opts.mutual</span></code> defaults to <code class="docutils literal notranslate"><span class="pre">true</span></code>; the boolean <code class="docutils literal notranslate"><span class="pre">false</span></code> selects the union graph</p></li>
 </ul>
 </section>
 <section id="chill">
 <h2>CHILL+<a class="headerlink" href="#chill" title="Link to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">chill_plus(cloud[,</span> <span class="pre">opts])</span></code> builds <code class="docutils literal notranslate"><span class="pre">neighbors(cloud,</span> <span class="pre">opts)</span></code>, runs
-<code class="docutils literal notranslate"><span class="pre">core.getCorrelPlus(cloud,</span> <span class="pre">nl,</span> <span class="pre">false)</span></code>, returns
+<code class="docutils literal notranslate"><span class="pre">core.getCorrelPlus(cloud,</span> <span class="pre">nl,</span> <span class="pre">false)</span></code>, and returns
 <code class="docutils literal notranslate"><span class="pre">core.getIceTypePlusNoPrint(cloud,</span> <span class="pre">nl,</span> <span class="pre">false)</span></code> (1-based array of
-state names). Does not write a file. Mutates <code class="docutils literal notranslate"><span class="pre">cloud</span></code>.</p>
+state names). Writes no file. Mutates <code class="docutils literal notranslate"><span class="pre">cloud</span></code>.</p>
 </section>
 <section id="chill-cloud-opts">
 <h2>~chill~(cloud[, opts])<a class="headerlink" href="#chill-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Same pipeline with <code class="docutils literal notranslate"><span class="pre">core.getCorrel</span></code> and <code class="docutils literal notranslate"><span class="pre">core.getIceTypeNoPrint</span></code>.
-Mutates <code class="docutils literal notranslate"><span class="pre">cloud</span></code>. Does not write a file.</p>
+Mutates <code class="docutils literal notranslate"><span class="pre">cloud</span></code>. Writes no file.</p>
 </section>
 <section id="cages-cloud-opts">
 <h2>~cages~(cloud[, opts])<a class="headerlink" href="#cages-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Seeded HC/DDC membership. Builds mutual and union k-nearest graphs
 (<code class="docutils literal notranslate"><span class="pre">opts.k</span></code> 4, <code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code> 5.0, <code class="docutils literal notranslate"><span class="pre">opts.type</span></code> 1), converts each to an
-index list, keeps six-membered rings, and returns
-<code class="docutils literal notranslate"><span class="pre">core.seededCageAffiliation(...)</span></code>: a table <code class="docutils literal notranslate"><span class="pre">{hc</span> <span class="pre">=</span> <span class="pre">...,</span> <span class="pre">ddc</span> <span class="pre">=</span> <span class="pre">...}</span></code>
+index list, keeps six-membered rings, and calls
+<code class="docutils literal notranslate"><span class="pre">core.seededCageAffiliation</span></code>. Hands back a table <code class="docutils literal notranslate"><span class="pre">{hc</span> <span class="pre">=</span> <span class="pre">hc,</span> <span class="pre">ddc</span> <span class="pre">=</span> <span class="pre">ddc}</span></code>
 of per-atom flags.</p>
+<p><code class="docutils literal notranslate"><span class="pre">opts.complete</span></code> is the fifth argument of
+<code class="docutils literal notranslate"><span class="pre">seededCageAffiliation</span></code>. The default is <code class="docutils literal notranslate"><span class="pre">false</span></code>. <code class="docutils literal notranslate"><span class="pre">true</span></code> runs the
+engine ring-adjacent walk: the last vertex of a six-ring whose
+other vertices already carry an HC or DDC label.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">aff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">cages</span><span class="p">(</span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
+</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">filled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">cages</span><span class="p">(</span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nv">complete</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">})</span>
+</span></pre></div>
+</div>
+</section>
+<section id="seededcageaffiliation-strictrings-strictnlist-permrings-permnlist-ringadjacentcompletion">
+<h2>~seededCageAffiliation~(strictRings, strictNList, permRings, permNList[, ringAdjacentCompletion])<a class="headerlink" href="#seededcageaffiliation-strictrings-strictnlist-permrings-permnlist-ringadjacentcompletion" title="Link to this heading">#</a></h2>
+<p>Compiled name on <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code>. Mutual-graph seeds, permissive-graph
+fill. Hands back <code class="docutils literal notranslate"><span class="pre">{hc</span> <span class="pre">=</span> <span class="pre">hc,</span> <span class="pre">ddc</span> <span class="pre">=</span> <span class="pre">ddc}</span></code>, each a 1-based array of
+per-atom flags of length <code class="docutils literal notranslate"><span class="pre">cloud.nop</span></code>.</p>
+<p>Those per-atom flags are the return table.
+<code class="docutils literal notranslate"><span class="pre">seededCageAffiliation</span></code> takes the four ring and neighbour
+arguments by value. A nested Lua table and a container
+userdata both bind.</p>
+<p>The fifth argument is <code class="docutils literal notranslate"><span class="pre">ringAdjacentCompletion</span></code>, a boolean that
+defaults to <code class="docutils literal notranslate"><span class="pre">false</span></code> when the call drops it. Pass <code class="docutils literal notranslate"><span class="pre">true</span></code> and the
+accepted labels go through <code class="docutils literal notranslate"><span class="pre">ring::ringAdjacentCompletion</span></code> on the
+permissive six-rings. HC flags and DDC flags run as two walks. The
+walk is the all-but-one rule: a six-ring whose vertices all carry
+that cage label but one fills the last vertex, and the walk
+repeats until a fixed point.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">aff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">core</span><span class="p">.</span><span class="nf">seededCageAffiliation</span><span class="p">(</span><span class="nv">six_s</span><span class="p">,</span><span class="w"> </span><span class="nv">idx_s</span><span class="p">,</span><span class="w"> </span><span class="nv">six_u</span><span class="p">,</span><span class="w"> </span><span class="nv">idx_u</span><span class="p">)</span>
+</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">filled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">core</span><span class="p">.</span><span class="nf">seededCageAffiliation</span><span class="p">(</span><span class="nv">six_s</span><span class="p">,</span><span class="w"> </span><span class="nv">idx_s</span><span class="p">,</span><span class="w"> </span><span class="nv">six_u</span><span class="p">,</span><span class="w"> </span><span class="nv">idx_u</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">dseams.cages</span></code> passes <code class="docutils literal notranslate"><span class="pre">opts.complete</span> <span class="pre">or</span> <span class="pre">false</span></code> as that fifth
+argument. <code class="docutils literal notranslate"><span class="pre">example_lua/library/topology.lua</span></code> calls the compiled
+name with <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+</section>
+<section id="worked-example-the-legacy-ring-chain">
+<h2>Worked example: the legacy ring chain<a class="headerlink" href="#worked-example-the-legacy-ring-chain" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">legacy_chain.lua</span></code> under <code class="docutils literal notranslate"><span class="pre">example_lua/library/</span></code> is the
+worked example for the by-value getters. The script reads
+<code class="docutils literal notranslate"><span class="pre">input/traj/exampleTraj.lammpstrj</span></code> (oxygen type 2). A neighbour
+table comes from <code class="docutils literal notranslate"><span class="pre">dseams.neighbors</span></code>, then feeds
+<code class="docutils literal notranslate"><span class="pre">getHbondNetwork</span></code>, <code class="docutils literal notranslate"><span class="pre">bondNetworkByIndex</span></code>, <code class="docutils literal notranslate"><span class="pre">getPrimitiveRings</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">prismAnalysis</span></code>. <code class="docutils literal notranslate"><span class="pre">neighborList</span></code> userdata binds those names too.
+Both paths agree on the ring count. <code class="docutils literal notranslate"><span class="pre">prismAnalysis</span></code> writes
+<code class="docutils literal notranslate"><span class="pre">topoINT/nPrisms.dat</span></code>.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">nList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">neighbors</span><span class="p">(</span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nv">cutoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.5</span><span class="p">,</span><span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
+</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">hbn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">core</span><span class="p">.</span><span class="nf">getHbondNetwork</span><span class="p">(</span><span class="nv">path</span><span class="p">,</span><span class="w"> </span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="nv">nList</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+</span><span data-line="3"><span class="kd">local</span><span class="w"> </span><span class="nv">byIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">core</span><span class="p">.</span><span class="nf">bondNetworkByIndex</span><span class="p">(</span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="nv">hbn</span><span class="p">)</span>
+</span><span data-line="4"><span class="kd">local</span><span class="w"> </span><span class="nv">rings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">core</span><span class="p">.</span><span class="nf">getPrimitiveRings</span><span class="p">(</span><span class="nv">byIndex</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span>
+</span><span data-line="5"><span class="nv">core</span><span class="p">.</span><span class="nf">prismAnalysis</span><span class="p">(</span><span class="nv">out</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">"/"</span><span class="p">,</span><span class="w"> </span><span class="nv">rings</span><span class="p">,</span><span class="w"> </span><span class="nv">byIndex</span><span class="p">,</span><span class="w"> </span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<p>The meson test name is <code class="docutils literal notranslate"><span class="pre">dseams_legacy_chain</span></code>. From a configured
+build directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">meson<span class="w"> </span><span class="nb">test</span><span class="w"> </span>-C<span class="w"> </span>bbdir<span class="w"> </span>dseams_legacy_chain
+</span></pre></div>
+</div>
 </section>
 <section id="hbonds-cloud-opts">
 <h2>~hbonds~(cloud[, opts])<a class="headerlink" href="#hbonds-cloud-opts" title="Link to this heading">#</a></h2>
@@ -534,54 +534,54 @@ uses <code class="docutils literal notranslate"><span class="pre">opts.cutoff</s
 <li><p>With <code class="docutils literal notranslate"><span class="pre">opts.h_cloud</span></code>, the helper uses the supplied hydrogen
 <code class="docutils literal notranslate"><span class="pre">PointCloud</span></code> instead.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">opts.dist</span></code> and <code class="docutils literal notranslate"><span class="pre">opts.angle</span></code> use the engine defaults 2.42 and 30.0
-when omitted.</p></li>
+when dropped.</p></li>
 </ul>
-<p>Returns a nested Lua table. Supplying neither <code class="docutils literal notranslate"><span class="pre">path</span></code> nor <code class="docutils literal notranslate"><span class="pre">h_cloud</span></code> is
-an error.</p>
+<p>Hands back a nested Lua table. Supplying neither <code class="docutils literal notranslate"><span class="pre">path</span></code> nor
+<code class="docutils literal notranslate"><span class="pre">h_cloud</span></code> is an error.</p>
 </section>
 <section id="density-cloud-opts">
 <h2>~density~(cloud[, opts])<a class="headerlink" href="#density-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Cartesian number density along <code class="docutils literal notranslate"><span class="pre">opts.axis</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;x&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;y&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;z&quot;</span></code>,
-or the corresponding zero-based index. The default axis is <code class="docutils literal notranslate"><span class="pre">&quot;z&quot;</span></code>.
-<code class="docutils literal notranslate"><span class="pre">opts.bins</span></code> defaults to the axis span divided into approximately 0.1
+or the matching zero-based index. The default direction is <code class="docutils literal notranslate"><span class="pre">&quot;z&quot;</span></code>.
+<code class="docutils literal notranslate"><span class="pre">opts.bins</span></code> defaults to that span divided into about 0.1
 length-unit bins.</p>
 <ul class="simple">
 <li><p>Type mode uses <code class="docutils literal notranslate"><span class="pre">opts.type</span></code> (default 0) and returns
-<code class="docutils literal notranslate"><span class="pre">{centres,</span> <span class="pre">rho,</span> <span class="pre">axis,</span> <span class="pre">atom_type}</span></code>.</p></li>
+<code class="docutils literal notranslate"><span class="pre">{centres</span> <span class="pre">=</span> <span class="pre">centres,</span> <span class="pre">rho</span> <span class="pre">=</span> <span class="pre">rho,</span> <span class="pre">axis</span> <span class="pre">=</span> <span class="pre">axis,</span> <span class="pre">atom_type</span> <span class="pre">=</span> <span class="pre">atom_type}</span></code>.</p></li>
 <li><p>Site mode requires both <code class="docutils literal notranslate"><span class="pre">opts.table</span></code> and <code class="docutils literal notranslate"><span class="pre">opts.kind</span></code> and returns
-<code class="docutils literal notranslate"><span class="pre">{centres,</span> <span class="pre">rho,</span> <span class="pre">axis,</span> <span class="pre">site_kind}</span></code>.</p></li>
+<code class="docutils literal notranslate"><span class="pre">{centres</span> <span class="pre">=</span> <span class="pre">centres,</span> <span class="pre">rho</span> <span class="pre">=</span> <span class="pre">rho,</span> <span class="pre">axis</span> <span class="pre">=</span> <span class="pre">axis,</span> <span class="pre">site_kind</span> <span class="pre">=</span> <span class="pre">site_kind}</span></code>.</p></li>
 </ul>
 </section>
 <section id="site-mapping-table">
 <h2>Site mapping table<a class="headerlink" href="#site-mapping-table" title="Link to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">site_table(spec)</span></code> parses a comma-separated mapping such as
-<code class="docutils literal notranslate"><span class="pre">&quot;1=cationHead,2=anion,3=tail&quot;</span></code>. The result is a <code class="docutils literal notranslate"><span class="pre">SiteTable</span></code> userdata
-accepted by <code class="docutils literal notranslate"><span class="pre">density</span></code>, <code class="docutils literal notranslate"><span class="pre">pairs</span></code>, and <code class="docutils literal notranslate"><span class="pre">domain</span></code>. Site kinds are exposed
-on <code class="docutils literal notranslate"><span class="pre">dseams.core.Kind</span></code> (alias <code class="docutils literal notranslate"><span class="pre">SiteKind</span></code>), including <code class="docutils literal notranslate"><span class="pre">polar</span></code> and
-<code class="docutils literal notranslate"><span class="pre">apolar</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">&quot;1=cationHead,2=anion,3=tail&quot;</span></code>. That call yields a <code class="docutils literal notranslate"><span class="pre">SiteTable</span></code>
+userdata accepted by <code class="docutils literal notranslate"><span class="pre">density</span></code>, <code class="docutils literal notranslate"><span class="pre">pairs</span></code>, and <code class="docutils literal notranslate"><span class="pre">domain</span></code>. Site kinds
+live on <code class="docutils literal notranslate"><span class="pre">dseams.core.Kind</span></code> (alias <code class="docutils literal notranslate"><span class="pre">SiteKind</span></code>), including <code class="docutils literal notranslate"><span class="pre">polar</span></code>
+and <code class="docutils literal notranslate"><span class="pre">apolar</span></code>.</p>
 </section>
 <section id="pairs-cloud-opts">
 <h2>~pairs~(cloud, opts)<a class="headerlink" href="#pairs-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Requires <code class="docutils literal notranslate"><span class="pre">opts.table</span></code>. Maps the cloud to ionic sites and returns
 mutual nearest unlike pairs as
-<code class="docutils literal notranslate"><span class="pre">{pairs,</span> <span class="pre">count,</span> <span class="pre">n_cation,</span> <span class="pre">n_anion}</span></code>. Each pair contains the original
-atom IDs.</p>
+<code class="docutils literal notranslate"><span class="pre">{pairs</span> <span class="pre">=</span> <span class="pre">pairs,</span> <span class="pre">count</span> <span class="pre">=</span> <span class="pre">count,</span> <span class="pre">n_cation</span> <span class="pre">=</span> <span class="pre">n_cation,</span> <span class="pre">n_anion</span> <span class="pre">=</span> <span class="pre">n_anion}</span></code>.
+Each pair contains the original atom IDs.</p>
 </section>
 <section id="domain-cloud-opts">
 <h2>~domain~(cloud, opts)<a class="headerlink" href="#domain-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Requires <code class="docutils literal notranslate"><span class="pre">opts.table</span></code> and <code class="docutils literal notranslate"><span class="pre">opts.kind</span></code>. The graph joins mapped sites
-within <code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code> (default 3.5). Returns
-<code class="docutils literal notranslate"><span class="pre">{site_kind,</span> <span class="pre">n,</span> <span class="pre">largest,</span> <span class="pre">percolation}</span></code>, where <code class="docutils literal notranslate"><span class="pre">n</span></code> is the selected site
-count and <code class="docutils literal notranslate"><span class="pre">percolation</span> <span class="pre">=</span> <span class="pre">largest</span> <span class="pre">/</span> <span class="pre">n</span></code>.</p>
+within <code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code> (default 3.5). Hands back
+<code class="docutils literal notranslate"><span class="pre">{site_kind</span> <span class="pre">=</span> <span class="pre">site_kind,</span> <span class="pre">n</span> <span class="pre">=</span> <span class="pre">n,</span> <span class="pre">largest</span> <span class="pre">=</span> <span class="pre">largest,</span> <span class="pre">percolation</span> <span class="pre">=</span> <span class="pre">percolation}</span></code>.
+<code class="docutils literal notranslate"><span class="pre">n</span></code> is the selected site count and <code class="docutils literal notranslate"><span class="pre">percolation</span> <span class="pre">=</span> <span class="pre">largest</span> <span class="pre">/</span> <span class="pre">n</span></code>.</p>
 </section>
 <section id="core">
 <h2><code class="docutils literal notranslate"><span class="pre">core</span></code><a class="headerlink" href="#core" title="Link to this heading">#</a></h2>
-<p>The table returned by <code class="docutils literal notranslate"><span class="pre">require(&quot;dseams_core&quot;)</span></code>. Every name from
+<p><code class="docutils literal notranslate"><span class="pre">require(&quot;dseams_core&quot;)</span></code> returns this table. Every name from
 <code class="docutils literal notranslate"><span class="pre">luaApi::registerAll</span></code> (<code class="docutils literal notranslate"><span class="pre">src/lua_api.cpp</span></code>) lives here.</p>
-<p>Usertypes (<code class="docutils literal notranslate"><span class="pre">PointCloud</span></code>, <code class="docutils literal notranslate"><span class="pre">RingUpdater</span></code>, <code class="docutils literal notranslate"><span class="pre">AffiliationUpdater</span></code>) are
-registered on the Lua state, not on this table.
-<code class="docutils literal notranslate"><span class="pre">RingUpdater.new(6)</span></code> works after <code class="docutils literal notranslate"><span class="pre">require</span></code>.</p>
-<p>Signatures for every compiled name are in
+<p>Usertypes (<code class="docutils literal notranslate"><span class="pre">PointCloud</span></code>, <code class="docutils literal notranslate"><span class="pre">RingUpdater</span></code>, <code class="docutils literal notranslate"><span class="pre">AffiliationUpdater</span></code>) live
+on the Lua state, off this table. <code class="docutils literal notranslate"><span class="pre">RingUpdater.new(6)</span></code> works after
+<code class="docutils literal notranslate"><span class="pre">require</span></code>.</p>
+<p>Signatures for every compiled name live in
 <a class="reference external" href="lua-functions.rst">Compiled registrations</a>.</p>
 </section>
 </section>
