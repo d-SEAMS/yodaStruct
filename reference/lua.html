@@ -145,6 +145,12 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#chill-cloud-opts">~chill~(cloud[, opts])</a></li>
 <li><a class="reference internal" href="#cages-cloud-opts">~cages~(cloud[, opts])</a></li>
 <li><a class="reference internal" href="#cages-by-signature-cloud-spec-opts">~cages_by_signature~(cloud, spec[, opts])</a></li>
+<li><a class="reference internal" href="#guest-occupancy-cloud-cages-guests-opts">~guest_occupancy~(cloud, cages, guests[, opts])</a></li>
+<li><a class="reference internal" href="#fingerprint-rows-opts">~fingerprint~(rows[, opts])</a></li>
+<li><a class="reference internal" href="#topology-library-rows-label-opts">~topology_library~(rows, label[, opts])</a></li>
+<li><a class="reference internal" href="#classify-topology-rows-library-opts">~classify_topology~(rows, library[, opts])</a></li>
+<li><a class="reference internal" href="#ion-environment-cloud-ice-ions-opts">~ion_environment~(cloud, ice, ions[, opts])</a></li>
+<li><a class="reference internal" href="#shell-ring-census-rings-shell-opts">~shell_ring_census~(rings, shell[, opts])</a></li>
 <li><a class="reference internal" href="#seededcageaffiliation-strictrings-strictnlist-permrings-permnlist-ringadjacentcompletion">~seededCageAffiliation~(strictRings, strictNList, permRings, permNList[, ringAdjacentCompletion])</a></li>
 <li><a class="reference internal" href="#worked-example-the-legacy-ring-chain">Worked example: the legacy ring chain</a></li>
 <li><a class="reference internal" href="#hbonds-cloud-opts">~hbonds~(cloud[, opts])</a></li>
@@ -491,6 +497,63 @@ Hands back an array of tables <code class="docutils literal notranslate"><span c
 </span><span data-line="2"><span class="nb">print</span><span class="p">(</span><span class="o">#</span><span class="nv">sod</span><span class="p">,</span><span class="w"> </span><span class="nv">sod</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="o">#</span><span class="nv">sod</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nv">vertices</span><span class="p">)</span>
 </span></pre></div>
 </div>
+</section>
+<section id="guest-occupancy-cloud-cages-guests-opts">
+<h2>~guest_occupancy~(cloud, cages, guests[, opts])<a class="headerlink" href="#guest-occupancy-cloud-cages-guests-opts" title="Link to this heading">#</a></h2>
+<p>Guests (methane, THF, ions; zero-based cloud indices) placed in cages
+given as vertex index lists, each guest to the nearest periodic cage
+centroid within <code class="docutils literal notranslate"><span class="pre">opts.radius</span></code> (default 4.0). Hands back
+<code class="docutils literal notranslate"><span class="pre">{guestsPerCage=,</span> <span class="pre">cageOfGuest=,</span> <span class="pre">centreDistance=,</span> <span class="pre">occupied=,</span>
+<span class="pre">multiply=,</span> <span class="pre">free=}</span></code>; <code class="docutils literal notranslate"><span class="pre">cageOfGuest</span></code> is zero-based and <code class="docutils literal notranslate"><span class="pre">-1</span></code> for a
+free guest. <code class="docutils literal notranslate"><span class="pre">core.periodicCentroid(cloud,</span> <span class="pre">atoms)</span></code> is the centroid
+with every atom unwrapped to its minimum image about the first.</p>
+</section>
+<section id="fingerprint-rows-opts">
+<h2>~fingerprint~(rows[, opts])<a class="headerlink" href="#fingerprint-rows-opts" title="Link to this heading">#</a></h2>
+<p>Label-independent topology keys of the bonded graph given as index
+rows (<code class="docutils literal notranslate"><span class="pre">core.neighbourListByIndex</span></code>). <code class="docutils literal notranslate"><span class="pre">opts.hops</span></code> (default 2),
+<code class="docutils literal notranslate"><span class="pre">opts.max_ring</span></code> (default 7) and <code class="docutils literal notranslate"><span class="pre">opts.colours</span></code> (one integer class
+per row, so species never match across types). Hands back <code class="docutils literal notranslate"><span class="pre">{key=,</span>
+<span class="pre">method=,</span> <span class="pre">atomKeys=,</span> <span class="pre">classes=,</span> <span class="pre">ringCensus=,</span> <span class="pre">hops=}</span></code>; <code class="docutils literal notranslate"><span class="pre">method</span></code> is
+<code class="docutils literal notranslate"><span class="pre">nauty</span></code> when the engine links nauty, else <code class="docutils literal notranslate"><span class="pre">wl</span></code>.</p>
+</section>
+<section id="topology-library-rows-label-opts">
+<h2>~topology_library~(rows, label[, opts])<a class="headerlink" href="#topology-library-rows-label-opts" title="Link to this heading">#</a></h2>
+<p>The frame’s distinct keys as a key library text under <code class="docutils literal notranslate"><span class="pre">label</span></code>;
+<code class="docutils literal notranslate"><span class="pre">opts.library</span></code> extends an existing text. Same <code class="docutils literal notranslate"><span class="pre">opts</span></code> as
+<code class="docutils literal notranslate"><span class="pre">fingerprint</span></code>.</p>
+</section>
+<section id="classify-topology-rows-library-opts">
+<h2>~classify_topology~(rows, library[, opts])<a class="headerlink" href="#classify-topology-rows-library-opts" title="Link to this heading">#</a></h2>
+<p>Names every atom by a key library text, or by a Lua sequence of
+library texts built at different hop counts: then the deepest library
+that holds an atom’s key names it and <code class="docutils literal notranslate"><span class="pre">opts.hops</span></code> is ignored. Hands
+back <code class="docutils literal notranslate"><span class="pre">{labels=,</span> <span class="pre">counts=,</span> <span class="pre">depth=,</span> <span class="pre">matched=}</span></code>; unmatched atoms carry
+<code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> under <code class="docutils literal notranslate"><span class="pre">counts.unmatched</span></code> and depth <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">lib2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">topology_library</span><span class="p">(</span><span class="nv">rows</span><span class="p">,</span><span class="w"> </span><span class="s2">"Ic"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nv">hops</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
+</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">lib3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">topology_library</span><span class="p">(</span><span class="nv">rows</span><span class="p">,</span><span class="w"> </span><span class="s2">"Ic"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nv">hops</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">})</span>
+</span><span data-line="3"><span class="kd">local</span><span class="w"> </span><span class="nv">named</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">classify_topology</span><span class="p">(</span><span class="nv">rows</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">lib3</span><span class="p">,</span><span class="w"> </span><span class="nv">lib2</span><span class="w"> </span><span class="p">})</span>
+</span><span data-line="4"><span class="nb">print</span><span class="p">(</span><span class="nv">named</span><span class="p">.</span><span class="py">matched</span><span class="p">,</span><span class="w"> </span><span class="nv">named</span><span class="p">.</span><span class="py">depth</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</span></pre></div>
+</div>
+</section>
+<section id="ion-environment-cloud-ice-ions-opts">
+<h2>~ion_environment~(cloud, ice, ions[, opts])<a class="headerlink" href="#ion-environment-cloud-ice-ions-opts" title="Link to this heading">#</a></h2>
+<p>Ions read against a per-atom ice flag list (1-based booleans) by their
+first water shell: <code class="docutils literal notranslate"><span class="pre">ice</span></code> when every shell molecule is labelled,
+<code class="docutils literal notranslate"><span class="pre">liquid</span></code> when none is, <code class="docutils literal notranslate"><span class="pre">front</span></code> otherwise. <code class="docutils literal notranslate"><span class="pre">ions</span></code> are zero-based
+cloud indices, <code class="docutils literal notranslate"><span class="pre">opts.type</span></code> the water type (default 1),
+<code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code> the shell radius (default 3.5). Hands back <code class="docutils literal notranslate"><span class="pre">{ion=,</span>
+<span class="pre">shell=,</span> <span class="pre">iceFraction=,</span> <span class="pre">state=,</span> <span class="pre">members=,</span> <span class="pre">nIce=,</span> <span class="pre">nFront=,</span> <span class="pre">nLiquid=}</span></code>;
+<code class="docutils literal notranslate"><span class="pre">members[i]</span></code> lists ion <code class="docutils literal notranslate"><span class="pre">i</span></code>’s shell.</p>
+</section>
+<section id="shell-ring-census-rings-shell-opts">
+<h2>~shell_ring_census~(rings, shell[, opts])<a class="headerlink" href="#shell-ring-census-rings-shell-opts" title="Link to this heading">#</a></h2>
+<p>Rings (zero-based index lists, as <code class="docutils literal notranslate"><span class="pre">core.ringNetwork</span></code> returns them)
+with a vertex in <code class="docutils literal notranslate"><span class="pre">shell</span></code>, counted by size up to <code class="docutils literal notranslate"><span class="pre">opts.max_ring</span></code>
+(default 7): <code class="docutils literal notranslate"><span class="pre">census[s</span> <span class="pre">+</span> <span class="pre">1]</span></code> is the number of rings of size <code class="docutils literal notranslate"><span class="pre">s</span></code>.
+With <code class="docutils literal notranslate"><span class="pre">env.members[i]</span></code> as the shell this is the hydration-shell ring
+census of ion <code class="docutils literal notranslate"><span class="pre">i</span></code>.</p>
 </section>
 <section id="seededcageaffiliation-strictrings-strictnlist-permrings-permnlist-ringadjacentcompletion">
 <h2>~seededCageAffiliation~(strictRings, strictNList, permRings, permNList[, ringAdjacentCompletion])<a class="headerlink" href="#seededcageaffiliation-strictrings-strictnlist-permrings-permnlist-ringadjacentcompletion" title="Link to this heading">#</a></h2>
