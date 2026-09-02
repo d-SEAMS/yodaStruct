@@ -144,6 +144,7 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#chill">CHILL+</a></li>
 <li><a class="reference internal" href="#chill-cloud-opts">~chill~(cloud[, opts])</a></li>
 <li><a class="reference internal" href="#cages-cloud-opts">~cages~(cloud[, opts])</a></li>
+<li><a class="reference internal" href="#cages-by-signature-cloud-spec-opts">~cages_by_signature~(cloud, spec[, opts])</a></li>
 <li><a class="reference internal" href="#seededcageaffiliation-strictrings-strictnlist-permrings-permnlist-ringadjacentcompletion">~seededCageAffiliation~(strictRings, strictNList, permRings, permNList[, ringAdjacentCompletion])</a></li>
 <li><a class="reference internal" href="#worked-example-the-legacy-ring-chain">Worked example: the legacy ring chain</a></li>
 <li><a class="reference internal" href="#hbonds-cloud-opts">~hbonds~(cloud[, opts])</a></li>
@@ -474,6 +475,20 @@ engine ring-adjacent walk: the last vertex of a six-ring whose
 other vertices already carry an HC or DDC label.</p>
 <div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">aff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">cages</span><span class="p">(</span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
 </span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">filled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">cages</span><span class="p">(</span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nv">complete</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">})</span>
+</span></pre></div>
+</div>
+</section>
+<section id="cages-by-signature-cloud-spec-opts">
+<h2>~cages_by_signature~(cloud, spec[, opts])<a class="headerlink" href="#cages-by-signature-cloud-spec-opts" title="Link to this heading">#</a></h2>
+<p>Closed polyhedra whose faces match a ring-size census. <code class="docutils literal notranslate"><span class="pre">spec</span></code> is a
+comma list (<code class="docutils literal notranslate"><span class="pre">4:6,6:8</span></code>) or a named table entry (<code class="docutils literal notranslate"><span class="pre">sodalite</span></code>,
+<code class="docutils literal notranslate"><span class="pre">alpha</span></code>, <code class="docutils literal notranslate"><span class="pre">512</span></code>, <code class="docutils literal notranslate"><span class="pre">51262</span></code>, <code class="docutils literal notranslate"><span class="pre">hc</span></code>, <code class="docutils literal notranslate"><span class="pre">ddc</span></code>). Builds the cutoff
+neighbour graph (<code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code>, <code class="docutils literal notranslate"><span class="pre">opts.type</span></code>), primitive rings up
+to <code class="docutils literal notranslate"><span class="pre">opts.max_ring</span></code> (default 8), and calls <code class="docutils literal notranslate"><span class="pre">core.findBySignature</span></code>.
+Hands back an array of tables <code class="docutils literal notranslate"><span class="pre">{signature=,</span> <span class="pre">faces=,</span> <span class="pre">vertices=,</span>
+<span class="pre">certificate=}</span></code>. Named <code class="docutils literal notranslate"><span class="pre">hc</span></code> and <code class="docutils literal notranslate"><span class="pre">ddc</span></code> use the TUM finders.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">sod</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">cages_by_signature</span><span class="p">(</span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="s2">"sodalite"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">})</span>
+</span><span data-line="2"><span class="nb">print</span><span class="p">(</span><span class="o">#</span><span class="nv">sod</span><span class="p">,</span><span class="w"> </span><span class="nv">sod</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="o">#</span><span class="nv">sod</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nv">vertices</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </section>
