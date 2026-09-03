@@ -15,7 +15,7 @@
 
 stdenv.mkDerivation {
   pname = "dseams";
-  version = "2.6.0";
+  version = "2.9.1";
 
   src = lib.fileset.toSource {
     root = ./..;
