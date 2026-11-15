@@ -153,6 +153,7 @@ This documentation follows the `Diataxis <https://diataxis.fr/>`_ framework.
 
    reference/index
    api/lua
+   lang/task-lua
 
 Related projects
 ----------------

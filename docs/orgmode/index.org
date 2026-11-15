@@ -158,6 +158,7 @@ This documentation follows the [[https://diataxis.fr/][Diataxis]] framework.
 
    reference/index
    api/lua
+   lang/task-lua
 #+end_export
 
 * Related projects
