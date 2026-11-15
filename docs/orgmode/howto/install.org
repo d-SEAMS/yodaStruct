@@ -42,7 +42,6 @@ meson compile -C bbdir
 meson install -C bbdir
 export LUA_PATH="$PWD/prefix/share/lua/5.4/?.lua;;"
 export LUA_CPATH="$PWD/prefix/lib/lua/5.4/?.so;;"
-export LD_LIBRARY_PATH="$PWD/prefix/lib"
 lua5.4 tests/test_rock.lua .
 #+end_src
 
@@ -78,9 +77,10 @@ local dseams = require("dseams")  -- dseams.lua via LUA_PATH
 -- dseams.lua calls require("dseams_core"), found via LUA_CPATH
 #+end_src
 
-~dseams_core.so~ needs ~libseams.so~ at load time: an install
-prefix on ~LD_LIBRARY_PATH~, or the build tree, whose modules carry
-an rpath to the subproject.
+~dseams_core.so~ loads ~libseams.so~. An installed module carries a
+run path to ~$prefix/lib~, and a module in the build tree one to the
+subproject, so neither needs ~LD_LIBRARY_PATH~. A rock built by
+LuaRocks carries a run path to ~SEAMS_LIBDIR~.
 
 * Next steps
 

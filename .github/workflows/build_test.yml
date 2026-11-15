@@ -73,11 +73,13 @@ jobs:
             luarocks
             ${{ matrix.luajit }}
           cache-environment: true
-      - name: Fennel and busted
+      - name: Fennel, busted, freud and OVITO
         shell: bash -el {0}
         run: |
           echo "FENNEL_LUA=$(sh scripts/fetch_fennel.sh "$RUNNER_TEMP/fennel")" >> "$GITHUB_ENV"
           luarocks --lua-version 5.4 install --tree "$CONDA_PREFIX" busted
+          # seams-core registers capi_crosscheck in the subproject build.
+          python -m pip install "freud-analysis>=3.6.1,<4" "ovito>=3.12.0,<4"
       - name: Configure and build
         shell: bash -el {0}
         run: |

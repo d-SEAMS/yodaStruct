@@ -67,7 +67,7 @@ Build
 -----
 
 The engine is no longer linked static. ``dseams_core.so`` loads
-``libseams.so``, so an installed module needs that library on the
-loader path. LuaJIT is built beside Lua 5.4 when meson finds it. Lua
+``libseams.so``, which an install puts in ``$prefix/lib``; the installed
+module carries a run path there. LuaJIT is built beside Lua 5.4 when meson finds it. Lua
 5.3 is no longer a target. The Lua tests need the Fennel compiler;
 see `Install the library <install.rst>`_.
