@@ -28,6 +28,8 @@ master_doc = "index"
 
 html_theme = "shibuya"
 html_static_path = ["_static"]
+# llms.txt at the site root, from the repository root.
+html_extra_path = ["../../llms.txt"]
 html_favicon = "_static/logo/dseams-icon.ico"
 html_css_files = ["custom.css"]
 html_js_files = []
