@@ -1,9 +1,7 @@
 import os
 import re
-import subprocess
 
 _conf_dir = os.path.dirname(os.path.abspath(__file__))
-subprocess.check_call(["doxygen", "Doxyfile"], cwd=_conf_dir)
 
 project = "dseams"
 # the release string is the meson project version, so the book cannot drift
@@ -14,19 +12,18 @@ copyright = "2019--present, d-SEAMS core team"
 author = "d-SEAMS core team"
 
 extensions = [
-    "breathe",
+    "myst_parser",
     "sphinx.ext.intersphinx",
     "sphinx_sitemap",
     "sphinx_design",
     "sphinxcontrib.mermaid",
 ]
 
-breathe_projects = {"dseams": "xml"}
-breathe_default_project = "dseams"
+myst_enable_extensions = ["colon_fence"]
 
 templates_path = ["_templates"]
 exclude_patterns = []
-source_suffix = [".rst"]
+source_suffix = {".rst": "restructuredtext", ".md": "markdown"}
 master_doc = "index"
 
 html_theme = "shibuya"

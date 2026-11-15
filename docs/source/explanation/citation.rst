@@ -64,8 +64,8 @@ Related software
 See also
 ~~~~~~~~
 
-- `The library, not a second CLI <library-not-cli.rst>`_
+- `Three products <frontends.rst>`_
 
-- `Lua surface <../reference/lua.rst>`_
+- `Reference <../reference/index.rst>`_
 
 - `Tutorials <../tutorials/index.rst>`_

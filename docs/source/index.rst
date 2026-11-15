@@ -35,36 +35,39 @@ Lua and Fennel library for the d-SEAMS C++ engine.
       Load a dump with ``require("dseams")``.
 
    .. grid-item-card:: Classify
-      :link: tutorials/read-and-classify
+      :link: tutorials/lua
       :link-type: doc
       :class-card: sd-shadow-sm
 
-      CHILL+ labels and HC / DDC cage flags.
+      CHILL+, Steinhardt, rings and cages on Lua 5.4 and LuaJIT.
 
-   .. grid-item-card:: Embed
-      :link: howto/embed-lua
+   .. grid-item-card:: Upgrade
+      :link: howto/upgrade-2.14
       :link-type: doc
       :class-card: sd-shadow-sm
 
-      Host ``dseams_core.so`` from Lua, Fennel, or C.
+      Move a 2.10 script off the retired sol2 module.
 
 About
 -----
 
 This repository is a **library**. There is no ``yodaStruct`` executable.
-Call ``require("dseams")`` from Lua, or ``(require :dseams)`` from Fennel.
-The engine CLI is ``seams`` in
+Call ``require("dseams")`` from Lua 5.4 or LuaJIT, or ``(require :dseams)``
+from Fennel. Every call goes through the d-SEAMS C API, ``seams.h`` in
 `seams-core <https://github.com/d-SEAMS/seams-core>`_.
 Python is `pydseams <https://github.com/d-SEAMS/PydSEAMSlib>`_.
 
 .. code:: lua
 
     local dseams = require("dseams")
-    local cloud = dseams.read("water.lammpstrj")
-    print(dseams.chill_plus(cloud, {cutoff = 3.5}))
+    local cloud = dseams.read("input/traj/genice_sI.lammpstrj", {type = 1})
+    local labels = dseams.chill_plus(cloud, {cutoff = 3.5, rule = dseams.PUBLISHED})
+    print(labels.counts.clathrate)  -- 46
+    cloud:close()
 
-``dseams.core`` is the compiled registrations (``dseams_core.so``).
-Helpers stay in Lua. ``require("yoda")`` still resolves to ``dseams``.
+``dseams.core`` is the compiled C module (``dseams_core.so``).
+``require("yoda")`` still resolves to ``dseams``. Version 2.14.0 replaced
+the sol2 module of 2.10; see `Upgrade to 2.14 <howto/upgrade-2.14.rst>`_.
 
 Suite stack
 -----------
@@ -85,6 +88,7 @@ relate:
        CORE["dseams_core.so"]
      end
      subgraph engine["seams-core"]
+       API["libseams (seams.h)"]
        YDS[libyodaLib]
        SEAMS[seams CLI]
      end
@@ -95,9 +99,10 @@ relate:
      FNL --> HELPERS
      EMB --> CORE
      HELPERS --> CORE
+     CORE --> API
+     API --> YDS
      LC[linkcell]
      LC --> YDS
-     CORE --> YDS
      SEAMS --> YDS
      PY --> YDS
 
@@ -123,7 +128,7 @@ This documentation follows the `Diataxis <https://diataxis.fr/>`_ framework.
    :caption: Tutorials
 
    tutorials/index
-   tutorials/read-and-classify
+   tutorials/lua
 
 .. toctree::
    :maxdepth: 2
@@ -131,17 +136,14 @@ This documentation follows the `Diataxis <https://diataxis.fr/>`_ framework.
 
    howto/index
    howto/install
-   howto/fennel
-   howto/embed-lua
-   howto/faq
-   howto/troubleshooting
+   howto/lua
+   howto/upgrade-2.14
 
 .. toctree::
    :maxdepth: 2
    :caption: Explanation
 
    explanation/index
-   explanation/library-not-cli
    explanation/frontends
    explanation/citation
 
@@ -150,11 +152,7 @@ This documentation follows the `Diataxis <https://diataxis.fr/>`_ framework.
    :caption: Reference
 
    reference/index
-   reference/lua
-   reference/lua-functions
-
-The compiled-registration appendix is `Compiled registrations <reference/lua-functions.rst>`_,
-from Doxygen of ``lua_api.hpp``.
+   api/lua
 
 Related projects
 ----------------

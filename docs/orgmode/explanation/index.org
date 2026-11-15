@@ -11,7 +11,6 @@ understand concepts and design.
 
 | Explanation | Description |
 |-------------+-------------|
-| [[file:library-not-cli.org][The library, not a second CLI]] | Why this tree exports ~require("dseams")~ |
 | [[file:frontends.org][Three products]] | ~require("dseams")~, ~pydseams~, and ~seams~ |
 | [[file:citation.org][How to cite]] | JCIM paper and ~CITATION.cff~ |
 
@@ -26,4 +25,4 @@ Each explanation includes:
 
 - [[file:../tutorials/index.org][Tutorials]] - Learn from scratch
 - [[file:../howto/index.org][How-to Guides]] - Solve problems
-- [[file:../reference/lua.org][Lua surface]] - API documentation
+- [[file:../reference/index.org][Reference]] - API documentation

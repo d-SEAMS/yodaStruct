@@ -3,8 +3,8 @@ Quickstart
 ==========
 
 
-Call ``require("dseams")`` from Lua, or ``(require :dseams)`` from
-Fennel. This tree builds no ``yodaStruct`` executable. Call ``seams``
+Call ``require("dseams")`` from Lua 5.4 or LuaJIT, or ``(require :dseams)``
+from Fennel. This tree builds no ``yodaStruct`` executable. Call ``seams``
 for the engine CLI, in
 `seams-core <https://github.com/d-SEAMS/seams-core>`_.
 
@@ -13,80 +13,81 @@ for the engine CLI, in
 Prerequisites
 -------------
 
-- A Lua 5.4 interpreter on ``PATH``
+- Lua 5.4 (headers and interpreter), LuaJIT 2.1, or both
 
-- meson >= 1.3, ninja, a C++20 compiler, pkg-config
+- meson >= 1.3, ninja, C and C++20 compilers, pkg-config, Eigen
 
-- Work from the repository root so the shipped dump path resolves
+- Python 3 for the FFI generator and the test drivers
 
-How meson emits ``dseams_core.so``, and where an install puts it, is
-in `Install the library <howto/install.rst>`_.
+- Work from the repository root so the shipped dump paths resolve
 
 Meson
 -----
 
-From the repository root. ``LUA_PATH`` finds ``lua/dseams.lua``.
-``LUA_CPATH`` finds ``dseams_core.so`` in the build directory.
+meson fetches seams-core through ``subprojects/seams-core.wrap`` and
+builds ``dseams_core.so`` for each interpreter it finds. The tests
+compile Fennel, so name the compiler:
 
 .. code:: bash
 
-    meson setup bbdir --wrap-mode=nofallback
+    fennel=$(sh scripts/fetch_fennel.sh .cache/fennel)
+    meson setup bbdir -Dfennel_lua="$fennel"
     meson compile -C bbdir
-    LUA_PATH="$PWD/lua/?.lua;;" LUA_CPATH="$PWD/bbdir/?.so;;" \
-      lua example_lua/library/read.lua
+    meson test -C bbdir
 
-That script is:
+Run one example against the build tree:
 
-.. code:: lua
+.. code:: bash
 
-    local dseams = require("dseams")
-    local cloud = dseams.read("input/traj/exampleTraj.lammpstrj", {type = 2})
-    assert(cloud.nop > 0, "empty cloud")
-    print(string.format("dseams_lib nop=%d", cloud.nop))
+    LUA_PATH="$PWD/lua/?.lua;;" LUA_CPATH="$PWD/bbdir/src/lua54/?.so;;" \
+      lua5.4 examples/lua/chill_plus.lua .
 
 You should see:
 
 ::
 
-    dseams_lib nop=250
+    cubic 0 hexagonal 0 water 0 interfacial 0 clathrate 46 interClathrate 0 unclassified 0 reCubic 0 reHex 0
 
-``dseams.read`` keeps one atom type. This dump stores oxygen as
-LAMMPS type 2, so the option table is ``{type = 2}``.
+LuaJIT loads ``bbdir/src/luajit/dseams_core.so`` instead. A Lua 5.4
+process that loads the LuaJIT module crashes, so point ``LUA_CPATH``
+at the directory that matches the interpreter.
 
-Nix
----
+LuaRocks
+--------
 
-``nix develop`` sets ``LUA_PATH`` and ``LUA_CPATH`` to the installed
-library.
+The rock builds ``dseams_core`` against an installed libseams. From
+the repository root, with ``$prefix`` holding ``lib/libseams.so`` and
+``include/seams.h``:
 
 .. code:: bash
 
-    nix build
-    nix develop
-    lua example_lua/library/read.lua
+    luarocks make dseams-2.14.0-1.rockspec SEAMS_DIR="$prefix" SEAMS_LIBDIR="$prefix/lib"
+    luarocks test dseams-2.14.0-1.rockspec
+
+``meson install`` of this tree puts libseams under its prefix.
 
 Fennel
 ------
 
-Fennel loads the same Lua module:
+Fennel loads the same module:
 
 .. code:: fennel
 
     (local dseams (require :dseams))
     (local cloud (dseams.read "input/traj/exampleTraj.lammpstrj" {:type 2}))
-    (print (dseams.chill_plus cloud {:cutoff 3.5 :type 2}))
+    (local rings (dseams.ring-network cloud 8))
 
-How to invoke the vendored compiler and the kebab-case wrappers in
-``lua/dseams.fnl`` is in `Fennel <howto/fennel.rst>`_.
+``seams.fnl`` is the Fennel module with keyword options. The how-to is
+`Lua and Fennel <howto/lua.rst>`_.
 
 Next steps
 ----------
 
-`Read a dump and classify <tutorials/read-and-classify.rst>`_
-    CHILL+ labels and cage flags on the same cloud
+`Lua and Fennel tutorial <tutorials/lua.rst>`_
+    every call on the shipped frames
 
 `Install the library <howto/install.rst>`_
-    How the ``.so`` is built and found
+    where an install puts each file
 
-`Embed in a host <howto/embed-lua.rst>`_
-    Load ``dseams_core`` from a process that already owns ``main``
+`Upgrade to 2.14 <howto/upgrade-2.14.rst>`_
+    scripts written for the sol2 module

@@ -54,6 +54,6 @@ J. Chem. Inf. Model. 2020, 10.1021/acs.jcim.0c00031].
 
 ** See also
 
-- [[file:library-not-cli.org][The library, not a second CLI]]
-- [[file:../reference/lua.org][Lua surface]]
+- [[file:frontends.org][Three products]]
+- [[file:../reference/index.org][Reference]]
 - [[file:../tutorials/index.org][Tutorials]]

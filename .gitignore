@@ -3,7 +3,8 @@
 build/
 bbdir/
 /result
-docs/source/xml/
+docs/build/
+docs/ldoc/
 *.swp
 .DS_Store
 .cache/

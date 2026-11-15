@@ -1,26 +1,29 @@
 # Lua and Fennel tutorial
 
-`require("dseams")` is the module in `bindings/lua/dseams.lua`.
+`require("dseams")` is the module in `lua/dseams.lua`.
 `require("yoda")` is the same table. Lua 5.4 and LuaJIT both load it.
 Fennel compiles to Lua and then uses the same module: `(require :dseams)`.
 
-Build the shared module when an interpreter is present:
+Build the module for every interpreter meson finds. The tests need the
+Fennel compiler; `scripts/fetch_fennel.sh` fetches it and prints its path:
 
 ```bash
-meson setup build -Dwith_lua=auto
+fennel=$(sh scripts/fetch_fennel.sh .cache/fennel)
+meson setup build -Dfennel_lua="$fennel"
 meson compile -C build
+meson test -C build
 ```
 
-`LUA_PATH` points at `bindings/lua`. `LUA_CPATH` points at the directory
+`LUA_PATH` points at `lua`. `LUA_CPATH` points at the directory
 that holds `dseams_core.so`. On this tree that is
-`build/bindings/lua/lua54` for Lua 5.4 and `build/bindings/lua/luajit`
+`build/src/lua54` for Lua 5.4 and `build/src/luajit`
 for LuaJIT. `meson test lua_examples` runs the scripts under
 `examples/lua` and `examples/fennel` on both interpreters and checks
 each census against `tests/lua_oracle.cpp`.
 
 ## Eight-atom cubic cell
 
-`examples/lua/ice.lua` is the cell from `docs/examples/ice.c`.
+`examples/lua/ice.lua` is the cell from the seams-core C example `docs/examples/ice.c`.
 Every atom is cubic. Lua 5.4 and LuaJIT both print:
 
 ```
@@ -28,8 +31,8 @@ Every atom is cubic. Lua 5.4 and LuaJIT both print:
 ```
 
 ```bash
-LUA_PATH=bindings/lua/?.lua \
-  LUA_CPATH=build/bindings/lua/lua54/?.so \
+LUA_PATH=lua/?.lua \
+  LUA_CPATH=build/src/lua54/?.so \
   lua5.4 examples/lua/ice.lua .
 ```
 
@@ -61,11 +64,9 @@ rings 3 37 4 273 5 34 6 167 7 0 8 0 fraction 1.000000
 
 `docs/examples/lua_analyses.lua` calls the remaining names on
 `input/traj/ice1h.lammpstrj`, then the cage signature on the sI guest
-frame. `docs/examples/core_counts.lua` checks that cell and sII:
-128 hexagonal waters, 256 six-rings, 136 clathrate waters, 144
-five-rings and 16 six-rings. `meson test docs_core_counts` runs it.
+frame. `meson test lua_docs_examples` runs it on both interpreters.
 
-```{literalinclude} ../../../docs/examples/core_counts.lua
+```{literalinclude} ../../../docs/examples/lua_analyses.lua
 :language: lua
 ```
 
@@ -127,20 +128,9 @@ tip rings 0 0 0 37 273 34 167 0 0
 
 ## LuaJIT FFI
 
-`bindings/lua/gen_ffi.py` writes `dseams_ffi.lua` from `include/seams.h`.
+`src/gen_ffi.py` writes `dseams_ffi.lua` from `include/seams.h`.
 `ffi.load` opens `libseams`. Every declaration in the header is in that
 cdef, so a LuaJIT program can call `seams_system_read`,
 `seams_steinhardt`, `seams_cages`, `seams_rdf`, `seams_hbonds`,
 `seams_rings_vertices`, and the rest of the C API directly.
 `tests/lua_ffi.lua` does that for the cubic cell and prints `ffi ok`.
-
-
-## Structure still
-
-```{figure} ../tutorials/molecules/lua/overlay-web.png
-:alt: Molecule still for this front
-:width: 480px
-
-Ice Ih colored by published CHILL+, drawn with chemparseplot. `python docs/scripts/render_molecules.py --slug lua` writes the 2400 by 1800 PNG.
-```
-

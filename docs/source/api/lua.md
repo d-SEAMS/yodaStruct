@@ -1,6 +1,6 @@
 # Lua API
 
-`docs/examples/minimal_lua.lua` reads one trajectory and prints the CHILL+ clathrate count. `meson test docs_examples` runs it.
+`docs/examples/minimal_lua.lua` reads one trajectory and prints the CHILL+ clathrate count. `meson test lua_docs_examples` runs it on Lua 5.4 and LuaJIT.
 
 ```{literalinclude} ../../../docs/examples/minimal_lua.lua
 :language: lua
@@ -12,24 +12,24 @@ census are userdata. `:close()` frees the handle. Lua 5.4 also frees it
 at the end of a `<close>` scope. A status other than `SEAMS_OK` is a
 Lua error whose text is `seams_last_error`.
 
-`bindings/lua/dseams.lua` is the name table. `bindings/lua/dseams.c` is
+`lua/dseams.lua` is the name table. `src/dseams.c` is
 the C module `dseams_core`. Hyphenated keys (`chill-plus`,
 `ring-network`, `cages-by-signature`, `running-cn`, `site-table`,
 `set-num-threads`) are the same functions, for Fennel callers.
 
-`bindings/lua/dseams-2.14.0-1.rockspec` is the LuaRocks package. It
+`dseams-2.14.0-1.rockspec` is the LuaRocks package. It
 compiles `dseams_core` against an installed libseams and installs
 `dseams.lua`, `yoda.lua`, and `dseams_fnl.fnl` (the kebab-case table for
 Fennel). From the repository root:
 
 ```bash
-luarocks make bindings/lua/dseams-2.14.0-1.rockspec SEAMS_DIR="$prefix" SEAMS_LIBDIR="$(pkg-config --variable=libdir seams)"
-luarocks test bindings/lua/dseams-2.14.0-1.rockspec
+luarocks make dseams-2.14.0-1.rockspec SEAMS_DIR="$prefix" SEAMS_LIBDIR="$(pkg-config --variable=libdir seams)"
+luarocks test dseams-2.14.0-1.rockspec
 ```
 
 Fennel finds `dseams_fnl` once its path includes the rock tree:
 `fennel.path = package.path:gsub("%.lua", ".fnl") .. ";" .. fennel.path`.
-`bindings/lua/test_rock.lua` is the `luarocks test` script.
+`tests/test_rock.lua` is the `luarocks test` script.
 
 ## Handles
 
@@ -110,20 +110,12 @@ that module, labels the cubic cell through `seams_chill_plus`, and
 prints `ffi ok`.
 
 
-## Structure still
-
-```{figure} ../tutorials/molecules/lua/overlay-web.png
-:alt: Molecule still for this front
-:width: 480px
-
-Ice Ih colored by published CHILL+, drawn with chemparseplot. `python docs/scripts/render_molecules.py --slug lua` writes the 2400 by 1800 PNG.
-```
 
 
 ## Lua and Fennel
 
 `require("dseams")` is the module. `require("yoda")` is the same table.
-`bindings/lua/seams.fnl` is the Fennel module: keyword options, a
+`lua/seams.fnl` is the Fennel module: keyword options, a
 `chill+` function, and `seams.close`. Lua 5.4 and LuaJIT both load
 `dseams_core.so`. The FFI cdef generated from `include/seams.h` is
 LuaJIT only.
@@ -136,15 +128,15 @@ A cloud, a neighbour list, a ring census, and a cage set are handles.
 `__gc` frees the C object. Lua 5.4 `__close` frees it at the end of a
 scope. `:close()` is the same call. Closing twice is safe.
 
-`ldoc bindings/lua/config.ld` writes the native reference. The book
+`ldoc .` writes the native reference. The book
 links that HTML at `/lua/index.html`.
-`bindings/lua/dseams-2.14.0-1.rockspec` is the rock. The `luarocks
+`dseams-2.14.0-1.rockspec` is the rock. The `luarocks
 make` and `luarocks test` lines at the top of this page run from the
 repository root, because a rock built from the git source starts there.
 `SEAMS_LIBDIR` holds `libseams.so` and `SEAMS_INCDIR` holds the
 generated `seams_version.h`; `SEAMS_DIR` sets both from one prefix. The
-rock also installs `seams.fnl`. `busted bindings/lua/spec` runs
-`bindings/lua/spec/ownership_spec.lua`. `meson test lua_examples`
+rock also installs `seams.fnl`. `busted spec` runs
+`spec/ownership_spec.lua`. `meson test lua_examples`
 runs the examples on both interpreters.
 
 ### Quickstart
@@ -223,7 +215,7 @@ they no longer hold the C handle.
 :language: text
 ```
 
-```{literalinclude} ../../../bindings/lua/seams.fnl
+```{literalinclude} ../../../lua/seams.fnl
 :language: text
 :lines: 1-40
 ```

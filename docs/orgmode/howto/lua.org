@@ -1,10 +1,6 @@
 #+TITLE: Lua and Fennel
 #+OPTIONS: toc:nil num:nil
 
-#+begin_export rst
-.. include:: ../videos/embeds/lua.rst
-#+end_export
-
 ~require("dseams")~ is the Lua module over =include/seams.h=.
 ~require("yoda")~ is that same table. Fennel uses it with
 ~(require :dseams)~. Lua 5.4 and LuaJIT both load the module.
@@ -13,14 +9,17 @@ A system, a neighbour list, and a ring census are userdata.
 of a scope. ~:close()~ does the same call. A status other than
 ~SEAMS_OK~ is a Lua error whose text is ~seams_last_error~.
 
-Build it when the interpreter is present:
+Build it for every interpreter meson finds. The tests need the Fennel
+compiler; ~scripts/fetch_fennel.sh~ fetches it and prints its path:
 
 #+begin_src bash
-meson setup build -Dwith_lua=auto
+fennel=$(sh scripts/fetch_fennel.sh .cache/fennel)
+meson setup build -Dfennel_lua="$fennel"
 meson compile -C build
+meson test -C build
 #+end_src
 
-~LUA_PATH~ points at ~bindings/lua~. ~LUA_CPATH~ points at the
+~LUA_PATH~ points at ~lua~. ~LUA_CPATH~ points at the
 directory that holds ~dseams_core.so~. Reading, CHILL, Steinhardt
 parameters, cages, neighbour lists, the RDF, hydrogen bonds, density,
 the fingerprint, prisms, and the monolayer all call ~seams.h~.
@@ -29,7 +28,7 @@ LuaJIT and checks each census against the C++ path.
 
 * Eight-atom cubic cell
 
-The cell is the one in =docs/examples/ice.c=. Every atom is cubic.
+The cell is the one in the seams-core C example =docs/examples/ice.c=. Every atom is cubic.
 
 #+begin_src lua
 # excerpt: examples/lua/ice.lua
@@ -63,7 +62,7 @@ The basal interface is =examples/fennel/interface.fnl=. The published
 rule on the cutoff list is ~dseams.chill-plus~. The rings tutorial
 frame is =examples/fennel/rings.fnl=. The eight-atom cell through the
 Fennel module is =examples/fennel/cubic.fnl=, which loads
-=bindings/lua/seams.fnl=.
+=lua/seams.fnl=.
 
 #+begin_src fennel
 # excerpt: examples/fennel/interface.fnl

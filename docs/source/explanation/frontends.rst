@@ -18,20 +18,15 @@ Three products share one engine. Fennel, ``require("yoda")``, and
     | Engine CLI           | ``seams``             | `seams-core <https://github.com/d-SEAMS/seams-core>`_   |
     +----------------------+-----------------------+---------------------------------------------------------+
 
-Aliases of the Lua product: ``(require :dseams)``,
-``fennel.dofile("lua/dseams.fnl")``, ``require("yoda")``.
-``require("dseams_core")`` is the compiled registration surface,
-not a product.
+Aliases of the Lua product: ``(require :dseams)``, ``seams.fnl``,
+``dseams_fnl.fnl``, ``require("yoda")``. ``require("dseams_core")`` is the
+compiled C module, not a product.
 
-Helpers stay in the scripting language (``lua/dseams.lua`` here,
-Python helpers in pydseams). The compiled module is the registration
-surface (``dseams_core``, ``pydseams.yoda``).
+Every front calls the same C API, ``seams.h`` in seams-core. Helpers
+stay in the scripting language (``lua/dseams.lua`` here, Python helpers
+in pydseams).
 
-YAML plus globals (``readFrameOnlyOne``, ``trajectory``,
-``functionScript``) is the 2020 driver. It is not live. A library
-script never sees those globals unless the host injects them. This
-tree does not grow a second CLI. ``seams`` is flags and twelve-factor
-knobs, not ``conf.yaml``. The engine CLI now has ``seams cn`` and
-``seams hbonds --donors``; those commands are not this binary.
-
-See `The library, not a second CLI <library-not-cli.rst>`_.
+The YAML driver of 2020 (``yodaStruct -c conf.yml`` with the
+``readFrameOnlyOne``, ``trajectory`` and ``functionScript`` globals) is gone
+in 2.14.0. ``seams`` is flags and twelve-factor knobs, not
+``conf.yaml``.

@@ -3,21 +3,16 @@ Reference
 =========
 
 
-Public ``require("dseams")`` table, then the compiled-registration
-appendix. Fennel call shape is in `Fennel <../howto/fennel.rst>`_.
+The public ``require("dseams")`` table, call by call, with the
+``seams.h`` function each one forwards to.
 
 .. table::
 
-    +-----------------------------------------------+-----------------------------+
-    | page                                          | what it names               |
-    +===============================================+=============================+
-    | `require("dseams") <lua.rst>`_                | Public Lua helpers          |
-    +-----------------------------------------------+-----------------------------+
-    | `Compiled registrations <lua-functions.rst>`_ | ``dseams.core`` via Doxygen |
-    +-----------------------------------------------+-----------------------------+
+    +-----------------------------+-----------------------------------------------------------------+
+    | page                        | what it names                                                   |
+    +=============================+=================================================================+
+    | `Lua API <../api/lua.rst>`_ | ``require("dseams")``, ``seams.fnl``, the rock and the FFI cdef |
+    +-----------------------------+-----------------------------------------------------------------+
 
-.. toctree::
-   :maxdepth: 2
-
-   lua
-   lua-functions
+``ldoc .`` from the repository root writes the LDoc pages to
+``docs/ldoc`` from ``lua/dseams.lua`` and ``lua/yoda.lua``.
