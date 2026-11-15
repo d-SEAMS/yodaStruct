@@ -64,6 +64,37 @@ nix build
 nix develop
 ```
 
+## Development
+
+This repository binds seams-core; it does not contain the engine. A new
+analysis, a changed result or a new C API call goes to
+[d-SEAMS/seams-core](https://github.com/d-SEAMS/seams-core) first, and this
+tree binds it once a seams-core commit carries it.
+`subprojects/seams-core.wrap` and the `seams-core` input of `flake.nix` pin
+that commit. The contributing guide at the repository root has the layout,
+the test rules and the commit and changelog conventions.
+
+To build against a local seams-core checkout, put it where the wrap would:
+
+```bash
+ln -s /path/to/seams-core subprojects/seams-core
+meson setup bbdir -Dfennel_lua="$fennel"
+```
+
+meson uses an existing `subprojects/seams-core` directory instead of
+fetching the wrap. Remove the link to go back to the pinned commit.
+
+Release order:
+
+1. seams-core tags `vX.Y.Z`.
+2. Here: point the wrap at `https://github.com/d-SEAMS/seams-core.git` with
+   `revision = vX.Y.Z`, move the flake input to the same tag and run
+   `nix flake lock --update-input seams-core`, set `X.Y.Z` in `meson.build`,
+   the rockspec, `CITATION.cff`, `nix/package.nix` and `pixi.toml`, run the
+   suite, and run `towncrier build --version X.Y.Z`.
+3. Tag `vX.Y.Z` here; the rockspec's `source.tag` names it.
+4. Upload the rock: `luarocks upload dseams-X.Y.Z-1.rockspec`.
+
 ## Upgrading from 2.10
 
 2.14.0 retires the sol2 module, the `yodaStruct` executable and its YAML
