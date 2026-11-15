@@ -1,21 +1,17 @@
+# The file is dseams_core.so because dseams.c exports luaopen_dseams_core.
+# Each interpreter gets its own directory, in the build and in the install.
 luajit_mod = shared_module(
-  'dseams_luajit',
+  'dseams_core',
   files('../dseams.c'),
   name_prefix: '',
+  name_suffix: 'so',
   dependencies: [luajit_dep],
   link_with: [seams_api_lib],
   c_args: seams_api_cargs,
   build_rpath: rpath,
-  install: false,
-)
-luajit_named = custom_target(
-  'dseams_core_luajit',
-  input: luajit_mod,
-  output: 'dseams_core.so',
-  command: ['cp', '@INPUT@', '@OUTPUT@'],
-  build_by_default: true,
   install: true,
   install_dir: get_option('libdir') / 'lua' / '5.1',
+  install_rpath: get_option('prefix') / get_option('libdir'),
 )
-lua_mod_targets += luajit_named
+lua_mod_targets += luajit_mod
 lua_runners += [find_program('luajit').full_path(), meson.current_build_dir()]
