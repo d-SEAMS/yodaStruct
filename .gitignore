@@ -8,3 +8,4 @@ docs/ldoc/
 *.swp
 .DS_Store
 .cache/
+.pixi/
