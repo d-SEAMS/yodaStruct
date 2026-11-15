@@ -3,9 +3,11 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # Source only: meson builds seams-core as a static subproject.
+    # Source only: meson builds seams-core as a subproject. Same commit as
+    # subprojects/seams-core.wrap; becomes github:d-SEAMS/seams-core/v2.14.0
+    # once the tag exists.
     seams-core = {
-      url = "github:d-SEAMS/seams-core";
+      url = "github:HaoZeke/seams-core/2b5c3e00f60aeb7fda6e1e705d6cc61ec6d2c31c";
       flake = false;
     };
   };
@@ -55,11 +57,13 @@
             inputsFrom = [ dseams ];
             packages = with pkgs; [
               lua5_4
+              luajit
               gdb
             ];
             env = {
-              LUA_PATH = "${dseams}/share/luadseams/lua/?.lua;;";
-              LUA_CPATH = "${dseams}/lib/?.so;;";
+              LUA_PATH = "${dseams}/share/lua/5.4/?.lua;;";
+              LUA_CPATH = "${dseams}/lib/lua/5.4/?.so;;";
+              LD_LIBRARY_PATH = "${dseams}/lib";
             };
           };
         }

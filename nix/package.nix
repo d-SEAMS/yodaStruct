@@ -4,29 +4,31 @@
   meson,
   ninja,
   pkg-config,
+  python3,
   eigen,
   blas,
   lapack,
   libhwy,
   lua5_4,
+  luajit,
   llvmPackages,
   seams-core-src,
 }:
 
 stdenv.mkDerivation {
   pname = "dseams";
-  version = "2.10.0";
+  version = "2.14.0";
 
   src = lib.fileset.toSource {
     root = ./..;
     fileset = lib.fileset.unions [
       ../meson.build
+      ../meson.options
       ../src
       ../lua
-      ../example_lua
+      ../tests
+      ../examples
       ../input
-      ../templates
-      ../lua_inputs
     ];
   };
 
@@ -34,7 +36,9 @@ stdenv.mkDerivation {
     meson
     ninja
     pkg-config
+    python3
     lua5_4
+    luajit
   ];
 
   buildInputs = [
@@ -43,46 +47,38 @@ stdenv.mkDerivation {
     lapack
     libhwy
     lua5_4
+    luajit
   ]
   ++ lib.optionals stdenv.cc.isClang [ llvmPackages.openmp ];
 
+  # The engine's optional readers (readcon, chemfiles) and neighbour
+  # backends stay off in the sandbox, so the meson Lua suite, which reads
+  # .con and .xyz frames, runs in CI instead. installCheckPhase loads the
+  # installed module on both interpreters.
   mesonAutoFeatures = "disabled";
-
-  preConfigure = ''
-    export DSEAMS_SOURCE_DIR="$PWD"
-  '';
+  mesonFlags = [
+    (lib.mesonEnable "with_lua" true)
+    (lib.mesonBool "with_tests" false)
+  ];
 
   postPatch = ''
     mkdir -p subprojects
     cp -r ${seams-core-src} subprojects/seams-core
     chmod -R u+w subprojects/seams-core
     rm -rf subprojects/seams-core/subprojects
-  '';
-
-  doCheck = true;
-
-  postInstall = ''
-    mkdir -p $out/share/lua/${lua5_4.luaversion} $out/lib/lua/${lua5_4.luaversion}
-    ln -s $out/share/luadseams/lua/dseams.lua $out/share/lua/${lua5_4.luaversion}/dseams.lua
-    ln -s $out/share/luadseams/lua/yoda.lua $out/share/lua/${lua5_4.luaversion}/yoda.lua
-    if [ -e $out/lib/dseams_core.so ]; then
-      ln -s $out/lib/dseams_core.so $out/lib/lua/${lua5_4.luaversion}/dseams_core.so
-    fi
-    mkdir -p $out/nix-support
-    cat > $out/nix-support/setup-hook <<EOF
-    addToSearchPath LUA_PATH "$out/share/luadseams/lua/?.lua"
-    addToSearchPath LUA_CPATH "$out/lib/?.so"
-    EOF
+    patchShebangs src/gen_ffi.py
   '';
 
   doInstallCheck = true;
 
   installCheckPhase = ''
-    cd "$DSEAMS_SOURCE_DIR"
-    DSEAMS_INSTALL_ROOT="$out" \
-      LUA_PATH="$out/share/luadseams/lua/?.lua;;" \
-      LUA_CPATH="$out/lib/?.so;;" \
-      lua example_lua/library/installed.lua
+    runHook preInstallCheck
+    export LD_LIBRARY_PATH="$out/lib" OMP_NUM_THREADS=1
+    LUA_PATH="$out/share/lua/5.4/?.lua;;" LUA_CPATH="$out/lib/lua/5.4/?.so;;" \
+      ${lua5_4}/bin/lua "$src/tests/test_rock.lua" "$src"
+    LUA_PATH="$out/share/lua/5.1/?.lua;;" LUA_CPATH="$out/lib/lua/5.1/?.so;;" \
+      ${luajit}/bin/luajit "$src/tests/test_rock.lua" "$src"
+    runHook postInstallCheck
   '';
 
   meta = {
