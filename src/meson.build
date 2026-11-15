@@ -90,14 +90,10 @@ foreach candidate : fennel_candidates
   endif
 endforeach
 if fennel_lua == '' and get_option('with_tests')
-  if lua_opt.enabled()
-    error('with_lua is enabled and the Fennel compiler was not found')
-  endif
+  error('the Lua tests need the Fennel compiler: pass -Dfennel_lua=FILE (scripts/fetch_fennel.sh fetches one) or -Dwith_tests=false')
 endif
 
-api_inc = include_directories('../../include')
-version_inc = '-I' + meson.project_build_root() / 'src'
-lua54_cargs = [version_inc]
+lua54_cargs = seams_api_cargs
 # Debian's lua5.4/luaconf.h includes a multiarch header that lives beside
 # the compiler's system includes. A non-distro compiler does not search it.
 # Other distributions have no dpkg-architecture and need no extra path.
@@ -118,13 +114,12 @@ if deb_ok
     lua54_cargs += '-I' + deb_private
   endif
 endif
-rpath = meson.project_build_root() / 'src'
+rpath = seams_libdir
 
 ffi = custom_target(
   'dseams_ffi_lua',
-  input: files('../../include/seams.h'),
   output: 'dseams_ffi.lua',
-  command: [find_program('python3'), files('gen_ffi.py'), '@INPUT@', '@OUTPUT@'],
+  command: [find_program('python3'), files('gen_ffi.py'), seams_h, '@OUTPUT@'],
   build_by_default: true,
 )
 
@@ -140,7 +135,7 @@ endif
 if get_option('with_tests') and lua_runners.length() > 0 and fennel_lua != ''
   oracle = executable(
     'lua_oracle',
-    files('../../tests/lua_oracle.cpp'),
+    files('../tests/lua_oracle.cpp'),
     dependencies: [yds_dep],
     build_rpath: rpath,
   )
@@ -162,4 +157,40 @@ if get_option('with_tests') and lua_runners.length() > 0 and fennel_lua != ''
     depends: [oracle, ffi, seams_api_lib] + lua_mod_targets,
     timeout: 600,
   )
+endif
+
+if get_option('with_tests') and lua_runners.length() > 0
+  docs_env = environment()
+  docs_env.set('OMP_NUM_THREADS', '1')
+  docs_env.set('LD_LIBRARY_PATH', seams_libdir)
+  test(
+    'lua_docs_examples',
+    find_program('python3'),
+    args: [
+      meson.project_source_root() / 'tests' / 'lua_docs_examples.py',
+      meson.project_source_root(),
+    ] + lua_runners,
+    env: docs_env,
+    depends: lua_mod_targets,
+    timeout: 300,
+  )
+
+  # bindings spec, when busted is installed (luarocks install busted).
+  busted = find_program('busted', required: false)
+  if busted.found() and lua54_dep.found()
+    busted_env = environment()
+    busted_env.set('OMP_NUM_THREADS', '1')
+    busted_env.set('LD_LIBRARY_PATH', seams_libdir)
+    busted_env.set('LUA_PATH', meson.project_source_root() / 'lua' / '?.lua;;')
+    busted_env.set('LUA_CPATH', meson.current_build_dir() / 'lua54' / '?.so;;')
+    test(
+      'lua_busted_spec',
+      busted,
+      args: [meson.project_source_root() / 'spec'],
+      env: busted_env,
+      workdir: meson.project_source_root(),
+      depends: lua_mod_targets,
+      timeout: 300,
+    )
+  endif
 endif

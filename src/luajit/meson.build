@@ -4,8 +4,7 @@ luajit_mod = shared_module(
   name_prefix: '',
   dependencies: [luajit_dep],
   link_with: [seams_api_lib],
-  include_directories: [api_inc],
-  c_args: [version_inc],
+  c_args: seams_api_cargs,
   build_rpath: rpath,
   install: false,
 )

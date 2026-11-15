@@ -1,0 +1,6 @@
+option('with_lua', type: 'feature', value: 'auto',
+  description: 'Build require("dseams") for Lua 5.4 and LuaJIT when the interpreter is found')
+option('with_tests', type: 'boolean', value: true,
+  description: 'Register the Lua and Fennel tests')
+option('fennel_lua', type: 'string', value: '',
+  description: 'fennel.lua compiler for the Lua tests. scripts/fetch_fennel.sh fetches one; the distro paths are tried when empty')

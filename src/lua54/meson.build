@@ -4,7 +4,6 @@ lua54_mod = shared_module(
   name_prefix: '',
   dependencies: [lua54_dep],
   link_with: [seams_api_lib],
-  include_directories: [api_inc],
   c_args: lua54_cargs,
   build_rpath: rpath,
   install: false,
