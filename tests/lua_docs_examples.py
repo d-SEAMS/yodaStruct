@@ -3,6 +3,10 @@
 # SPDX-License-Identifier: MIT
 """Run the docs Lua examples on every interpreter the build made a module for.
 
+minimal_lua.lua, lua_analyses.lua, core_counts.lua and lang_tasks.lua
+each print a census; the expected lines are the ice Ih, sI and sII
+counts the docs pages quote.
+
 argv: ROOT then interpreter, cpath-directory pairs.
 """
 
@@ -10,6 +14,10 @@ import os
 import pathlib
 import subprocess
 import sys
+
+# lang_tasks.lua on ice Ih: cutoff pairs, ring histogram 0..6, CHILL+ counts.
+LANG_TASKS = "pairs 512 rings 0 0 0 0 0 0 256 chill 0 128 0 0 0 0 0 0 0"
+CORE_COUNTS = "lua hexagonal 128 rings6 256 clathrate 136 rings5 144"
 
 
 def run(cmd, env, cwd):
@@ -37,6 +45,14 @@ def main(argv):
         text = run([lua, str(root / "docs" / "examples" / "lua_analyses.lua")], env, root)
         if "hexagonal 128" not in text:
             raise SystemExit("{} lua_analyses.lua printed\n{}".format(lua, text))
+        text = run([lua, str(root / "docs" / "examples" / "core_counts.lua")], env, root)
+        if text.strip() != CORE_COUNTS:
+            raise SystemExit("{} core_counts.lua printed\n{}".format(lua, text))
+        task_env = dict(env)
+        task_env["DSEAMS_ROOT"] = str(root)
+        text = run([lua, str(root / "docs" / "examples" / "lang_tasks.lua")], task_env, "/")
+        if text.strip() != LANG_TASKS:
+            raise SystemExit("{} lang_tasks.lua printed\n{}".format(lua, text))
     print("lua docs examples ok")
     return 0
 
