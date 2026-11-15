@@ -13,7 +13,7 @@ project(
 seams = subproject(
   'seams-core',
   default_options: [
-    'default_library=static',
+    'default_library=shared',
     'with_tests=false',
     'with_python=false',
     'with_cli=false',
