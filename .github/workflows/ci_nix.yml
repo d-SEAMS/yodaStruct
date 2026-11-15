@@ -9,9 +9,12 @@ on:
       - 'flake.lock'
       - 'nix/**'
       - 'meson.build'
+      - 'meson.options'
+      - 'subprojects/seams-core.wrap'
       - 'src/**'
       - 'lua/**'
-      - 'example_lua/**'
+      - 'tests/**'
+      - 'examples/**'
       - 'input/**'
   pull_request:
     branches: [main]
@@ -21,9 +24,12 @@ on:
       - 'flake.lock'
       - 'nix/**'
       - 'meson.build'
+      - 'meson.options'
+      - 'subprojects/seams-core.wrap'
       - 'src/**'
       - 'lua/**'
-      - 'example_lua/**'
+      - 'tests/**'
+      - 'examples/**'
       - 'input/**'
 
 permissions:
