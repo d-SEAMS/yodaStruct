@@ -2,7 +2,7 @@ rockspec_format = "3.0"
 package = "dseams"
 version = "2.14.0-1"
 source = {
-   url = "git+https://github.com/d-SEAMS/seams-core.git",
+   url = "git+https://github.com/d-SEAMS/yodaStruct.git",
    tag = "v2.14.0",
 }
 description = {
@@ -18,7 +18,7 @@ Needs an installed libseams (meson install, conda, Nix or Spack). Point
 LuaRocks at it with SEAMS_DIR, or SEAMS_INCDIR and SEAMS_LIBDIR.
 ]],
    homepage = "https://dseams.info",
-   issues_url = "https://github.com/d-SEAMS/seams-core/issues",
+   issues_url = "https://github.com/d-SEAMS/yodaStruct/issues",
    license = "MIT",
    maintainer = "Rohit Goswami <rgoswami@ieee.org>",
    labels = { "science", "chemistry", "molecular-dynamics", "fennel" },
@@ -36,24 +36,24 @@ build = {
    type = "builtin",
    modules = {
       dseams_core = {
-         sources = { "bindings/lua/dseams.c" },
+         sources = { "src/dseams.c" },
          libraries = { "seams" },
          incdirs = { "$(SEAMS_INCDIR)" },
          libdirs = { "$(SEAMS_LIBDIR)" },
       },
-      dseams = "bindings/lua/dseams.lua",
-      yoda = "bindings/lua/yoda.lua",
+      dseams = "lua/dseams.lua",
+      yoda = "lua/yoda.lua",
    },
    install = {
       lua = {
-         dseams_fnl = "bindings/lua/dseams_fnl.fnl",
-         seams = "bindings/lua/seams.fnl",
+         dseams_fnl = "lua/dseams_fnl.fnl",
+         seams = "lua/seams.fnl",
       },
    },
    copy_directories = {},
 }
 test = {
    type = "command",
-   script = "bindings/lua/test_rock.lua",
+   script = "tests/test_rock.lua",
    flags = { "." },
 }

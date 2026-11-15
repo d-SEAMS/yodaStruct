@@ -11,5 +11,5 @@ Lua 5.4 and LuaJIT both load `dseams_core.so`. The FFI cdef is LuaJIT
 only.
 
 ```bash
-ldoc bindings/lua/config.ld
+ldoc .
 ```

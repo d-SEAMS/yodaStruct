@@ -14,7 +14,7 @@
 --
 -- LuaJIT loads the same C module as PUC Lua 5.4. The FFI cdef generated
 -- from `include/seams.h` is LuaJIT only; `require("dseams")` does not
--- need it. Fennel loads this table through `bindings/lua/seams.fnl`.
+-- need it. Fennel loads this table through `lua/seams.fnl`.
 --
 -- @module dseams
 

@@ -1,9 +1,9 @@
 project = "dseams"
 title = "d-SEAMS Lua and Fennel"
-description = "require('dseams') over include/seams.h. Errors are raised with error."
+description = "require('dseams') over seams.h. Errors are raised with error."
 format = "markdown"
-file = { "dseams.lua", "yoda.lua" }
-dir = "../../docs/ldoc"
-readme = "README.md"
+file = { "lua/dseams.lua", "lua/yoda.lua" }
+dir = "docs/ldoc"
+readme = "lua/README.md"
 all = true
 style = '!'
