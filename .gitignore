@@ -9,3 +9,6 @@ docs/ldoc/
 .DS_Store
 .cache/
 .pixi/
+# luarocks make (builtin) compiles in the source tree.
+/dseams_core.so
+/src/*.o
