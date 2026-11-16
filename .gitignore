@@ -1,5 +1,5 @@
 /subprojects/*
-!/subprojects/*.wrap
+!/subprojects/seams-core.wrap
 build/
 bbdir/
 /result
