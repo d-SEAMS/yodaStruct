@@ -144,21 +144,23 @@ jobs:
           if [ "${{ matrix.lua }}" = lua5.4 ]; then
             ln -s "$CONDA_PREFIX/bin/lua" "$root/bin/lua5.4"
             ln -s "$CONDA_PREFIX/include" "$root/include"
-            flags="--lua-version=5.4 --with-lua-interpreter=lua5.4"
+            flags=(--lua-version=5.4 --with-lua-interpreter=lua5.4)
           else
             ln -s "$CONDA_PREFIX/bin/luajit" "$root/bin/luajit"
             ln -s "$CONDA_PREFIX/include/luajit-2.1" "$root/include"
-            flags="--lua-version=5.1 --with-lua-interpreter=luajit"
+            flags=(--lua-version=5.1 --with-lua-interpreter=luajit)
           fi
           curl -fsSL -o luarocks.tar.gz "https://luarocks.github.io/luarocks/releases/luarocks-$LUAROCKS_VERSION.tar.gz"
           echo "$LUAROCKS_SHA256  luarocks.tar.gz" | sha256sum -c -
           tar -xzf luarocks.tar.gz
-          (cd "luarocks-$LUAROCKS_VERSION" && ./configure --prefix="$RUNNER_TEMP/luarocks" --with-lua="$root" $flags && make && make install)
+          (cd "luarocks-$LUAROCKS_VERSION" && ./configure --prefix="$RUNNER_TEMP/luarocks" --with-lua="$root" "${flags[@]}" && make && make install)
           rm -rf luarocks.tar.gz "luarocks-$LUAROCKS_VERSION"
           # A private root holds one interpreter, so LuaRocks cannot pick another.
-          echo "LUAROCKS=$RUNNER_TEMP/luarocks/bin/luarocks --lua-dir=$root" >> "$GITHUB_ENV"
-          echo "LD_LIBRARY_PATH=$RUNNER_TEMP/seams/lib" >> "$GITHUB_ENV"
-          echo "OMP_NUM_THREADS=1" >> "$GITHUB_ENV"
+          {
+            echo "LUAROCKS=$RUNNER_TEMP/luarocks/bin/luarocks --lua-dir=$root"
+            echo "LD_LIBRARY_PATH=$RUNNER_TEMP/seams/lib"
+            echo "OMP_NUM_THREADS=1"
+          } >> "$GITHUB_ENV"
       - name: luarocks make, test and pack
         shell: bash -el {0}
         run: |
