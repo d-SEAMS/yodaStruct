@@ -7,7 +7,7 @@
     # subprojects/seams-core.wrap; becomes github:d-SEAMS/seams-core/v2.14.0
     # once the tag exists.
     seams-core = {
-      url = "github:HaoZeke/seams-core/2b5c3e00f60aeb7fda6e1e705d6cc61ec6d2c31c";
+      url = "github:HaoZeke/seams-core/628b0af94b4d3bf52426708a0d08436027c8e4fa";
       flake = false;
     };
   };

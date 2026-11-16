@@ -25,17 +25,17 @@
     "seams-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1794781060,
-        "narHash": "sha256-SbRgBOvP6/V+zhNcvuK0eELe9GDn+6awQDllHrD5S8g=",
+        "lastModified": 1794799104,
+        "narHash": "sha256-5kVGD+3C5QQBXNvd6YK5giL7mmb0zfzU8ysawy0kxtI=",
         "owner": "HaoZeke",
         "repo": "seams-core",
-        "rev": "2b5c3e00f60aeb7fda6e1e705d6cc61ec6d2c31c",
+        "rev": "628b0af94b4d3bf52426708a0d08436027c8e4fa",
         "type": "github"
       },
       "original": {
         "owner": "HaoZeke",
         "repo": "seams-core",
-        "rev": "2b5c3e00f60aeb7fda6e1e705d6cc61ec6d2c31c",
+        "rev": "628b0af94b4d3bf52426708a0d08436027c8e4fa",
         "type": "github"
       }
     }
