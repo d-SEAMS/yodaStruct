@@ -20,6 +20,10 @@ jobs:
         run: pip install -r docs/requirements.txt
       - name: Build HTML from Doxygen XML and RST
         run: sphinx-build -b html docs/source docs/build
+      - name: Add SEO metadata
+        run: python3 tools/seo.py docs/build
+      - name: Validate SEO metadata on every page
+        run: python3 tools/validate_seo.py docs/build
       # Links between pages are checked as files in the build; links out
       # are fetched with retries.
       - name: Check links in the built site

@@ -34,8 +34,9 @@ html_static_path = ["_static"]
 html_favicon = "_static/logo/dseams-icon.ico"
 html_css_files = ["custom.css"]
 html_js_files = []
-html_title = "dseams"
-html_baseurl = "https://d-seams.github.io/yodaStruct/"
+html_title = "dseams Lua API | Molecular Simulation Structure Analysis"
+html_baseurl = "https://lua.dseams.info/"
+sitemap_url_scheme = "{link}"
 
 html_context = {
     "source_type": "github",
@@ -77,7 +78,7 @@ html_theme_options = {
                 },
                 {
                     "title": "dseams (Lua)",
-                    "url": "https://d-seams.github.io/yodaStruct/",
+                    "url": "https://lua.dseams.info/",
                     "summary": "require(\"dseams\") and Fennel",
                     "external": True,
                 },
