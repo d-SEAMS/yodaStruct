@@ -9,7 +9,7 @@ from pathlib import Path
 import re
 import sys
 
-from validate_seo import DOI_URL, canonical_url
+from validate_seo import BASE_URL, DOI_URL, canonical_url
 
 SITE_TITLE = "dseams Lua API | Molecular Simulation Structure Analysis"
 SITE_DESCRIPTION = (
@@ -17,6 +17,7 @@ SITE_DESCRIPTION = (
     "analysis with the d-SEAMS molecular simulation engine."
 )
 REPOSITORY = "https://github.com/d-SEAMS/yodaStruct"
+IMAGE_URL = "https://dseams.info/images/og-card.png"
 
 
 def attributes(tag: str) -> dict[str, str]:
@@ -38,6 +39,7 @@ def strip_existing_metadata(document: str) -> str:
             "twitter:card",
             "twitter:title",
             "twitter:description",
+            "twitter:image",
         }:
             return ""
         if prop.startswith("og:"):
@@ -115,9 +117,11 @@ def enhance(root: Path) -> None:
 <meta property="og:title" content="{escaped_title}">
 <meta property="og:description" content="{escaped_description}">
 <meta property="og:url" content="{escaped_url}">
+<meta property="og:image" content="{IMAGE_URL}">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="{escaped_title}">
 <meta name="twitter:description" content="{escaped_description}">
+<meta name="twitter:image" content="{IMAGE_URL}">
 <script type="application/ld+json">{json.dumps(structured_data(canonical, title, description), separators=(",", ":"))}</script>
 """
         document, count = re.subn(
@@ -130,6 +134,11 @@ def enhance(root: Path) -> None:
         if count != 1:
             raise ValueError(f"could not add metadata to {page.relative_to(root)}")
         page.write_text(document, encoding="utf-8")
+
+    (root / "robots.txt").write_text(
+        f"User-agent: *\nAllow: /\nSitemap: {BASE_URL}sitemap.xml\n",
+        encoding="utf-8",
+    )
 
 
 def main() -> int:

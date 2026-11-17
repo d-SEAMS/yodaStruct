@@ -8,7 +8,7 @@ from html.parser import HTMLParser
 import json
 from pathlib import Path
 import sys
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 import xml.etree.ElementTree as ET
 
 BASE_URL = "https://lua.dseams.info/"
@@ -31,6 +31,7 @@ class MetadataParser(HTMLParser):
         self._in_title = False
         self.meta: list[dict[str, str]] = []
         self.links: list[dict[str, str]] = []
+        self.anchors: list[dict[str, str]] = []
         self.json_ld: list[object] = []
         self._in_json_ld = False
         self._json_buffer: list[str] = []
@@ -43,6 +44,8 @@ class MetadataParser(HTMLParser):
             self.meta.append(values)
         elif tag == "link":
             self.links.append(values)
+        elif tag == "a":
+            self.anchors.append(values)
         elif tag == "script" and values.get("type", "").lower() == "application/ld+json":
             self._in_json_ld = True
             self._json_buffer = []
@@ -92,7 +95,7 @@ def validate(root: Path) -> None:
             errors.append(f"{relative}: must have exactly one meta description")
         if canonicals != [expected]:
             errors.append(f"{relative}: must have exactly one canonical, {expected}")
-        for prop in ("og:type", "og:title", "og:description", "og:url"):
+        for prop in ("og:type", "og:title", "og:description", "og:url", "og:image"):
             matching = [
                 item.get("content", "")
                 for item in parser.meta
@@ -100,7 +103,12 @@ def validate(root: Path) -> None:
             ]
             if len(matching) != 1 or not matching[0]:
                 errors.append(f"{relative}: must have exactly one {prop}")
-        for name in ("twitter:card", "twitter:title", "twitter:description"):
+        for name in (
+            "twitter:card",
+            "twitter:title",
+            "twitter:description",
+            "twitter:image",
+        ):
             matching = [
                 item.get("content", "")
                 for item in parser.meta
@@ -125,6 +133,16 @@ def validate(root: Path) -> None:
             elif DOI_URL not in json.dumps(matching):
                 errors.append(f"{relative}: {schema_type} does not cite {DOI_URL}")
 
+        for anchor in parser.anchors:
+            href = anchor.get("href", "")
+            parsed = urlparse(href)
+            internal = (
+                parsed.scheme in ("", "http", "https")
+                and parsed.netloc in ("", "lua.dseams.info")
+            )
+            if internal and parsed.path.lower().endswith(".rst"):
+                errors.append(f"{relative}: generated internal .rst link: {href}")
+
     sitemap_path = root / "sitemap.xml"
     if not sitemap_path.exists():
         errors.append("missing sitemap.xml")
@@ -136,6 +154,16 @@ def validate(root: Path) -> None:
         ]
         if not urls or any(not url.startswith(BASE_URL) for url in urls):
             errors.append("sitemap.xml has no URLs or URLs outside the canonical site")
+
+    robots_path = root / "robots.txt"
+    if not robots_path.exists():
+        errors.append("missing robots.txt")
+    else:
+        robots = robots_path.read_text(encoding="utf-8")
+        if "User-agent: *" not in robots or "Allow: /" not in robots:
+            errors.append("robots.txt must allow all crawlers")
+        if f"Sitemap: {BASE_URL}sitemap.xml" not in robots:
+            errors.append("robots.txt must name the custom-domain sitemap")
 
     if errors:
         raise ValueError("\n".join(errors))
