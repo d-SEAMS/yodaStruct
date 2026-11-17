@@ -10,6 +10,26 @@ by [towncrier](https://towncrier.readthedocs.io/).
 
 <!-- towncrier release notes start -->
 
+## [2.14.0] - 2026-11-17
+
+
+### Added
+
+- The LuaRocks package `dseams-2.14.0-1.rockspec` builds from this repository against an installed libseams; `luarocks test` runs `tests/test_rock.lua`.
+- `require("dseams")` is the seams-core C API module (`src/dseams.c` over `seams.h`), built for Lua 5.4 and LuaJIT, with the Fennel module `seams.fnl`, the kebab-case table `dseams_fnl.fnl`, and the LuaJIT FFI cdef `dseams_ffi.lua`. Its history comes over from seams-core `bindings/lua`. `meson test` compares every Lua and Fennel census with the C++ oracle on both interpreters.
+
+### Changed
+
+- A build with tests needs the Fennel compiler: `-Dfennel_lua=FILE`, or `-Dwith_tests=false`. `scripts/fetch_fennel.sh` fetches Fennel 1.5.3 and checks its sha256.
+- CHANGELOG.md follows Keep a Changelog. Unreleased notes are
+  changelog.d fragments assembled by towncrier.
+- Engine wrap and flake input follow the seams-core tag `v2.14.0`. The engine builds as shared libraries, so `dseams_core.so` loads `libseams.so` at run time through a run path to the install `lib` directory. An install puts the module under `lib/lua/5.4` and `lib/lua/5.1` and the Lua files under `share/lua/5.4` and `share/lua/5.1`. The meson project is `dseams`.
+
+### Removed
+
+- The sol2 module, the `yodaStruct` executable and its YAML runner, `example_lua/`, `lua_inputs/`, `templates/`, `lua/dseams.fnl`, `lua/yoda.fnl` and the vendored sol, cxxopts, rang and Fennel sources. `dseams.classify_topology`, `topology_library`, `guest_occupancy`, `ion_environment`, `shell_ring_census` and `neighbors_pair` have no C API call and are gone. Lua 5.3 is no longer a target. `docs/orgmode/howto/upgrade-2.14.org` maps a 2.10 script onto 2.14.
+
+
 ## 2.10.0 (2026-09-06)
 
 - Engine pinned at seams-core v2.10.0: F4 and Zeron q12, water-type CHILL, incomplete cages, TUM offload.

@@ -1,1 +1,0 @@
-Engine wrap and flake input follow the seams-core tag `v2.14.0`. The engine builds as shared libraries, so `dseams_core.so` loads `libseams.so` at run time through a run path to the install `lib` directory. An install puts the module under `lib/lua/5.4` and `lib/lua/5.1` and the Lua files under `share/lua/5.4` and `share/lua/5.1`. The meson project is `dseams`.

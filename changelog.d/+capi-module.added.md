@@ -1,1 +1,0 @@
-`require("dseams")` is the seams-core C API module (`src/dseams.c` over `seams.h`), built for Lua 5.4 and LuaJIT, with the Fennel module `seams.fnl`, the kebab-case table `dseams_fnl.fnl`, and the LuaJIT FFI cdef `dseams_ffi.lua`. Its history comes over from seams-core `bindings/lua`. `meson test` compares every Lua and Fennel census with the C++ oracle on both interpreters.
