@@ -104,3 +104,18 @@ intersphinx_mapping = {
     "dseams": ("https://docs.dseams.info", None),
     "pydseams": ("https://d-seams.github.io/PydSEAMSlib/", None),
 }
+
+
+def _org_file_links_to_html(app, doctree, docname):
+    """Point the ``page.rst`` links that ox-rst writes for Org file links at
+    the built ``page.html``; Sphinx treats them as external URIs."""
+    from docutils import nodes
+
+    for ref in doctree.findall(nodes.reference):
+        uri = ref.get("refuri", "")
+        if uri.endswith(".rst") and "://" not in uri and not uri.startswith("/"):
+            ref["refuri"] = uri[: -len(".rst")] + ".html"
+
+
+def setup(app):
+    app.connect("doctree-resolved", _org_file_links_to_html)
