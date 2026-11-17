@@ -20,9 +20,56 @@ jobs:
         run: pip install -r docs/requirements.txt
       - name: Build HTML from Doxygen XML and RST
         run: sphinx-build -b html docs/source docs/build
+      # Links between pages are checked as files in the build; links out
+      # are fetched with retries.
+      - name: Check links in the built site
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          fail: true
+          args: >-
+            --no-progress
+            --root-dir ${{ github.workspace }}/docs/build
+            --index-files index.html
+            --max-retries 3
+            --timeout 30
+            --accept 200,202,206,429
+            --exclude "^https://lua\.dseams\.info"
+            --exclude "_static/"
+            "docs/build/**/*.html" README.md
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy to GitHub Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/build
+          cname: lua.dseams.info
+
+  # The site as readers get it: every published page is a lychee input,
+  # so relative links resolve against the page they are on.
+  live-links:
+    needs: build-docs
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: gh-pages
+          path: site
+      - name: Wait for Pages to publish
+        run: sleep 120
+      - name: Page list
+        run: |
+          (cd site && find . -name '*.html' -not -path './_static/*' | sed 's#^\./#https://lua.dseams.info/#') > pages.txt
+          wc -l pages.txt
+      - name: Lychee
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          fail: true
+          args: >-
+            --no-progress
+            --max-retries 3
+            --timeout 30
+            --accept 200,202,206,429
+            --files-from pages.txt
+          token: ${{ secrets.GITHUB_TOKEN }}
