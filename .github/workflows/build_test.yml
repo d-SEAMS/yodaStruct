@@ -1,10 +1,10 @@
 name: Build and test
 on:
   push:
-    branches: [main]
+    branches: [main, "release/**"]
     tags: ["v*"]
   pull_request:
-    branches: [main]
+    branches: [main, "release/**"]
 
 permissions:
   contents: read
@@ -33,6 +33,7 @@ jobs:
           for path, pattern in {
               "CITATION.cff": r'(?m)^version: "([^"]+)"',
               "nix/package.nix": r'(?m)^  version = "([^"]+)"',
+              "pixi.toml": r'(?m)^version = "([^"]+)"',
           }.items():
               got = re.search(pattern, (root / path).read_text()).group(1)
               if got != want:
@@ -77,12 +78,38 @@ jobs:
         shell: bash -el {0}
         run: |
           echo "FENNEL_LUA=$(sh scripts/fetch_fennel.sh "$RUNNER_TEMP/fennel")" >> "$GITHUB_ENV"
-          luarocks --lua-version 5.4 install --tree "$CONDA_PREFIX" busted
+          # conda-forge's luarocks is the LuaJIT build when luajit is in the
+          # environment, and LuaJIT cannot load the rocks manifest. busted
+          # runs on Lua 5.4, so install it with the pinned LuaRocks built
+          # against that interpreter.
+          root="$RUNNER_TEMP/lua-root"
+          mkdir -p "$root/bin"
+          ln -s "$CONDA_PREFIX/bin/lua" "$root/bin/lua5.4"
+          ln -s "$CONDA_PREFIX/include" "$root/include"
+          curl -fsSL -o luarocks.tar.gz "https://luarocks.github.io/luarocks/releases/luarocks-$LUAROCKS_VERSION.tar.gz"
+          echo "$LUAROCKS_SHA256  luarocks.tar.gz" | sha256sum -c -
+          tar -xzf luarocks.tar.gz
+          (cd "luarocks-$LUAROCKS_VERSION" && ./configure --prefix="$RUNNER_TEMP/luarocks" --with-lua="$root" --lua-version=5.4 --with-lua-interpreter=lua5.4 && make && make install)
+          rm -rf luarocks.tar.gz "luarocks-$LUAROCKS_VERSION"
+          "$RUNNER_TEMP/luarocks/bin/luarocks" --lua-dir="$root" install --tree "$CONDA_PREFIX" busted
           # seams-core registers capi_crosscheck in the subproject build.
           python -m pip install "freud-analysis>=3.6.1,<4" "ovito>=3.12.0,<4"
       - name: Configure and build
         shell: bash -el {0}
         run: |
+          # libyodaLib needs libseams-chemfiles. The bench links libseams, and
+          # ld does not search a shared library's RPATH for that dependency.
+          # -rpath-link is a GNU ld option. Apple ld64 rejects it, and Meson
+          # passes LDFLAGS to the compiler sanity check, so setup fails
+          # before any target is compiled. ld64 resolves an @rpath
+          # dependency through -rpath.
+          chem_lib="$GITHUB_WORKSPACE/bbdir/subprojects/seams-core/chemfiles-prefix/lib"
+          if [ "$(uname -s)" = Darwin ]; then
+            chem_link="-Wl,-rpath,${chem_lib}"
+          else
+            chem_link="-Wl,-rpath-link,${chem_lib}"
+          fi
+          export LDFLAGS="${chem_link}${LDFLAGS:+ $LDFLAGS}"
           meson setup bbdir --prefix="$RUNNER_TEMP/prefix" --libdir=lib \
             -Dwith_lua=enabled -Dfennel_lua="$FENNEL_LUA"
           meson compile -C bbdir
@@ -133,6 +160,8 @@ jobs:
       - name: libseams
         shell: bash -el {0}
         run: |
+          # Same link search as the meson job: the bench needs libseams-chemfiles.
+          export LDFLAGS="-Wl,-rpath-link,$GITHUB_WORKSPACE/bbdir/subprojects/seams-core/chemfiles-prefix/lib${LDFLAGS:+ $LDFLAGS}"
           meson setup bbdir --prefix="$RUNNER_TEMP/seams" --libdir=lib -Dwith_lua=disabled -Dwith_tests=false
           meson compile -C bbdir
           meson install -C bbdir
@@ -144,21 +173,23 @@ jobs:
           if [ "${{ matrix.lua }}" = lua5.4 ]; then
             ln -s "$CONDA_PREFIX/bin/lua" "$root/bin/lua5.4"
             ln -s "$CONDA_PREFIX/include" "$root/include"
-            flags="--lua-version=5.4 --with-lua-interpreter=lua5.4"
+            flags=(--lua-version=5.4 --with-lua-interpreter=lua5.4)
           else
             ln -s "$CONDA_PREFIX/bin/luajit" "$root/bin/luajit"
             ln -s "$CONDA_PREFIX/include/luajit-2.1" "$root/include"
-            flags="--lua-version=5.1 --with-lua-interpreter=luajit"
+            flags=(--lua-version=5.1 --with-lua-interpreter=luajit)
           fi
           curl -fsSL -o luarocks.tar.gz "https://luarocks.github.io/luarocks/releases/luarocks-$LUAROCKS_VERSION.tar.gz"
           echo "$LUAROCKS_SHA256  luarocks.tar.gz" | sha256sum -c -
           tar -xzf luarocks.tar.gz
-          (cd "luarocks-$LUAROCKS_VERSION" && ./configure --prefix="$RUNNER_TEMP/luarocks" --with-lua="$root" $flags && make && make install)
+          (cd "luarocks-$LUAROCKS_VERSION" && ./configure --prefix="$RUNNER_TEMP/luarocks" --with-lua="$root" "${flags[@]}" && make && make install)
           rm -rf luarocks.tar.gz "luarocks-$LUAROCKS_VERSION"
           # A private root holds one interpreter, so LuaRocks cannot pick another.
-          echo "LUAROCKS=$RUNNER_TEMP/luarocks/bin/luarocks --lua-dir=$root" >> "$GITHUB_ENV"
-          echo "LD_LIBRARY_PATH=$RUNNER_TEMP/seams/lib" >> "$GITHUB_ENV"
-          echo "OMP_NUM_THREADS=1" >> "$GITHUB_ENV"
+          {
+            echo "LUAROCKS=$RUNNER_TEMP/luarocks/bin/luarocks --lua-dir=$root"
+            echo "LD_LIBRARY_PATH=$RUNNER_TEMP/seams/lib"
+            echo "OMP_NUM_THREADS=1"
+          } >> "$GITHUB_ENV"
       - name: luarocks make, test and pack
         shell: bash -el {0}
         run: |
@@ -180,7 +211,7 @@ jobs:
           eval "$($LUAROCKS --tree "$tree" path)"
           cd "$RUNNER_TEMP"
           $($LUAROCKS config variables.LUA) "$GITHUB_WORKSPACE/tests/test_rock.lua" "$GITHUB_WORKSPACE"
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: rock-${{ matrix.lua }}
           path: rocks/*.rock

@@ -34,7 +34,7 @@ html_favicon = "_static/logo/dseams-icon.ico"
 html_css_files = ["custom.css"]
 html_js_files = []
 html_title = "dseams"
-html_baseurl = "https://d-seams.github.io/yodaStruct/"
+html_baseurl = "https://lua.dseams.info/"
 
 html_context = {
     "source_type": "github",
@@ -70,13 +70,13 @@ html_theme_options = {
                 },
                 {
                     "title": "pydseams",
-                    "url": "https://d-seams.github.io/PydSEAMSlib/",
+                    "url": "https://python.dseams.info/",
                     "summary": "Python Frame API on yoda",
                     "external": True,
                 },
                 {
                     "title": "dseams (Lua)",
-                    "url": "https://d-seams.github.io/yodaStruct/",
+                    "url": "https://lua.dseams.info/",
                     "summary": "require(\"dseams\") and Fennel",
                     "external": True,
                 },
@@ -102,5 +102,20 @@ html_sidebars = {
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "dseams": ("https://docs.dseams.info", None),
-    "pydseams": ("https://d-seams.github.io/PydSEAMSlib/", None),
+    "pydseams": ("https://python.dseams.info/", None),
 }
+
+
+def _org_file_links_to_html(app, doctree, docname):
+    """Point the ``page.rst`` links that ox-rst writes for Org file links at
+    the built ``page.html``; Sphinx treats them as external URIs."""
+    from docutils import nodes
+
+    for ref in doctree.findall(nodes.reference):
+        uri = ref.get("refuri", "")
+        if uri.endswith(".rst") and "://" not in uri and not uri.startswith("/"):
+            ref["refuri"] = uri[: -len(".rst")] + ".html"
+
+
+def setup(app):
+    app.connect("doctree-resolved", _org_file_links_to_html)

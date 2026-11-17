@@ -2,32 +2,32 @@
 
 > yodaStruct is the Lua and Fennel library for d-SEAMS: `require("dseams")` from Lua 5.4 or LuaJIT, `(require :dseams)` from Fennel, with CHILL and CHILL+ ice labels, Steinhardt order parameters, primitive rings, cages, RDFs, hydrogen bonds and topological fingerprints of molecular simulation frames, through the libseams C API.
 
-The LuaRocks package is `dseams`; `require("yoda")` is the same table. The C module `dseams_core` is built from `src/dseams.c` against `seams.h`, by meson (with seams-core as a wrap subproject) or by LuaRocks (against an installed libseams). The version is the seams-core release it binds. Each link below is a page of https://d-seams.github.io/yodaStruct/. Contributor instructions are in the contributing guide at the repository root.
+The LuaRocks package is `dseams`; `require("yoda")` is the same table. The C module `dseams_core` is built from `src/dseams.c` against `seams.h`, by meson (with seams-core as a wrap subproject) or by LuaRocks (against an installed libseams). The version is the seams-core release it binds. Each link below is a page of https://lua.dseams.info/. Contributor instructions are in the contributing guide at the repository root.
 
 ## Getting started
 
-- [dseams](https://d-seams.github.io/yodaStruct/index.html): What the library is and how it relates to seams-core and pydseams.
-- [Quickstart](https://d-seams.github.io/yodaStruct/quickstart.html): Build with meson, run one example, install the rock, call it from Fennel.
+- [dseams](https://lua.dseams.info/index.html): What the library is and how it relates to seams-core and pydseams.
+- [Quickstart](https://lua.dseams.info/quickstart.html): Build with meson, run one example, install the rock, call it from Fennel.
 
 ## Tutorials
 
-- [Lua and Fennel tutorial](https://d-seams.github.io/yodaStruct/tutorials/lua.html): Every call on the shipped frames, with what each prints, and the LuaJIT FFI.
+- [Lua and Fennel tutorial](https://lua.dseams.info/tutorials/lua.html): Every call on the shipped frames, with what each prints, and the LuaJIT FFI.
 
 ## How-to guides
 
-- [Install the library](https://d-seams.github.io/yodaStruct/howto/install.html): meson, LuaRocks and Nix layouts of `dseams_core.so` and how `require` finds them.
-- [Lua and Fennel](https://d-seams.github.io/yodaStruct/howto/lua.html): The examples, the Fennel module and the check against the C++ path.
-- [Upgrade to 2.14](https://d-seams.github.io/yodaStruct/howto/upgrade-2.14.html): Move a 2.10 script off the retired sol2 module.
+- [Install the library](https://lua.dseams.info/howto/install.html): meson, LuaRocks and Nix layouts of `dseams_core.so` and how `require` finds them.
+- [Lua and Fennel](https://lua.dseams.info/howto/lua.html): The examples, the Fennel module and the check against the C++ path.
+- [Upgrade to 2.14](https://lua.dseams.info/howto/upgrade-2.14.html): Move a 2.10 script off the retired sol2 module.
 
 ## Reference
 
-- [Lua API](https://d-seams.github.io/yodaStruct/api/lua.html): Every `require("dseams")` call, the `seams.h` function it forwards to, handles, errors and the rock.
-- [Lua task](https://d-seams.github.io/yodaStruct/lang/task-lua.html): The ice Ih census every d-SEAMS language front prints, in Lua.
+- [Lua API](https://lua.dseams.info/api/lua.html): Every `require("dseams")` call, the `seams.h` function it forwards to, handles, errors and the rock.
+- [Lua task](https://lua.dseams.info/lang/task-lua.html): The ice Ih census every d-SEAMS language front prints, in Lua.
 
 ## Explanation
 
-- [Three products](https://d-seams.github.io/yodaStruct/explanation/frontends.html): `require("dseams")`, `pydseams` and the `seams` CLI.
-- [How to cite](https://d-seams.github.io/yodaStruct/explanation/citation.html): The JCIM paper and `CITATION.cff`.
+- [Three products](https://lua.dseams.info/explanation/frontends.html): `require("dseams")`, `pydseams` and the `seams` CLI.
+- [How to cite](https://lua.dseams.info/explanation/citation.html): The JCIM paper and `CITATION.cff`.
 
 ## Engine
 

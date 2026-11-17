@@ -29,6 +29,14 @@ cloud:close()
 (print (. (dseams.ring-network cloud 8) :fraction))
 ```
 
+## Book and video
+
+- Book: [Lua and Fennel](https://docs.dseams.info/stable/lua.html) in the
+  d-SEAMS book
+- Video: [dseams Lua and Fennel walkthrough](https://odysee.com/dseams-lua:9a7ffc26dff9590174a707db848f5f5d6d7a737f)
+  on Odysee
+- Docs: <https://lua.dseams.info/>
+
 ## Build and test
 
 meson builds seams-core from `subprojects/seams-core.wrap` and
@@ -71,7 +79,8 @@ analysis, a changed result or a new C API call goes to
 [d-SEAMS/seams-core](https://github.com/d-SEAMS/seams-core) first, and this
 tree binds it once a seams-core commit carries it.
 `subprojects/seams-core.wrap` and the `seams-core` input of `flake.nix` pin
-that commit. The contributing guide at the repository root has the layout,
+that revision. A release pins the seams-core tag, not a branch. The
+contributing guide at the repository root has the layout,
 the test rules and the commit and changelog conventions.
 
 To build against a local seams-core checkout, put it where the wrap would:
@@ -82,7 +91,7 @@ meson setup bbdir -Dfennel_lua="$fennel"
 ```
 
 meson uses an existing `subprojects/seams-core` directory instead of
-fetching the wrap. Remove the link to go back to the pinned commit.
+fetching the wrap. Remove the link to go back to the pinned revision.
 
 Release order:
 

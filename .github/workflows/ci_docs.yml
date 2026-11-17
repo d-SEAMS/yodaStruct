@@ -1,14 +1,19 @@
 name: Docs
 on:
   push:
-    branches: [main]
+    branches: [main, "release/**"]
     tags: ["v*"]
   pull_request:
-    branches: [main]
+    branches: [main, "release/**"]
+
+permissions:
+  contents: read
 
 jobs:
   build-docs:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # the gh-pages push of the deploy step
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
@@ -24,9 +29,18 @@ jobs:
         run: |
           sphinx-build -b html docs/source docs/build
           cp -R docs/ldoc docs/build/ldoc
+      - name: Link check
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: >-
+            --no-progress --max-retries 3 --accept 200,206,429
+            --root-dir ${{ github.workspace }}/docs/build
+            README.md 'docs/build/**/*.html'
+          fail: true
       - name: Deploy to GitHub Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/build
+          cname: lua.dseams.info

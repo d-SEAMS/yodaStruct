@@ -15,10 +15,7 @@ seams = subproject(
   default_options: [
     'default_library=shared',
     'with_tests=false',
-    'with_python=false',
     'with_cli=false',
-    'with_lua=disabled',
-    'with_fortran=disabled',
     'with_lammps=disabled',
     'with_gromacs=disabled',
     'with_openmm=disabled',
