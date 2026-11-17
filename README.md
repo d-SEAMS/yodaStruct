@@ -35,7 +35,7 @@ cloud:close()
   d-SEAMS book
 - Video: [dseams Lua and Fennel walkthrough](https://odysee.com/dseams-lua:9a7ffc26dff9590174a707db848f5f5d6d7a737f)
   on Odysee
-- Docs: <https://d-seams.github.io/yodaStruct/>
+- Docs: <https://lua.dseams.info/>
 
 ## Build and test
 
