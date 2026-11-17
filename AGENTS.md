@@ -25,7 +25,7 @@ the oracle test calls live in
 | Path | Contents |
 |---|---|
 | `meson.build`, `meson.options` | Top-level build; pulls seams-core as a subproject |
-| `subprojects/seams-core.wrap` | The seams-core commit this tree builds against |
+| `subprojects/seams-core.wrap` | The seams-core tag, or commit between releases, this tree builds against |
 | `src/dseams.c` | The C module `dseams_core`, one call per `seams.h` function |
 | `src/gen_ffi.py` | Writes `dseams_ffi.lua`, the LuaJIT FFI cdef of `seams.h` |
 | `src/lua54/`, `src/luajit/` | One `dseams_core.so` per interpreter |
@@ -38,7 +38,7 @@ the oracle test calls live in
 | `docs/orgmode/` | Org sources; `docs/export.el` writes the RST under `docs/source/` |
 | `docs/source/` | Sphinx book; `api/` and `tutorials/` are MyST pages |
 | `input/` | Trajectory frames the tests and examples read |
-| `nix/`, `flake.nix` | Nix package; the flake input is the same seams-core commit |
+| `nix/`, `flake.nix` | Nix package; the flake input is the same seams-core revision |
 | `pixi.toml` | Development environment |
 | `changelog.d/` | Unreleased changelog fragments |
 
@@ -82,9 +82,9 @@ interpreter from a test to make it pass; fix the code under test.
 ## The seams-core pin
 
 `subprojects/seams-core.wrap` and the `seams-core` input of `flake.nix` name
-the same commit. Move both together, run `nix flake lock --update-input
+the same revision. Move both together, run `nix flake lock --update-input
 seams-core`, run the full suite, and add a `changed` fragment that names the
-new commit. A release pins a seams-core tag, not a branch.
+new revision. A release pins a seams-core tag, not a branch.
 
 ## Commits and changelog
 

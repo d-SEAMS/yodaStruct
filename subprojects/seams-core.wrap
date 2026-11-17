@@ -1,7 +1,6 @@
 [wrap-git]
 directory = seams-core
-url = https://github.com/HaoZeke/seams-core.git
-# release/2.14.0. Becomes the v2.14.0 tag on d-SEAMS/seams-core; switch
-# url to d-SEAMS/seams-core and revision to v2.14.0 then.
-revision = 628b0af94b4d3bf52426708a0d08436027c8e4fa
+url = https://github.com/d-SEAMS/seams-core.git
+# Release tag. A development pin may name a commit; never a branch.
+revision = v2.14.0
 depth = 1

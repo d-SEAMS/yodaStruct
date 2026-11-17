@@ -18,9 +18,8 @@ What meson emits
 ----------------
 
 The meson project is ``dseams``. seams-core is the wrap subproject in
-``subprojects/seams-core.wrap``, pinned to the 2.14.0 release commit,
-built as shared libraries with its CLI, Python, Fortran and engine
-hooks off. ``libseams.so`` is the C API and ``libyodaLib.so`` the engine.
+``subprojects/seams-core.wrap``, pinned to the tag ``v2.14.0``,
+built as shared libraries with its CLI and engine hooks off. ``libseams.so`` is the C API and ``libyodaLib.so`` the engine.
 
 ``src/dseams.c`` compiles twice: against Lua 5.4 into
 ``src/lua54/dseams_core.so`` and against LuaJIT into
