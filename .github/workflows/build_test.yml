@@ -33,6 +33,7 @@ jobs:
           for path, pattern in {
               "CITATION.cff": r'(?m)^version: "([^"]+)"',
               "nix/package.nix": r'(?m)^  version = "([^"]+)"',
+              "pixi.toml": r'(?m)^version = "([^"]+)"',
           }.items():
               got = re.search(pattern, (root / path).read_text()).group(1)
               if got != want:
@@ -77,12 +78,28 @@ jobs:
         shell: bash -el {0}
         run: |
           echo "FENNEL_LUA=$(sh scripts/fetch_fennel.sh "$RUNNER_TEMP/fennel")" >> "$GITHUB_ENV"
-          luarocks --lua-version 5.4 install --tree "$CONDA_PREFIX" busted
+          # conda-forge's luarocks is the LuaJIT build when luajit is in the
+          # environment, and LuaJIT cannot load the rocks manifest. busted
+          # runs on Lua 5.4, so install it with the pinned LuaRocks built
+          # against that interpreter.
+          root="$RUNNER_TEMP/lua-root"
+          mkdir -p "$root/bin"
+          ln -s "$CONDA_PREFIX/bin/lua" "$root/bin/lua5.4"
+          ln -s "$CONDA_PREFIX/include" "$root/include"
+          curl -fsSL -o luarocks.tar.gz "https://luarocks.github.io/luarocks/releases/luarocks-$LUAROCKS_VERSION.tar.gz"
+          echo "$LUAROCKS_SHA256  luarocks.tar.gz" | sha256sum -c -
+          tar -xzf luarocks.tar.gz
+          (cd "luarocks-$LUAROCKS_VERSION" && ./configure --prefix="$RUNNER_TEMP/luarocks" --with-lua="$root" --lua-version=5.4 --with-lua-interpreter=lua5.4 && make && make install)
+          rm -rf luarocks.tar.gz "luarocks-$LUAROCKS_VERSION"
+          "$RUNNER_TEMP/luarocks/bin/luarocks" --lua-dir="$root" install --tree "$CONDA_PREFIX" busted
           # seams-core registers capi_crosscheck in the subproject build.
           python -m pip install "freud-analysis>=3.6.1,<4" "ovito>=3.12.0,<4"
       - name: Configure and build
         shell: bash -el {0}
         run: |
+          # libyodaLib needs libseams-chemfiles. The bench links libseams, and
+          # ld does not search a shared library's RPATH for that dependency.
+          export LDFLAGS="-Wl,-rpath-link,$GITHUB_WORKSPACE/bbdir/subprojects/seams-core/chemfiles-prefix/lib${LDFLAGS:+ $LDFLAGS}"
           meson setup bbdir --prefix="$RUNNER_TEMP/prefix" --libdir=lib \
             -Dwith_lua=enabled -Dfennel_lua="$FENNEL_LUA"
           meson compile -C bbdir
@@ -133,6 +150,8 @@ jobs:
       - name: libseams
         shell: bash -el {0}
         run: |
+          # Same link search as the meson job: the bench needs libseams-chemfiles.
+          export LDFLAGS="-Wl,-rpath-link,$GITHUB_WORKSPACE/bbdir/subprojects/seams-core/chemfiles-prefix/lib${LDFLAGS:+ $LDFLAGS}"
           meson setup bbdir --prefix="$RUNNER_TEMP/seams" --libdir=lib -Dwith_lua=disabled -Dwith_tests=false
           meson compile -C bbdir
           meson install -C bbdir
