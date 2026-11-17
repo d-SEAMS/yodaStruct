@@ -8,7 +8,7 @@
     setColorMode(localStorage._theme||"auto");
   </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=e1a1ceaf" />
     <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=2ceb65ce" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=6a604523" />
     <link media="print" rel="stylesheet" type="text/css" href="../_static/print.css?v=20ff2c19" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=3c150423" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -254,7 +254,7 @@ data-aria-dark="Switch to auto color mode">
 <li><p>meson &gt;= 1.3, ninja, a C++20 compiler, pkg-config</p></li>
 <li><p>This repository, with work from the repository root so the dump
 path resolves</p></li>
-<li><p>The <a class="reference external" href="../quickstart.rst">Quickstart</a> build, or the meson / Nix
+<li><p>The <a class="reference external" href="../quickstart.html">Quickstart</a> build, or the meson / Nix
 steps in Step 1</p></li>
 </ul>
 </section>
@@ -287,7 +287,7 @@ you get. Do not treat a <code class="docutils literal notranslate"><span class="
 </span><span data-line="2">nix<span class="w"> </span>develop
 </span></pre></div>
 </div>
-<p>If you already ran the <a class="reference external" href="../quickstart.rst">Quickstart</a>, the
+<p>If you already ran the <a class="reference external" href="../quickstart.html">Quickstart</a>, the
 exports (or the Nix shell) are enough. Skip the compile.</p>
 </section>
 <section id="step-2-require-and-read">
@@ -413,7 +413,7 @@ need not be labeled hexagonal. Read both tables; do not expect
 them to match.</p>
 <p>The helpers live in <code class="docutils literal notranslate"><span class="pre">lua/dseams.lua</span></code>. The compiled names they
 call are on <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code>; see
-<a class="reference external" href="../reference/lua.rst">Lua surface</a>.</p>
+<a class="reference external" href="../reference/lua.html">Lua surface</a>.</p>
 </section>
 <section id="complete-example-script">
 <h2>Complete Example Script<a class="headerlink" href="#complete-example-script" title="Link to this heading">#</a></h2>
@@ -443,7 +443,7 @@ after <code class="docutils literal notranslate"><span class="pre">chill_plus</s
 </span></pre></div>
 </div>
 <p>How Fennel finds <code class="docutils literal notranslate"><span class="pre">dseams</span></code>, and how <code class="docutils literal notranslate"><span class="pre">lua/dseams.fnl</span></code> adds
-<code class="docutils literal notranslate"><span class="pre">chill-plus</span></code>, is in <a class="reference external" href="../howto/fennel.rst">Fennel</a>.</p>
+<code class="docutils literal notranslate"><span class="pre">chill-plus</span></code>, is in <a class="reference external" href="../howto/fennel.html">Fennel</a>.</p>
 </section>
 <section id="troubleshooting">
 <h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">#</a></h2>
@@ -480,16 +480,16 @@ contain an accepted hexagonal cage or double-diamond cage.</p>
 <p>Scripts that mention <code class="docutils literal notranslate"><span class="pre">readFrameOnlyOne</span></code>, <code class="docutils literal notranslate"><span class="pre">functionScript</span></code>, or
 <code class="docutils literal notranslate"><span class="pre">trajectory</span></code> as a global expect the 2020 driver. Rewrite them to
 <code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code>. See
-<a class="reference external" href="../explanation/library-not-cli.rst">The library, not a second CLI</a>.</p>
+<a class="reference external" href="../explanation/library-not-cli.html">The library, not a second CLI</a>.</p>
 </section>
 </section>
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference external" href="../howto/fennel.rst">Call dseams from Fennel</a> - Lisp syntax on the same table</p></li>
-<li><p><a class="reference external" href="../howto/embed-lua.rst">Embed in a Lua host</a> - Load the <code class="docutils literal notranslate"><span class="pre">.so</span></code> from your own process</p></li>
-<li><p><a class="reference external" href="../reference/lua.rst">Lua surface</a> - Helpers and <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code> names</p></li>
-<li><p><a class="reference external" href="../howto/install.rst">Install the library</a> - How the <code class="docutils literal notranslate"><span class="pre">.so</span></code> is built and found</p></li>
+<li><p><a class="reference external" href="../howto/fennel.html">Call dseams from Fennel</a> - Lisp syntax on the same table</p></li>
+<li><p><a class="reference external" href="../howto/embed-lua.html">Embed in a Lua host</a> - Load the <code class="docutils literal notranslate"><span class="pre">.so</span></code> from your own process</p></li>
+<li><p><a class="reference external" href="../reference/lua.html">Lua surface</a> - Helpers and <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code> names</p></li>
+<li><p><a class="reference external" href="../howto/install.html">Install the library</a> - How the <code class="docutils literal notranslate"><span class="pre">.so</span></code> is built and found</p></li>
 </ul>
 </section>
 <section id="summary">
@@ -689,6 +689,6 @@ stay on <code class="docutils literal notranslate"><span class="pre">dseams.core
       <script src="../_static/documentation_options.js?v=67920a36"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
-      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../_static/design-tabs.js?v=fcb327ea"></script>
       <script src="../_static/shibuya.js?v=50760d75"></script></body>
 </html>
