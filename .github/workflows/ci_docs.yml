@@ -73,5 +73,6 @@ jobs:
             --max-retries 3
             --timeout 30
             --accept 200,202,206,429
+            --remap "https://github.com/d-SEAMS/yodaStruct/(blob|tree)/main file://${{ github.workspace }}"
             --files-from pages.txt
           token: ${{ secrets.GITHUB_TOKEN }}
