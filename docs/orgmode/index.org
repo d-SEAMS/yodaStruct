@@ -10,18 +10,7 @@ dseams
 .. raw:: html
 
    <p class="dseams-hero">
-     <img class="dseams-hero-logo dseams-hero-logo--light"
-          src="_static/logo/dseams-logo-light.png"
-          alt="dseams"
-          width="320"
-          height="320"
-          loading="eager" />
-     <img class="dseams-hero-logo dseams-hero-logo--dark"
-          src="_static/logo/dseams-logo-dark.png"
-          alt="dseams"
-          width="320"
-          height="320"
-          loading="eager" />
+     <img src="_static/dseams/dseams-logo.png" alt="" width="128" height="128" />
    </p>
 
 Lua and Fennel library for the d-SEAMS C++ engine.
