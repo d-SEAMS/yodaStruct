@@ -1,0 +1,102 @@
+name: Release
+
+# A v* tag that names the meson.build version gets a GitHub release whose
+# notes are that version's CHANGELOG section, then uploads the rockspec to
+# LuaRocks. GITHUB_TOKEN creates the release. LuaRocks has no OIDC
+# publisher, so the upload reads the LUAROCKS_API_KEY repository secret.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  LUAROCKS_VERSION: "3.12.2"
+  LUAROCKS_SHA256: b0e0c85205841ddd7be485f53d6125766d18a81d226588d2366931e9a1484492
+
+jobs:
+  github:
+    if: github.repository == 'd-SEAMS/yodaStruct'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Tag names the release version
+        id: version
+        env:
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          python3 - << 'PY'
+          import os, pathlib, re, sys
+          tag = os.environ["TAG_NAME"]
+          if not re.fullmatch(r"v\d+\.\d+\.\d+", tag):
+              sys.exit(f"tag {tag} is not vMAJOR.MINOR.PATCH")
+          want = tag[1:]
+          got = re.search(r"version: '([^']+)'", pathlib.Path("meson.build").read_text()).group(1)
+          if got != want:
+              sys.exit(f"meson.build version {got} does not match tag {tag}")
+          rock = pathlib.Path(f"dseams-{want}-1.rockspec")
+          rock_text = rock.read_text() if rock.is_file() else ""
+          if f'version = "{want}-1"' not in rock_text:
+              sys.exit(f"{rock} does not carry {want}-1")
+          if f'tag = "v{want}"' not in rock_text:
+              sys.exit(f"{rock} source tag is not v{want}")
+          text = pathlib.Path("CHANGELOG.md").read_text()
+          marker = f"## [{want}]"
+          start = text.find(marker)
+          if start < 0:
+              sys.exit(f"CHANGELOG.md has no {marker} section")
+          nxt = text.find("\n## ", start + 1)
+          body = text[start:] if nxt < 0 else text[start:nxt]
+          pathlib.Path("release-notes.md").write_text(body.strip() + "\n")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
+              fh.write(f"version={want}\n")
+          PY
+      - name: Create or update the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          if gh release view "$TAG_NAME" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release edit "$TAG_NAME" --repo "$GITHUB_REPOSITORY" --notes-file release-notes.md
+          else
+            gh release create "$TAG_NAME" --repo "$GITHUB_REPOSITORY" --verify-tag --title "$TAG_NAME" --notes-file release-notes.md
+          fi
+
+  luarocks:
+    needs: github
+    if: github.repository == 'd-SEAMS/yodaStruct'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Lua and LuaRocks
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.4 liblua5.4-dev
+          curl -fsSL -o luarocks.tar.gz "https://luarocks.github.io/luarocks/releases/luarocks-$LUAROCKS_VERSION.tar.gz"
+          echo "$LUAROCKS_SHA256  luarocks.tar.gz" | sha256sum -c -
+          tar -xzf luarocks.tar.gz
+          (cd "luarocks-$LUAROCKS_VERSION" && ./configure --lua-version=5.4 --with-lua-include=/usr/include/lua5.4 && make && sudo make install)
+          rm -rf luarocks.tar.gz "luarocks-$LUAROCKS_VERSION"
+      - name: Upload the rockspec
+        env:
+          LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
+          VERSION: ${{ needs.github.outputs.version }}
+        run: |
+          if [ -z "$LUAROCKS_API_KEY" ]; then
+            echo "repository secret LUAROCKS_API_KEY is unset"
+            exit 1
+          fi
+          luarocks upload --api-key="$LUAROCKS_API_KEY" "dseams-${VERSION}-1.rockspec"
