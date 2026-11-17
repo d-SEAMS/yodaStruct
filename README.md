@@ -29,6 +29,14 @@ cloud:close()
 (print (. (dseams.ring-network cloud 8) :fraction))
 ```
 
+## Book and video
+
+- Book: [Lua and Fennel](https://docs.dseams.info/stable/lua.html) in the
+  d-SEAMS book
+- Video: [dseams Lua and Fennel walkthrough](https://odysee.com/dseams-lua:9a7ffc26dff9590174a707db848f5f5d6d7a737f)
+  on Odysee
+- Docs: <https://d-seams.github.io/yodaStruct/>
+
 ## Build and test
 
 meson builds seams-core from `subprojects/seams-core.wrap` and

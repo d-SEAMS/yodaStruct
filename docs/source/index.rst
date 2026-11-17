@@ -69,6 +69,22 @@ Python is `pydseams <https://github.com/d-SEAMS/PydSEAMSlib>`_.
 ``require("yoda")`` still resolves to ``dseams``. Version 2.14.0 replaced
 the sol2 module of 2.10; see `Upgrade to 2.14 <howto/upgrade-2.14.rst>`_.
 
+Book and video
+--------------
+
+The d-SEAMS book chapter on the Lua and Fennel front end:
+`Lua and Fennel <https://docs.dseams.info/stable/lua.html>`_. The
+walkthrough video is on
+`Odysee <https://odysee.com/dseams-lua:9a7ffc26dff9590174a707db848f5f5d6d7a737f>`_.
+
+.. raw:: html
+
+   <iframe class="dseams-video"
+           src="https://odysee.com/$/embed/dseams-lua:9a7ffc26dff9590174a707db848f5f5d6d7a737f"
+           title="dseams Lua and Fennel walkthrough"
+           width="100%" style="aspect-ratio: 16 / 9; border: 0;"
+           loading="lazy" allowfullscreen></iframe>
+
 Suite stack
 -----------
 
