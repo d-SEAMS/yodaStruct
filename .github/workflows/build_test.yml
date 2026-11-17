@@ -99,7 +99,17 @@ jobs:
         run: |
           # libyodaLib needs libseams-chemfiles. The bench links libseams, and
           # ld does not search a shared library's RPATH for that dependency.
-          export LDFLAGS="-Wl,-rpath-link,$GITHUB_WORKSPACE/bbdir/subprojects/seams-core/chemfiles-prefix/lib${LDFLAGS:+ $LDFLAGS}"
+          # -rpath-link is a GNU ld option. Apple ld64 rejects it, and Meson
+          # passes LDFLAGS to the compiler sanity check, so setup fails
+          # before any target is compiled. ld64 resolves an @rpath
+          # dependency through -rpath.
+          chem_lib="$GITHUB_WORKSPACE/bbdir/subprojects/seams-core/chemfiles-prefix/lib"
+          if [ "$(uname -s)" = Darwin ]; then
+            chem_link="-Wl,-rpath,${chem_lib}"
+          else
+            chem_link="-Wl,-rpath-link,${chem_lib}"
+          fi
+          export LDFLAGS="${chem_link}${LDFLAGS:+ $LDFLAGS}"
           meson setup bbdir --prefix="$RUNNER_TEMP/prefix" --libdir=lib \
             -Dwith_lua=enabled -Dfennel_lua="$FENNEL_LUA"
           meson compile -C bbdir
