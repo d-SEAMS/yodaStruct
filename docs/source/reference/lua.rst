@@ -27,12 +27,6 @@ Public names
 ``read``
     suffix-dispatching loader.
 
-``has_chemfiles``
-    true when PDB, GRO, and DCD reads are in this build.
-
-``has_readcon``
-    true when ``.con`` reads are in this build.
-
 ``neighbors``
     cutoff neighbour list by atom ID.
 
@@ -191,17 +185,17 @@ Suffix-dispatching loader. Returns a ``PointCloud``.
 
 .. table::
 
-    +--------------------------------+-----------------------------------------+-------------------------------------------------------------------------------------------------------------+
-    | suffix                         | backend                                 | notes                                                                                                       |
-    +================================+=========================================+=============================================================================================================+
-    | ``.xyz``                       | ``readXYZ``                             | the file; ``opts.frame`` unused                                                                             |
-    +--------------------------------+-----------------------------------------+-------------------------------------------------------------------------------------------------------------+
-    | ``.con``                       | ``readCon``                             | linked when readcon-core is found; ``has_readcon`` reports that                                             |
-    +--------------------------------+-----------------------------------------+-------------------------------------------------------------------------------------------------------------+
-    | ``.pdb`` / ``.gro`` / ``.dcd`` | ``readChemfiles``                       | linked when chemfiles is found; ``opts.type`` defaults to ``-1`` (keep all); ``has_chemfiles`` reports that |
-    +--------------------------------+-----------------------------------------+-------------------------------------------------------------------------------------------------------------+
-    | other (LAMMPS dump)            | ``readLammpsTrj`` or ``readLammpsTrjO`` | ``opts.all = true`` keeps all atoms. Otherwise ``opts.type`` selects a type; nil tries type 2 then type 1   |
-    +--------------------------------+-----------------------------------------+-------------------------------------------------------------------------------------------------------------+
+    +--------------------------------+-----------------------------------------+-----------------------------------------------------------------------------------------------------------+
+    | suffix                         | backend                                 | notes                                                                                                     |
+    +================================+=========================================+===========================================================================================================+
+    | ``.xyz``                       | ``readXYZ``                             | the file; ``opts.frame`` unused                                                                           |
+    +--------------------------------+-----------------------------------------+-----------------------------------------------------------------------------------------------------------+
+    | ``.con``                       | ``readCon``                             | missing unless this tree compiled readcon                                                                 |
+    +--------------------------------+-----------------------------------------+-----------------------------------------------------------------------------------------------------------+
+    | ``.pdb`` / ``.gro`` / ``.dcd`` | ``readChemfiles``                       | absent without chemfiles; ``opts.type`` defaults to ``-1`` (keep all)                                     |
+    +--------------------------------+-----------------------------------------+-----------------------------------------------------------------------------------------------------------+
+    | other (LAMMPS dump)            | ``readLammpsTrj`` or ``readLammpsTrjO`` | ``opts.all = true`` keeps all atoms. Otherwise ``opts.type`` selects a type; nil tries type 2 then type 1 |
+    +--------------------------------+-----------------------------------------+-----------------------------------------------------------------------------------------------------------+
 
 ``opts.frame`` is the 1-based frame index (default 1). ``opts.all = true``
 calls ``core.readLammpsTrj`` and keeps every atom. Otherwise
@@ -214,13 +208,6 @@ A dump slice that shrinks ``nop`` is
 and sets ``inSlice``. ``lo == hi`` leaves that direction open.
 ``{0,0,0}`` / ``{50,0,0}`` is ``x`` in ``[0, 50]``, with ``y`` and ``z`` open.
 The type argument is any LAMMPS type (the ``O`` is historical).
-
-``has_chemfiles()`` and ``has_readcon()`` are booleans. They are true
-only when this process was built with that library, which is also
-when ``core.readChemfiles`` or ``core.readCon`` is registered.
-``dseams.read`` on ``.pdb``, ``.gro``, or ``.dcd`` needs
-``has_chemfiles()``. ``dseams.read`` on ``.con`` needs ``has_readcon()``.
-LAMMPS dumps and ``.xyz`` do not.
 
 ..
    # proseguard:on proselint.Uncomparables
