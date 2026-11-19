@@ -8,13 +8,14 @@ One release version, written in the ``version:`` field of ``meson.build``.
 copy. Every other copy sits between cogapp markers in a file listed
 in ``ci/version/files.txt``: ``nix/package.nix``, ``CITATION.cff``,
 ``towncrier.toml``, and ``dseams-2.10.0-1.rockspec``.
-Regenerate them with cogapp (the Python package). That ``cog`` script
-is not cocogitto. Cocogitto's command is ``cog`` and its config is
+Regenerate them with cogapp (the Python package), the same command
+rgpot runs from ``ci/version/files.txt``. That ``cog`` script is not
+cocogitto. Cocogitto's command is ``cog`` and its config is
 ``cog.toml``, with ``tag_prefix = "v"``.
 
 .. code:: bash
 
-    python3 -m cogapp -r $(grep -v '^#' ci/version/files.txt)
+    python3 -m cogapp -I ci/version -r @ci/version/files.txt
 
 Git tags are ``vX.Y.Z``. Towncrier owns ``CHANGELOG.md``. Fragments under
 ``changelog.d/`` are the only input for the next notes block. Do not
@@ -91,15 +92,20 @@ From a clean clone to a published rock
 
    .. code:: bash
 
-       python3 -m cogapp -r $(grep -v '^#' ci/version/files.txt)
+       python3 -m cogapp -I ci/version -r @ci/version/files.txt
        luarocks pack dseams-2.10.0-1.rockspec
 
-4. Cut the release locally. ``cog bump`` runs the ``pre_bump_hooks`` in
-   ``cog.toml``:
+   ``luarocks pack`` on that rockspec fetches ``source.tag``. That tag is
+   the published release, not unpushed commits. To pack the checkout
+   you have, copy the rockspec, set ``source.url`` to ``git+file://`` plus
+   the absolute path of this clone and ``source.branch`` to ``HEAD``'s
+   branch, and ``luarocks pack`` that copy.
 
-   - write ``{{version}}`` into ``meson.build``
+4. Cut the release locally. Write the new version into the
+   ``version:`` field of ``meson.build`` first. ``cog bump`` then runs the
+   ``pre_bump_hooks`` in ``cog.toml``:
 
-   - regenerate every file in ``ci/version/files.txt``
+   - ``python3 -m cogapp -I ci/version -r @ci/version/files.txt``
 
    - ``towncrier build --yes --version {{version}}``
 
