@@ -4,3 +4,4 @@ nix/package.nix
 CITATION.cff
 towncrier.toml
 rockspec
+docs/source/Doxyfile

@@ -8,7 +8,15 @@ type: software
 # ]]]
 version: "2.10.0"
 # [[[end]]]
+# [[[cog
+# import subprocess
+# cog.outl(
+#     'date-released: "%s"'
+#     % subprocess.check_output(["date", "+%F"], text=True).strip()
+# )
+# ]]]
 date-released: "2026-09-06"
+# [[[end]]]
 license: MIT
 repository-code: "https://github.com/d-SEAMS/yodaStruct"
 url: https://dseams.info

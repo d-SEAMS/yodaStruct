@@ -2,6 +2,7 @@
 # cog bump --auto runs three hooks, then commits and tags:
 #   meson rewrite writes the project() version in meson.build
 #   cogapp copies that version into ci/version/files.txt
+#   and writes CITATION.cff date-released from `date +%F`
 #   towncrier writes CHANGELOG.md
 # luarocks new_version names the upload rockspec.
 # The tag push is the maintainer's. Publishing to LuaRocks is luarocks upload.
