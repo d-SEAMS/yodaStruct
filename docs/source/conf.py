@@ -11,12 +11,7 @@ project = "dseams"
 with open(os.path.join(_conf_dir, "..", "..", "meson.build"), encoding="utf-8") as _fh:
     release = re.search(r"version:\s*'([^']+)'", _fh.read()).group(1)
 copyright = "2019--present, d-SEAMS core team"
-author = (
-    "d-SEAMS core team: "
-    "Rohit Goswami (https://orcid.org/0000-0002-2393-8056), "
-    "Amrita Goswami (https://orcid.org/0000-0001-8706-2383), "
-    "Ruhila Goswami (https://orcid.org/0000-0002-5443-9356)"
-)
+author = "d-SEAMS core team"
 
 extensions = [
     "breathe",

@@ -21,9 +21,6 @@ authors:
   - family-names: Goswami
     given-names: Amrita
     orcid: "https://orcid.org/0000-0001-8706-2383"
-  - family-names: Goswami
-    given-names: Ruhila
-    orcid: "https://orcid.org/0000-0002-5443-9356"
 preferred-citation:
   type: article
   title: "d-SEAMS: Deferred Structural Elucidation Analysis for Molecular Simulations"
