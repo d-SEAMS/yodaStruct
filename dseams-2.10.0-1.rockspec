@@ -26,7 +26,7 @@ Lua and Fennel library for the d-SEAMS C++ engine. require("dseams")
 is the public table. dseams.core is the compiled module.
 
 Authors: Rohit Goswami (ORCID 0000-0002-2393-8056), Amrita Goswami
-(ORCID 0000-0001-8706-2383), Ruhila Goswami (ORCID 0000-0002-5443-9356).
+(ORCID 0000-0001-8706-2383).
 
 Readers: LAMMPS dumps (every atom, one type, or a slice), XYZ, .con
 through readcon-core when dseams.has_readcon() is true, and PDB, GRO,
