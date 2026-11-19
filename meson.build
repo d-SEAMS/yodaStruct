@@ -6,6 +6,29 @@ project(
     meson_version: '>=1.3.0',
 )
 
+# Optional readers. seams-core probes the same pkg-config names
+# (chemfiles, readcon-core). When it finds one it compiles that reader
+# and exports -DSEAMS_HAS_CHEMFILES or -DSEAMS_HAS_READCON on yds_dep.
+# This probe is the same lookup, and the defines below are applied to
+# this binding as well, so the Lua module and the engine agree.
+# auto leaves a LAMMPS/XYZ build when a library is absent. enabled
+# stops configuration when that library is missing.
+chemfiles_dep = dependency(
+    'chemfiles',
+    required: get_option('with_chemfiles'),
+)
+readcon_dep = dependency(
+    'readcon-core',
+    required: get_option('with_readcon'),
+)
+reader_defines = []
+if chemfiles_dep.found()
+    reader_defines += ['-DSEAMS_HAS_CHEMFILES=1']
+endif
+if readcon_dep.found()
+    reader_defines += ['-DSEAMS_HAS_READCON=1']
+endif
+
 # C++ engine. This repo is the Lua/Fennel library (require("dseams")).
 seams = subproject(
     'seams-core',
@@ -96,16 +119,33 @@ if host_machine.system() == 'linux'
     link_args += ['-Wl,--enable-new-dtags']
 endif
 
+mod_deps = [lua_dep, yds_dep]
+if chemfiles_dep.found()
+    mod_deps += chemfiles_dep
+endif
+if readcon_dep.found()
+    mod_deps += readcon_dep
+endif
+
 dseams_core = shared_module(
     'dseams_core',
     files('src/lua_api.cpp', 'src/luaopen.cpp'),
     name_prefix: '',
     name_suffix: 'so',
-    dependencies: [lua_dep, yds_dep],
+    dependencies: mod_deps,
     include_directories: inc,
-    cpp_args: lua_inc_args,
+    cpp_args: lua_inc_args + reader_defines,
     link_args: link_args,
     install: true,
+)
+
+summary(
+    {
+        'PDB/GRO/DCD (chemfiles)': chemfiles_dep.found(),
+        '.con (readcon-core)': readcon_dep.found(),
+    },
+    section: 'Readers',
+    bool_yn: true,
 )
 
 install_data(
@@ -198,6 +238,34 @@ if lua_exe.found()
         ],
         env: lua_test_env,
         workdir: meson.project_source_root(),
+        timeout: 120,
+    )
+    readers_lua = meson.project_source_root() / 'example_lua/library/readers.lua'
+    test(
+        'dseams_read_con',
+        lua_exe,
+        args: [readers_lua, 'con'],
+        env: lua_test_env,
+        workdir: meson.project_source_root(),
+        suite: 'readers',
+        timeout: 120,
+    )
+    test(
+        'dseams_read_pdb',
+        lua_exe,
+        args: [readers_lua, 'pdb'],
+        env: lua_test_env,
+        workdir: meson.project_source_root(),
+        suite: 'readers',
+        timeout: 120,
+    )
+    test(
+        'dseams_read_gro',
+        lua_exe,
+        args: [readers_lua, 'gro'],
+        env: lua_test_env,
+        workdir: meson.project_source_root(),
+        suite: 'readers',
         timeout: 120,
     )
 endif

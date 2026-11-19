@@ -152,6 +152,22 @@ Cloud readLammpsTrjreduced(std::string filename, int targetFrame, int typeI,
 
 Cloud readXYZ(const std::string &filename) { return sinp::readXYZ(filename); }
 
+bool has_chemfiles() {
+#ifdef SEAMS_HAS_CHEMFILES
+  return true;
+#else
+  return false;
+#endif
+}
+
+bool has_readcon() {
+#ifdef SEAMS_HAS_READCON
+  return true;
+#else
+  return false;
+#endif
+}
+
 #ifdef SEAMS_HAS_CHEMFILES
 Cloud readChemfiles(std::string filename, int targetFrame,
                     sol::optional<int> typeFilter) {
@@ -580,6 +596,8 @@ void registerIO(sol::state_view lua, sol::table m) {
   m.set_function("readLammpsTrjO", readLammpsTrjO);
   m.set_function("readLammpsTrjreduced", readLammpsTrjreduced);
   m.set_function("readXYZ", readXYZ);
+  m.set_function("has_chemfiles", has_chemfiles);
+  m.set_function("has_readcon", has_readcon);
 #ifdef SEAMS_HAS_CHEMFILES
   m.set_function("readChemfiles", readChemfiles);
 #endif

@@ -1,0 +1,12 @@
+option(
+    'with_chemfiles',
+    type: 'feature',
+    value: 'auto',
+    description: 'PDB, GRO, and DCD reads via chemfiles. auto links it when pkg-config finds chemfiles',
+)
+option(
+    'with_readcon',
+    type: 'feature',
+    value: 'auto',
+    description: '.con reads via readcon-core. auto links it when pkg-config finds readcon-core',
+)
