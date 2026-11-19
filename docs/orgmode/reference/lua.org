@@ -16,7 +16,7 @@ Compiled names on ~dseams.core~ live in
 
 #+begin_src lua
 local dseams = require("dseams")
-local cloud = dseams.read("water.lammpstrj", {type = 2})
+local cloud = dseams.read("input/traj/exampleTraj.lammpstrj", {type = 2})
 local types = dseams.chill_plus(cloud, {cutoff = 3.5, type = 2})
 local nl = dseams.core.neighListO(3.5, cloud, 2)
 #+end_src
@@ -217,6 +217,8 @@ engine ring-adjacent walk: the last vertex of a six-ring whose
 other vertices already carry an HC or DDC label.
 
 #+begin_src lua
+local dseams = require("dseams")
+local cloud = dseams.read("input/traj/exampleTraj.lammpstrj", {type = 2})
 local aff = dseams.cages(cloud, {type = 2})
 local filled = dseams.cages(cloud, {type = 2, complete = true})
 #+end_src
@@ -241,8 +243,28 @@ that cage label but one fills the last vertex, and the walk
 repeats until a fixed point.
 
 #+begin_src lua
-local aff = core.seededCageAffiliation(six_s, idx_s, six_u, idx_u)
-local filled = core.seededCageAffiliation(six_s, idx_s, six_u, idx_u, true)
+local dseams = require("dseams")
+local core = dseams.core
+local cloud = dseams.read("input/traj/exampleTraj.lammpstrj", {type = 2})
+local strict = core.neighbourListByIndex(
+  cloud, core.kNearestNeighbourList(cloud, 4, 5.0, 2, true)
+)
+local union = core.neighbourListByIndex(
+  cloud, core.kNearestNeighbourList(cloud, 4, 5.0, 2, false)
+)
+local function six(rings)
+  local out = {}
+  for _, ring in ipairs(rings) do
+    if #ring == 6 then out[#out + 1] = ring end
+  end
+  return out
+end
+local strict_rings = six(core.ringNetwork(strict, 6))
+local union_rings = six(core.ringNetwork(union, 6))
+local aff = core.seededCageAffiliation(strict_rings, strict, union_rings, union)
+local filled = core.seededCageAffiliation(
+  strict_rings, strict, union_rings, union, true
+)
 #+end_src
 
 ~dseams.cages~ passes ~opts.complete or false~ as that fifth
@@ -271,10 +293,17 @@ Both paths agree on the ring count. ~prismAnalysis~ writes
 #+end_export
 
 #+begin_src lua
+local dseams = require("dseams")
+local core = dseams.core
+local path = "input/traj/exampleTraj.lammpstrj"
+local cloud = dseams.read(path, {type = 2})
 local nList = dseams.neighbors(cloud, {cutoff = 3.5, type = 2})
 local hbn = core.getHbondNetwork(path, cloud, nList, 1, 1)
 local byIndex = core.bondNetworkByIndex(cloud, hbn)
 local rings = core.getPrimitiveRings(byIndex, 6)
+local out = assert(os.tmpname())
+os.remove(out)
+assert(os.execute("mkdir -p " .. out))
 core.prismAnalysis(out .. "/", rings, byIndex, cloud, 6, 1, 1, 1, false)
 #+end_src
 

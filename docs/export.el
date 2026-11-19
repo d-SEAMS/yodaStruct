@@ -20,6 +20,37 @@
     (memq (org-element-type node)
           (if (listp types) types (list types)))))
 
+(unless (fboundp 'org-element-parent)
+  (defun org-element-parent (node)
+    (org-element-property :parent node)))
+
+(unless (fboundp 'org-element-parent-element)
+  (defun org-element-parent-element (node)
+    (org-element-property :parent node)))
+
+(unless (fboundp 'org-element-extract)
+  (defun org-element-extract (node)
+    (let ((parent (org-element-parent node))
+          (secondary (org-element-secondary-p node)))
+      (if secondary
+          (org-element-put-property
+           parent secondary
+           (delq node (org-element-property secondary parent)))
+        (apply #'org-element-set-contents
+               parent
+               (delq node (org-element-contents parent))))
+      (org-element-put-property node :parent nil))))
+
+(unless (fboundp 'org-element-begin)
+  (defun org-element-begin (node)
+    (org-element-property :begin node)))
+
+(when (version< (org-version) "9.7")
+  (advice-add
+   'org-element-lineage :around
+   (lambda (function node &optional types with-self)
+     (funcall function node (if (symbolp types) (list types) types) with-self))))
+
 (setq org-export-with-section-numbers nil)
 (setq org-export-with-toc nil)
 (setq org-export-with-author nil)

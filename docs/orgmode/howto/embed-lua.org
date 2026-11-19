@@ -37,7 +37,8 @@ lua your_script.lua
 
 #+begin_src lua
 local dseams = require("dseams")
-local cloud = dseams.read("water.lammpstrj", {type = 2})
+local cloud = dseams.read("input/traj/exampleTraj.lammpstrj", {type = 2})
+assert(cloud.nop > 0)
 #+end_src
 
 In-tree, ~$PREFIX/share/luadseams/lua~ is ~lua/~ and
@@ -109,8 +110,7 @@ compiler is ~src/include/external/fennel/fennel.lua~ in the
 tree, or ~$prefix/share/luadseams/fennel.lua~ after install.
 
 #+begin_src lua
-local fennel = require("fennel")  -- after fennel.lua is on package.path
--- or: fennel = dofile("src/include/external/fennel/fennel.lua")
+local fennel = dofile("src/include/external/fennel/fennel.lua")
 print(fennel.eval([[
   (local dseams (require :dseams))
   (assert dseams.read)

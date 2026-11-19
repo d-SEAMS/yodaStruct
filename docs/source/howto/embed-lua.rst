@@ -44,7 +44,8 @@ This is the same path as the `Quickstart <../quickstart.rst>`_:
 .. code:: lua
 
     local dseams = require("dseams")
-    local cloud = dseams.read("water.lammpstrj", {type = 2})
+    local cloud = dseams.read("input/traj/exampleTraj.lammpstrj", {type = 2})
+    assert(cloud.nop > 0)
 
 In-tree, ``$PREFIX/share/luadseams/lua`` is ``lua/`` and
 ``$PREFIX/lib`` is the meson build directory (``bbdir/``).
@@ -119,8 +120,7 @@ tree, or ``$prefix/share/luadseams/fennel.lua`` after install.
 
 .. code:: lua
 
-    local fennel = require("fennel")  -- after fennel.lua is on package.path
-    -- or: fennel = dofile("src/include/external/fennel/fennel.lua")
+    local fennel = dofile("src/include/external/fennel/fennel.lua")
     print(fennel.eval([[
       (local dseams (require :dseams))
       (assert dseams.read)

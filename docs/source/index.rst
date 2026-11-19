@@ -49,8 +49,8 @@ Python is `pydseams <https://github.com/d-SEAMS/PydSEAMSlib>`_.
 .. code:: lua
 
     local dseams = require("dseams")
-    local cloud = dseams.read("water.lammpstrj")
-    print(dseams.chill_plus(cloud, {cutoff = 3.5}))
+    local cloud = dseams.read("input/traj/exampleTraj.lammpstrj", {type = 2})
+    print(dseams.chill_plus(cloud, {cutoff = 3.5, type = 2}))
 
 ``dseams.core`` is the compiled registrations (``dseams_core.so``).
 Helpers stay in Lua. ``require("yoda")`` still resolves to ``dseams``.
@@ -112,7 +112,6 @@ This documentation follows the `Diataxis <https://diataxis.fr/>`_ framework.
    :caption: Tutorials
 
    tutorials/index
-   tutorials/read-and-classify
 
 .. toctree::
    :maxdepth: 2
@@ -139,8 +138,6 @@ This documentation follows the `Diataxis <https://diataxis.fr/>`_ framework.
    :caption: Reference
 
    reference/index
-   reference/lua
-   reference/lua-functions
 
 The compiled-registration appendix is `Compiled registrations <reference/lua-functions.rst>`_,
 from Doxygen of ``lua_api.hpp``.
@@ -167,14 +164,8 @@ MIT. Cite the `2020 JCIM paper <https://doi.org/10.1021/acs.jcim.0c00031>`_
 and the ``CITATION.cff`` in this tree. See
 `How to cite <explanation/citation.rst>`_.
 
-#+begin\_export rst
 Indices and tables
-``================``
+------------------
 
-:ref:\`genindex\`
------------------
-
-:ref:\`search\`
----------------
-
-#+end\_export
+* :ref:`genindex`
+* :ref:`search`

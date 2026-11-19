@@ -214,8 +214,8 @@ shipped file ~example_lua/library/chill.fnl~ (that one stops
 after ~chill_plus~):
 
 #+begin_src bash
-lua src/include/external/fennel/fennel.lua /tmp/read-and-classify.fnl
-lua src/include/external/fennel/fennel.lua example_lua/library/chill.fnl
+lua -e 'local fennel = dofile("src/include/external/fennel/fennel.lua"); fennel.dofile("/tmp/read-and-classify.fnl")'
+lua -e 'local fennel = dofile("src/include/external/fennel/fennel.lua"); fennel.dofile("example_lua/library/chill.fnl")'
 #+end_src
 
 How Fennel finds ~dseams~, and how ~lua/dseams.fnl~ adds

@@ -239,8 +239,8 @@ after ``chill_plus``):
 
 .. code:: bash
 
-    lua src/include/external/fennel/fennel.lua /tmp/read-and-classify.fnl
-    lua src/include/external/fennel/fennel.lua example_lua/library/chill.fnl
+    lua -e 'local fennel = dofile("src/include/external/fennel/fennel.lua"); fennel.dofile("/tmp/read-and-classify.fnl")'
+    lua -e 'local fennel = dofile("src/include/external/fennel/fennel.lua"); fennel.dofile("example_lua/library/chill.fnl")'
 
 How Fennel finds ``dseams``, and how ``lua/dseams.fnl`` adds
 ``chill-plus``, is in `Fennel <../howto/fennel.rst>`_.
