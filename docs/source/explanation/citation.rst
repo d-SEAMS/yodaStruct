@@ -39,6 +39,11 @@ the methods. Cite the CFF when you need a software artifact
 (repository `d-SEAMS/yodaStruct <https://github.com/d-SEAMS/yodaStruct>`_,
 license MIT).
 
+The software authors on that record are
+`Rohit Goswami <https://orcid.org/0000-0002-2393-8056>`_,
+`Amrita Goswami <https://orcid.org/0000-0001-8706-2383>`_, and
+`Ruhila Goswami <https://orcid.org/0000-0002-5443-9356>`_.
+
 Call the library ``dseams`` in prose (``require("dseams")``). The
 repository name remains ``yodaStruct``.
 

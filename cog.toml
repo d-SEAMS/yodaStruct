@@ -1,0 +1,38 @@
+# Cocogitto release driver. Towncrier owns CHANGELOG.md.
+# Prepare: cog bump --auto   (or --patch / --minor / --major / --version X.Y.Z)
+# The tag push is the maintainer's. Publishing to LuaRocks is luarocks upload.
+
+from_latest_tag = true
+ignore_merge_commits = true
+disable_changelog = true
+disable_bump_commit = false
+tag_prefix = "v"
+branch_whitelist = ["main", "master"]
+
+pre_bump_hooks = [
+    "python3 -c \"import pathlib,re,sys; v=sys.argv[1]; p=pathlib.Path('meson.build'); t=p.read_text(encoding='utf-8'); q=chr(39); pat='version: '+q+'[^'+q+']+'+q; rep='version: '+q+v+q; n,k=re.subn(pat, rep, t, count=1); assert k==1, 'meson.build version field not found'; p.write_text(n, encoding='utf-8')\" {{version}}",
+    "python3 -m cogapp -r $(grep -v '^#' ci/version/files.txt)",
+    "towncrier build --yes --version {{version}}",
+]
+
+post_bump_hooks = [
+    "git --no-pager show --stat HEAD",
+    "echo \"Prepared v{{version}}. Push the version commit and tag v{{version}}, then luarocks upload the renamed rockspec.\"",
+]
+
+[commit_types]
+feat = { changelog_title = "Features" }
+fix = { changelog_title = "Bug Fixes" }
+perf = { changelog_title = "Performance" }
+refactor = { changelog_title = "Refactoring" }
+docs = { changelog_title = "Documentation" }
+test = { changelog_title = "Tests" }
+build = { changelog_title = "Build System" }
+ci = { changelog_title = "CI" }
+chore = { changelog_title = "Miscellaneous" }
+style = { changelog_title = "Style" }
+revert = { changelog_title = "Reverts" }
+
+[changelog]
+path = "CHANGELOG.md"
+authors = [{ username = "HaoZeke", signature = "Rohit Goswami" }]
