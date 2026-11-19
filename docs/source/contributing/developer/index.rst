@@ -35,7 +35,7 @@ Common tasks
     +---------------------+------------------------------------------------------------------------+
     | Readers required    | ``meson setup bbdir -Dwith_chemfiles=enabled -Dwith_readcon=enabled``  |
     +---------------------+------------------------------------------------------------------------+
-    | Changelog preview   | ``towncrier build --draft``                                            |
+    | Changelog preview   | ``towncrier build --draft --version unreleased``                       |
     +---------------------+------------------------------------------------------------------------+
     | Version copies      | ``python3 -m cogapp -I ci/version -r @ci/version/files.txt``           |
     +---------------------+------------------------------------------------------------------------+

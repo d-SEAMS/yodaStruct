@@ -8,7 +8,9 @@ One release version, the ``version`` keyword of ``project()`` in
 ``ci/version/dseams_version.py`` reads it with
 ``meson introspect --projectinfo meson.build``, and cogapp copies it
 into the files listed in ``ci/version/files.txt``: ``nix/package.nix``,
-``CITATION.cff``, ``towncrier.toml``, and ``rockspec``.
+``CITATION.cff``, ``towncrier.toml``, ``rockspec``, and
+``docs/source/Doxyfile``. That cogapp run also writes
+``date-released`` in ``CITATION.cff`` from ``date +%F``, the ship date.
 ``docs/source/conf.py`` reads the same ``project()`` line for Sphinx, so
 the book follows the build. Regenerate the copies with cogapp (the
 Python package). That ``cog`` script is not cocogitto. Cocogitto's
@@ -59,7 +61,9 @@ The orphan prefix is ``+`` when there is no issue number.
 .. code:: bash
 
     printf '%s\n' 'Short user-facing note.' > changelog.d/+short-name.added.md
-    towncrier build --draft
+    towncrier build --draft --version unreleased
+
+``--version unreleased`` labels that preview heading ``[unreleased]``.
 
 Types in ``towncrier.toml``: ``added``, ``changed``, ``deprecated``, ``removed``,
 ``fixed``, ``security``.
@@ -92,7 +96,7 @@ From a clean clone to a published rock
 
    .. code:: bash
 
-       towncrier build --draft
+       towncrier build --draft --version unreleased
        cog bump --dry-run --auto
        cog check v2.10.0..HEAD
 
@@ -107,9 +111,11 @@ From a clean clone to a published rock
 
    Meson writes ``{{version}}`` into the ``version`` keyword of
    ``project()``. cogapp reads that keyword and writes it into
-   ``rockspec`` and the other files in ``ci/version/files.txt``. Towncrier
-   writes the changelog section. Cocogitto commits that tree and puts
-   the tag ``vX.Y.Z`` on that commit.
+   ``rockspec``, ``docs/source/Doxyfile``, and the other files in
+   ``ci/version/files.txt``. The same run sets ``date-released`` in
+   ``CITATION.cff`` from ``date +%F``. Towncrier writes the changelog
+   section. Cocogitto commits that tree and puts the tag ``vX.Y.Z`` on
+   that commit.
 
    .. code:: bash
 
