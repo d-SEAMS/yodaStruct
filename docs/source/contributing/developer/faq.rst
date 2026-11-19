@@ -7,24 +7,31 @@ Why are chemfiles and readcon-core optional?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 LAMMPS dumps and XYZ are compiled into seams-core. PDB, GRO, and DCD
-need chemfiles. ``.con`` needs readcon-core. The engine and this
-binding both probe pkg-config. When a library is missing, that reader
-is left out and the rest of the library still builds.
-``dseams.has_chemfiles()`` and ``dseams.has_readcon()`` report the result
-for the module that was loaded.
+need chemfiles. ``.con`` needs readcon-core. Only seams-core probes for
+them. A separate ``dependency()`` in this project would be cached as
+not found and would skip the readcon-core wrap. When a library is
+missing and the wrap is not used, that reader is left out and the
+rest of the library still builds. ``dseams.has_chemfiles()`` and
+``dseams.has_readcon()`` are the ``SEAMS_HAS_CHEMFILES`` and
+``SEAMS_HAS_READCON`` macros from the engine that was linked.
 
 How do I turn the readers on?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Install chemfiles and readcon-core so ``pkg-config --modversion`` sees
 ``chemfiles`` and ``readcon-core``, then configure with
-``-Dwith_chemfiles=enabled -Dwith_readcon=enabled``. ``auto``, the
-default, links a library when the probe finds it and keeps going
-when it does not.
+``-Dwith_chemfiles=enabled -Dwith_readcon=enabled``. Those options do
+not search for the libraries. They fail configure when seams-core
+left the matching macro unset. ``auto``, the default, accepts whatever
+the engine built.
 
-readcon-core ships a pkg-config file through cargo-c. The pin this
-tree builds against is readcon-core v0.14.10. chemfiles 0.10.4
-matches the calls in seams-core.
+With the default wrap mode and no system readcon-core, seams-core
+builds its readcon-core wrap and ``has_readcon()`` is true. ``--wrap-mode=nofallback``
+leaves ``.con`` out unless a system library is found. There is no
+chemfiles wrap. The wrap revision in this tree is readcon-core
+v0.14.10. chemfiles 0.10.4 matches the calls in seams-core. When the
+wrap moves, the installed readcon-core must track seams-core's floor
+(>=0.16.2 in seams-core v2.14.1).
 
 Where is the version written?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

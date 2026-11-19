@@ -2,11 +2,11 @@ option(
     'with_chemfiles',
     type: 'feature',
     value: 'auto',
-    description: 'PDB, GRO, and DCD reads via chemfiles. auto links it when pkg-config finds chemfiles',
+    description: 'enabled fails configure when seams-core did not set SEAMS_HAS_CHEMFILES. auto follows that engine result',
 )
 option(
     'with_readcon',
     type: 'feature',
     value: 'auto',
-    description: '.con reads via readcon-core. auto links it when pkg-config finds readcon-core',
+    description: 'enabled fails configure when seams-core did not set SEAMS_HAS_READCON. auto follows that engine result, including its readcon-core wrap',
 )

@@ -6,30 +6,11 @@ project(
     meson_version: '>=1.3.0',
 )
 
-# Optional readers. seams-core probes the same pkg-config names
-# (chemfiles, readcon-core). When it finds one it compiles that reader
-# and exports -DSEAMS_HAS_CHEMFILES or -DSEAMS_HAS_READCON on yds_dep.
-# This probe is the same lookup, and the defines below are applied to
-# this binding as well, so the Lua module and the engine agree.
-# auto leaves a LAMMPS/XYZ build when a library is absent. enabled
-# stops configuration when that library is missing.
-chemfiles_dep = dependency(
-    'chemfiles',
-    required: get_option('with_chemfiles'),
-)
-readcon_dep = dependency(
-    'readcon-core',
-    required: get_option('with_readcon'),
-)
-reader_defines = []
-if chemfiles_dep.found()
-    reader_defines += ['-DSEAMS_HAS_CHEMFILES=1']
-endif
-if readcon_dep.found()
-    reader_defines += ['-DSEAMS_HAS_READCON=1']
-endif
-
 # C++ engine. This repo is the Lua/Fennel library (require("dseams")).
+# Do not probe chemfiles or readcon-core here. Meson caches a not-found
+# dependency() for the whole build, and that cache skips the readcon-core
+# wrap fallback inside seams-core. The readers are whatever that subproject
+# compiled. It puts -DSEAMS_HAS_CHEMFILES and -DSEAMS_HAS_READCON on yds_dep.
 seams = subproject(
     'seams-core',
     default_options: [
@@ -44,11 +25,23 @@ seams = subproject(
 # the Lua 5.3/5.4 -I wins over a distro lua.h in /usr/include.
 yds_dep = seams.get_variable('yds_dep').as_system()
 
+# The subproject's own dependency objects. found() is true when
+# seams-core compiled that reader, including a readcon-core wrap.
+# compiler.get_define() cannot take this internal dependency.
+cpp = meson.get_compiler('cpp')
+engine_has_chemfiles = seams.get_variable('chemfiles_dep').found()
+engine_has_readcon = seams.get_variable('readcon_dep').found()
+if get_option('with_chemfiles').enabled() and not engine_has_chemfiles
+    error('seams-core was built without chemfiles (SEAMS_HAS_CHEMFILES unset)')
+endif
+if get_option('with_readcon').enabled() and not engine_has_readcon
+    error('seams-core was built without readcon-core (SEAMS_HAS_READCON unset)')
+endif
+
 # Vendored sol does not support Lua 5.5 (LUA_ERRGCMM is gone).
 # conda-forge gcc also drops `-I/usr/include` from the distro lua
 # 5.5 pc file, so sol cannot include lua.h. Prefer 5.3/5.4 with a
 # visible header; the wrap is last resort.
-cpp = meson.get_compiler('cpp')
 lua_dep = disabler()
 foreach name : ['lua-5.4', 'lua5.4', 'lua-5.3', 'lua5.3', 'lua']
     if not lua_dep.found()
@@ -119,30 +112,22 @@ if host_machine.system() == 'linux'
     link_args += ['-Wl,--enable-new-dtags']
 endif
 
-mod_deps = [lua_dep, yds_dep]
-if chemfiles_dep.found()
-    mod_deps += chemfiles_dep
-endif
-if readcon_dep.found()
-    mod_deps += readcon_dep
-endif
-
 dseams_core = shared_module(
     'dseams_core',
     files('src/lua_api.cpp', 'src/luaopen.cpp'),
     name_prefix: '',
     name_suffix: 'so',
-    dependencies: mod_deps,
+    dependencies: [lua_dep, yds_dep],
     include_directories: inc,
-    cpp_args: lua_inc_args + reader_defines,
+    cpp_args: lua_inc_args,
     link_args: link_args,
     install: true,
 )
 
 summary(
     {
-        'PDB/GRO/DCD (chemfiles)': chemfiles_dep.found(),
-        '.con (readcon-core)': readcon_dep.found(),
+        'PDB/GRO/DCD (chemfiles)': engine_has_chemfiles,
+        '.con (readcon-core)': engine_has_readcon,
     },
     section: 'Readers',
     bool_yn: true,
