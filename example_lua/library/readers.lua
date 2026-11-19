@@ -1,7 +1,8 @@
 -- Real reads of one .con, one PDB, one GRO, and one DCD file.
 -- con, pdb, and gro skip only when the feature query for that reader is false.
 -- dcd is a real read: a build without chemfiles fails it.
--- A missing fixture, a short cloud, or a zero box is a failure.
+-- A missing fixture, a short cloud, a zero box, or a DCD box other
+-- than 10 10 10 is a failure.
 
 local dseams = require("dseams")
 
@@ -35,6 +36,7 @@ local cases = {
       return dseams.has_chemfiles()
     end,
     fail = true,
+    box = {10, 10, 10},
   },
 }
 
@@ -59,7 +61,14 @@ if cloud.currentFrame ~= 1 then
   error(string.format("%s frame %s, want 1", case.path, tostring(cloud.currentFrame)))
 end
 local box = cloud:box()
-if not (box[1] > 0 and box[2] > 0 and box[3] > 0) then
+if case.box then
+  if box[1] ~= case.box[1] or box[2] ~= case.box[2] or box[3] ~= case.box[3] then
+    error(string.format(
+      "%s box %s %s %s, want %d %d %d",
+      case.path, tostring(box[1]), tostring(box[2]), tostring(box[3]),
+      case.box[1], case.box[2], case.box[3]))
+  end
+elseif not (box[1] > 0 and box[2] > 0 and box[3] > 0) then
   error(string.format("%s box is empty", case.path))
 end
 print(string.format(

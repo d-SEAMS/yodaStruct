@@ -2,7 +2,7 @@
 # cog bump --auto runs three hooks, then commits and tags:
 #   meson rewrite writes the project() version in meson.build
 #   cogapp copies that version into ci/version/files.txt
-#   and writes CITATION.cff date-released from `date +%F`
+#   YODA_RELEASE_DATE=$(date +%F) on that command sets date-released
 #   towncrier writes CHANGELOG.md
 # luarocks new_version names the upload rockspec.
 # The tag push is the maintainer's. Publishing to LuaRocks is luarocks upload.
@@ -16,7 +16,7 @@ branch_whitelist = ["main", "master"]
 
 pre_bump_hooks = [
     "meson rewrite kwargs set project / version {{version}}",
-    "python3 -m cogapp -I ci/version -r @ci/version/files.txt",
+    "YODA_RELEASE_DATE=$(date +%F) python3 -m cogapp -I ci/version -r @ci/version/files.txt",
     "towncrier build --yes --version {{version}}",
 ]
 

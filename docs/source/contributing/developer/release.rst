@@ -9,8 +9,11 @@ One release version, the ``version`` keyword of ``project()`` in
 ``meson introspect --projectinfo meson.build``, and cogapp copies it
 into the files listed in ``ci/version/files.txt``: ``nix/package.nix``,
 ``CITATION.cff``, ``towncrier.toml``, ``rockspec``, and
-``docs/source/Doxyfile``. That cogapp run also writes
-``date-released`` in ``CITATION.cff`` from ``date +%F``, the ship date.
+``docs/source/Doxyfile``. ``date-released`` in ``CITATION.cff`` is the ship
+date. The bump hook sets ``YODA_RELEASE_DATE`` from ``date +%F`` for the
+cogapp command, and the cog block writes that value. The regenerate
+command leaves ``YODA_RELEASE_DATE`` unset, so the committed
+``date-released`` stays as it is.
 ``docs/source/conf.py`` reads the same ``project()`` line for Sphinx, so
 the book follows the build. Regenerate the copies with cogapp (the
 Python package). That ``cog`` script is not cocogitto. Cocogitto's
@@ -105,17 +108,17 @@ From a clean clone to a published rock
 
    - ``meson rewrite kwargs set project / version {{version}}``
 
-   - ``python3 -m cogapp -I ci/version -r @ci/version/files.txt``
+   - ``YODA_RELEASE_DATE=$(date +%F) python3 -m cogapp -I ci/version -r @ci/version/files.txt``
 
    - ``towncrier build --yes --version {{version}}``
 
    Meson writes ``{{version}}`` into the ``version`` keyword of
    ``project()``. cogapp reads that keyword and writes it into
    ``rockspec``, ``docs/source/Doxyfile``, and the other files in
-   ``ci/version/files.txt``. The same run sets ``date-released`` in
-   ``CITATION.cff`` from ``date +%F``. Towncrier writes the changelog
-   section. Cocogitto commits that tree and puts the tag ``vX.Y.Z`` on
-   that commit.
+   ``ci/version/files.txt``. ``YODA_RELEASE_DATE`` on that command is the
+   ship date the cog block writes to ``date-released``. Towncrier
+   writes the changelog section. Cocogitto commits that tree and puts
+   the tag ``vX.Y.Z`` on that commit.
 
    .. code:: bash
 

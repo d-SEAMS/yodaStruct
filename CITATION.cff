@@ -9,11 +9,19 @@ type: software
 version: "2.10.0"
 # [[[end]]]
 # [[[cog
-# import subprocess
-# cog.outl(
-#     'date-released: "%s"'
-#     % subprocess.check_output(["date", "+%F"], text=True).strip()
-# )
+# import os
+# import re
+# import dseams_version as v
+# released = os.environ.get("YODA_RELEASE_DATE")
+# if released:
+#     released = released.strip()
+# else:
+#     text = (v.ROOT / "CITATION.cff").read_text(encoding="utf-8")
+#     released = re.search(
+#         r'(?m)^date-released: "(\d{4}-\d{2}-\d{2})"',
+#         text,
+#     ).group(1)
+# cog.outl('date-released: "%s"' % released)
 # ]]]
 date-released: "2026-09-06"
 # [[[end]]]

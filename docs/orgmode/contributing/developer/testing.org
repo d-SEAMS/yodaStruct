@@ -32,8 +32,9 @@ helpers, the legacy chain, topology, and the Fennel wrappers.
 
 The con, PDB, and GRO tests skip by exiting 77 when their query is
 false, which Meson records as skipped. The DCD test is registered
-only when chemfiles is found, and that run reads the fixture. A
-missing file, a wrong atom count, or an empty box fails the test.
+only when chemfiles is found, and that run reads the fixture and
+requires the box lengths 10, 10, 10. A missing file, a wrong atom
+count, or an empty box fails the test.
 The queries are the compiled ~has_chemfiles~ and ~has_readcon~
 bindings. ~input/readers/water.dcd~ is a two-atom trajectory written
 by chemfiles.
