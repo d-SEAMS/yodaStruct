@@ -3,6 +3,12 @@
 
 (local impl (require :dseams))
 
+(fn has-chemfiles []
+  (impl.has_chemfiles))
+
+(fn has-readcon []
+  (impl.has_readcon))
+
 (fn read [path opts]
   (impl.read path opts))
 
@@ -48,7 +54,9 @@
 (fn domain [cloud opts]
   (impl.domain cloud opts))
 
-{:read read
+{:has-chemfiles has-chemfiles
+ :has-readcon has-readcon
+ :read read
  :neighbors neighbors
  :neighbors-pair neighbors-pair
  :cn cn
