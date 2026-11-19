@@ -54,6 +54,27 @@ Public names
 ``cages``
     seeded HC/DDC per-atom flags.
 
+``cages_by_signature``
+    closed cages selected by their face census.
+
+``guest_occupancy``
+    assign guest atoms to periodic cage centres.
+
+``fingerprint``
+    label-independent bonded-topology keys.
+
+``topology_library``
+    serialize topology keys under a label.
+
+``classify_topology``
+    name atoms from one or more key libraries.
+
+``ion_environment``
+    classify ion hydration shells by ice flags.
+
+``shell_ring_census``
+    count rings that intersect a shell.
+
 ``hbonds``
     hydrogen-bond adjacency table.
 
@@ -154,8 +175,8 @@ raw bind. Wrapped names spell optionals in Lua (``sol::optional``).
 Names without a Lua wrapper need every argument the bound C++
 signature requires.
 
-~read~(path[, opts])
---------------------
+``read(path[, opts])``
+----------------------
 
 Suffix-dispatching loader. Returns a ``PointCloud``.
 
@@ -191,8 +212,8 @@ The type argument is any LAMMPS type (the ``O`` is historical).
 ..
    # proseguard:on proselint.Uncomparables
 
-~neighbors~(cloud[, opts])
---------------------------
+``neighbors(cloud[, opts])``
+----------------------------
 
 Cutoff neighbour list by atom ID. Calls
 ``core.neighListO(opts.cutoff or 3.5, cloud, opts.type or 1)``.
@@ -204,8 +225,8 @@ Pair neighbours
 ``neighbors_pair(cloud[, opts])`` returns an I-J cutoff neighbour list. Calls
 ``core.neighListPair(opts.cutoff or 3.5, cloud, opts.type_i or 1, opts.type_j or 2)``. Like-type pairs reuse ``neighListO``.
 
-~cn~(cloud[, opts])
--------------------
+``cn(cloud[, opts])``
+---------------------
 
 Site-site coordination number. Calls ``core.calcCN`` with
 ``opts.type_i`` (default 1), ``opts.type_j`` (default 2),
@@ -213,8 +234,8 @@ Site-site coordination number. Calls ``core.calcCN`` with
 ``floor(cutoff / 0.1)``). ``rhoJ`` is ``nJ / volume`` from the
 partial RDF.
 
-~rdf~(cloud[, opts])
---------------------
+``rdf(cloud[, opts])``
+----------------------
 
 Partial three-dimensional radial distribution function. Calls
 ``core.calcRDF3D`` with ``opts.type_i`` (default 1), ``opts.type_j``
@@ -229,8 +250,8 @@ Shared options and defaults match ``rdf``. The call is
 ``core.calcRunningCN``. Hands back ``{r = r, cn = cn}``, with
 ``rhoJ = nJ / volume``.
 
-~knn~(cloud[, opts])
---------------------
+``knn(cloud[, opts])``
+----------------------
 
 ..
    # proseguard:off proselint.Uncomparables
@@ -256,14 +277,14 @@ state names). Writes no file. Mutates ``cloud``.
 ..
    # proseguard:on proselint.Uncomparables
 
-~chill~(cloud[, opts])
-----------------------
+``chill(cloud[, opts])``
+------------------------
 
 Same pipeline with ``core.getCorrel`` and ``core.getIceTypeNoPrint``.
 Mutates ``cloud``. Writes no file.
 
-~cages~(cloud[, opts])
-----------------------
+``cages(cloud[, opts])``
+------------------------
 
 ..
    # proseguard:off proselint.Uncomparables
@@ -286,8 +307,107 @@ other vertices already carry an HC or DDC label.
     local aff = dseams.cages(cloud, {type = 2})
     local filled = dseams.cages(cloud, {type = 2, complete = true})
 
-~seededCageAffiliation~(strictRings, strictNList, permRings, permNList[, ringAdjacentCompletion])
--------------------------------------------------------------------------------------------------
+``cages_by_signature(cloud, spec[, opts])``
+-------------------------------------------
+
+Closed polyhedra whose faces match a ring-size census. ``spec`` is a
+comma-separated census such as ``"4:6,6:8"``, or one of the named
+signatures ``"sodalite"``, ``"alpha"``, ``"512"``, ``"51262"``, ``"hc"``, and
+``"ddc"``. The helper builds a cutoff neighbour graph with
+``opts.cutoff`` (default 3.5) and ``opts.type`` (default 1), converts it
+to cloud indices, enumerates primitive rings through ``opts.max_ring``
+(default 8), and calls ``core.findBySignature``.
+
+The result is an array of
+``{signature=, faces=, vertices=, certificate=}`` tables. The ``"hc"``
+and ``"ddc"`` names select the corresponding TUM finders.
+
+.. code:: lua
+
+    local sod = dseams.cages_by_signature(cloud, "sodalite", {type = 1})
+    print(#sod, sod[1] and #sod[1].vertices)
+
+``guest_occupancy(cloud, cages, guests[, opts])``
+-------------------------------------------------
+
+Assign guest atoms such as methane, THF, or ions to cages. ``cages``
+is an array of zero-based cloud-index lists and ``guests`` is an array
+of zero-based cloud indices. Each guest is assigned to the nearest
+periodic cage centroid within ``opts.radius`` (default 4.0).
+
+The result is
+``{guestsPerCage=, cageOfGuest=, centreDistance=, occupied=, multiply=, free=}``.
+``cageOfGuest`` contains zero-based cage indices and uses ``-1`` for a
+free guest. ``core.periodicCentroid(cloud, atoms)`` computes a centroid
+after unwrapping every cage atom to its minimum image about the first
+atom.
+
+``fingerprint(rows[, opts])``
+-----------------------------
+
+Compute label-independent topology keys for a bonded graph represented
+as index rows, such as the result of ``core.neighbourListByIndex``.
+``opts.hops`` defaults to 2 and ``opts.max_ring`` defaults to 7.
+``opts.colours`` may supply one integer class per row so vertices of
+different species cannot match.
+
+The result is
+``{key=, method=, atomKeys=, classes=, ringCensus=, hops=}``. ``method``
+is ``"nauty"`` when the engine links nauty and ``"wl"`` otherwise.
+
+``topology_library(rows, label[, opts])``
+-----------------------------------------
+
+Serialize the frame's distinct topology keys under ``label``.
+``opts.library`` may contain an existing library to extend. ``opts.hops``,
+``opts.max_ring``, and ``opts.colours`` have the same meanings and defaults
+as for ``fingerprint``.
+
+``classify_topology(rows, library[, opts])``
+--------------------------------------------
+
+Name every atom from a key-library string. ``library`` may instead be a
+Lua sequence of library strings made at different hop counts; in that
+case the deepest library containing an atom's key supplies its name and
+``opts.hops`` is ignored.
+
+The result is ``{labels=, counts=, depth=, matched=}``. An unmatched atom
+has an empty string in ``labels``, depth 0, and contributes to
+``counts.unmatched``.
+
+.. code:: lua
+
+    local lib2 = dseams.topology_library(rows, "Ic", {hops = 2})
+    local lib3 = dseams.topology_library(rows, "Ic", {hops = 3})
+    local named = dseams.classify_topology(rows, {lib2, lib3})
+    print(named.matched, named.depth[1])
+
+``ion_environment(cloud, ice, ions[, opts])``
+---------------------------------------------
+
+Classify each ion from its first water shell against ``ice``, a
+one-based per-atom boolean list. ``ions`` contains zero-based cloud
+indices. ``opts.type`` is the water atom type (default 1), and
+``opts.cutoff`` is the shell radius (default 3.5). A shell is ``"ice"``
+when every member is labelled, ``"liquid"`` when none is labelled, and
+``"front"`` otherwise.
+
+The result is
+``{ion=, shell=, iceFraction=, state=, members=, nIce=, nFront=, nLiquid=}``.
+``members[i]`` lists ion ``i``'s shell.
+
+``shell_ring_census(rings, shell[, opts])``
+-------------------------------------------
+
+Count rings that have at least one vertex in ``shell``. ``rings`` and
+``shell`` contain zero-based cloud indices, as returned by
+``core.ringNetwork`` and ``ion_environment``. Rings larger than
+``opts.max_ring`` (default 7) are ignored. ``census[s + 1]`` is the count
+of rings of size ``s``. Passing ``env.members[i]`` as ``shell`` gives the
+hydration-shell ring census for ion ``i``.
+
+``seededCageAffiliation(strictRings, strictNList, permRings, permNList[, ringAdjacentCompletion])``
+---------------------------------------------------------------------------------------------------
 
 Compiled name on ``dseams.core``. Mutual-graph seeds, permissive-graph
 fill. Hands back ``{hc = hc, ddc = ddc}``, each a 1-based array of
@@ -378,8 +498,8 @@ build directory:
 
     meson test -C bbdir dseams_legacy_chain
 
-~hbonds~(cloud[, opts])
------------------------
+``hbonds(cloud[, opts])``
+-------------------------
 
 Hydrogen-bond adjacency for the selected sites. The neighbour graph
 uses ``opts.cutoff`` (default 3.5) and ``opts.type`` (default 1).
@@ -396,8 +516,8 @@ uses ``opts.cutoff`` (default 3.5) and ``opts.type`` (default 1).
 Hands back a nested Lua table. Supplying neither ``path`` nor
 ``h_cloud`` is an error.
 
-~density~(cloud[, opts])
-------------------------
+``density(cloud[, opts])``
+--------------------------
 
 ..
    # proseguard:off rgoswami.ReviewRegister
@@ -425,16 +545,16 @@ userdata accepted by ``density``, ``pairs``, and ``domain``. Site kinds
 live on ``dseams.core.Kind`` (alias ``SiteKind``), including ``polar``
 and ``apolar``.
 
-~pairs~(cloud, opts)
---------------------
+``pairs(cloud, opts)``
+----------------------
 
 Requires ``opts.table``. Maps the cloud to ionic sites and returns
 mutual nearest unlike pairs as
 ``{pairs = pairs, count = count, n_cation = n_cation, n_anion = n_anion}``.
 Each pair contains the original atom IDs.
 
-~domain~(cloud, opts)
----------------------
+``domain(cloud, opts)``
+-----------------------
 
 Requires ``opts.table`` and ``opts.kind``. The graph joins mapped sites
 within ``opts.cutoff`` (default 3.5). Hands back
