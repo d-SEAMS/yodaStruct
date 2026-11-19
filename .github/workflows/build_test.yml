@@ -46,3 +46,73 @@ jobs:
           export LUA_CPATH="$PWD/stage/usr/lib/?.so;;"
           export DSEAMS_INSTALL_ROOT="$PWD/stage"
           lua example_lua/library/installed.lua
+
+  readers:
+    name: chemfiles and readcon
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: dtolnay/rust-toolchain@df2a88e9fe4098bad09cb42c3dec7187f15861fc
+        with:
+          toolchain: stable
+      - uses: mamba-org/setup-micromamba@f457c30a868e4760d3a6fcea5f25dc655b8edf39 # v3.2.1
+        with:
+          environment-name: yoda
+          create-args: >-
+            cxx-compiler
+            meson
+            ninja
+            pkg-config
+            eigen
+            libblas
+            liblapack
+            lua=5.4
+            cmake
+            openssl
+            make
+          cache-environment: true
+      - name: Install chemfiles 0.10.4 and readcon-core v0.14.10
+        shell: bash -el {0}
+        run: |
+          set -euxo pipefail
+          curl -fsSL -o chemfiles.tar.gz https://github.com/chemfiles/chemfiles/archive/refs/tags/0.10.4.tar.gz
+          tar -xzf chemfiles.tar.gz
+          cmake -S chemfiles-0.10.4 -B chemfiles-build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX="$CONDA_PREFIX" \
+            -DCMAKE_C_COMPILER="${CC:-gcc}" \
+            -DCMAKE_CXX_COMPILER="${CXX:-g++}" \
+            -DBUILD_SHARED_LIBS=ON
+          cmake --build chemfiles-build --parallel
+          cmake --install chemfiles-build
+          # 0.10.4 installs a CMake package and no pkg-config file.
+          mkdir -p "$CONDA_PREFIX/lib/pkgconfig"
+          printf '%s\n' \
+            "prefix=${CONDA_PREFIX}" \
+            'libdir=${prefix}/lib' \
+            'includedir=${prefix}/include' \
+            '' \
+            'Name: chemfiles' \
+            'Description: Library for reading and writing chemistry files' \
+            'Version: 0.10.4' \
+            'Libs: -L${libdir} -lchemfiles' \
+            'Cflags: -I${includedir}' \
+            > "$CONDA_PREFIX/lib/pkgconfig/chemfiles.pc"
+          cargo install cargo-c --locked
+          git clone --depth 1 --branch v0.14.10 https://github.com/lode-org/readcon-core.git
+          cargo cinstall --release --prefix "$CONDA_PREFIX" \
+            --libdir lib --pkgconfigdir lib/pkgconfig \
+            --manifest-path readcon-core/Cargo.toml
+          pkg-config --modversion chemfiles
+          pkg-config --modversion readcon-core
+      - name: Configure, require both readers, and test
+        shell: bash -el {0}
+        run: |
+          set -euxo pipefail
+          meson setup bbdir --prefix=/usr --libdir=lib --wrap-mode=nofallback \
+            -Dwith_chemfiles=enabled -Dwith_readcon=enabled
+          meson compile -C bbdir
+          export LUA_PATH="$PWD/lua/?.lua;;"
+          export LUA_CPATH="$PWD/bbdir/?.so;;"
+          lua -e 'local d = require("dseams"); assert(d.has_chemfiles() == true); assert(d.has_readcon() == true)'
+          meson test -C bbdir -v --print-errorlogs
