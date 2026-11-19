@@ -2,7 +2,14 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it using the metadata below."
 title: "yodaStruct: Lua and Fennel front end for d-SEAMS"
 type: software
+# [[[cog
+# import re
+# from pathlib import Path
+# version = re.search(r"version:\s*'([^']+)'", Path("meson.build").read_text(encoding="utf-8")).group(1)
+# cog.outl(f'version: "{version}"')
+# ]]]
 version: "2.10.0"
+# [[[end]]]
 date-released: "2026-09-06"
 license: MIT
 repository-code: "https://github.com/d-SEAMS/yodaStruct"
@@ -14,6 +21,9 @@ authors:
   - family-names: Goswami
     given-names: Amrita
     orcid: "https://orcid.org/0000-0001-8706-2383"
+  - family-names: Goswami
+    given-names: Ruhila
+    orcid: "https://orcid.org/0000-0002-5443-9356"
 preferred-citation:
   type: article
   title: "d-SEAMS: Deferred Structural Elucidation Analysis for Molecular Simulations"

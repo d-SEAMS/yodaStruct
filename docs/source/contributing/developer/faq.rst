@@ -1,0 +1,58 @@
+
+
+Developer FAQ
+-------------
+
+Why are chemfiles and readcon-core optional?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+LAMMPS dumps and XYZ are compiled into seams-core. PDB, GRO, and DCD
+need chemfiles. ``.con`` needs readcon-core. The engine and this
+binding both probe pkg-config. When a library is missing, that reader
+is left out and the rest of the library still builds.
+``dseams.has_chemfiles()`` and ``dseams.has_readcon()`` report the result
+for the module that was loaded.
+
+How do I turn the readers on?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Install chemfiles and readcon-core so ``pkg-config --modversion`` sees
+``chemfiles`` and ``readcon-core``, then configure with
+``-Dwith_chemfiles=enabled -Dwith_readcon=enabled``. ``auto``, the
+default, links a library when the probe finds it and keeps going
+when it does not.
+
+readcon-core ships a pkg-config file through cargo-c. The pin this
+tree builds against is readcon-core v0.14.10. chemfiles 0.10.4
+matches the calls in seams-core.
+
+Where is the version written?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Once, in the ``version:`` field of ``meson.build``. ``docs/source/conf.py``
+reads that field for the Sphinx release. Every other copy is listed
+in ``ci/version/files.txt`` and regenerated with cogapp. Cocogitto's
+``tag_prefix`` is ``v``, so the git tag is ``vX.Y.Z``.
+
+Who writes the changelog?
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Towncrier. Fragments live in ``changelog.d/`` (the existing towncrier
+directory). ``towncrier build --version X.Y.Z`` writes ``CHANGELOG.md``
+and removes the fragments. Do not hand-edit a released section above
+the towncrier marker.
+
+Why are these pages Org?
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+``docs/orgmode/`` is the source. ``docs/export.el`` publishes RST for
+Sphinx. Hand-edited RST drifts from the Org. Release notes stay in
+``CHANGELOG.md``, not in a second Markdown file.
+
+What does LuaRocks publish?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The rockspec ``dseams-2.10.0-1.rockspec`` describes the package and
+builds it with Meson. ``luarocks upload`` sends that rockspec to the
+LuaRocks registry. The upload is the publish step. See
+`Release process <release.rst>`_.

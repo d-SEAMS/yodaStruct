@@ -1,0 +1,121 @@
+#+TITLE: Release Process
+#+OPTIONS: toc:nil todo:nil num:nil author:nil title:nil
+#+STARTUP: content
+
+* Release Process
+
+One release version, written in the ~version:~ field of ~meson.build~.
+~docs/source/conf.py~ reads it for Sphinx, so the book is not a second
+copy. Every other copy sits between cogapp markers in a file listed
+in ~ci/version/files.txt~: ~nix/package.nix~, ~CITATION.cff~,
+~towncrier.toml~, and ~dseams-2.10.0-1.rockspec~.
+Regenerate them with cogapp (the Python package). That ~cog~ script
+is not cocogitto. Cocogitto's command is ~cog~ and its config is
+~cog.toml~, with ~tag_prefix = "v"~.
+
+#+begin_src bash
+python3 -m cogapp -r $(grep -v '^#' ci/version/files.txt)
+#+end_src
+
+Git tags are ~vX.Y.Z~. Towncrier owns ~CHANGELOG.md~. Fragments under
+~changelog.d/~ are the only input for the next notes block. Do not
+hand-edit a ~## [X.Y.Z]~ section above the towncrier marker, and do
+not add a Markdown release manual.
+
+*Canonical changelog*: repository-root ~CHANGELOG.md~.
+
+Tooling:
+
+| Tool | Role |
+|------+------|
+| [[https://docs.cocogitto.io][cocogitto]] (~cog~) | Conventional-commit bump, version commit, annotated tag ~vX.Y.Z~ |
+| [[https://towncrier.readthedocs.io][towncrier]] | ~CHANGELOG.md~ from ~changelog.d/~ |
+| cogapp (~python3 -m cogapp~) | Rewrite the copies in ~ci/version/files.txt~ |
+| Meson | Configure, compile, and test the library |
+| LuaRocks | Pack and upload the rockspec to the LuaRocks registry |
+
+** Changelog fragments
+
+Add a fragment under ~changelog.d/~ for each user-visible change.
+The orphan prefix is ~+~ when there is no issue number.
+
+#+begin_src bash
+printf '%s\n' 'Short user-facing note.' > changelog.d/+short-name.added.md
+towncrier build --draft
+#+end_src
+
+Types in ~towncrier.toml~: ~added~, ~changed~, ~deprecated~, ~removed~,
+~fixed~, ~security~.
+
+** Commit check
+
+Cocogitto checks a revision range. Merge commits are ignored
+(~ignore_merge_commits~ in ~cog.toml~).
+
+#+begin_src bash
+cog check v2.10.0..HEAD
+#+end_src
+
+** From a clean clone to a published rock
+
+1. Clone and build.
+
+   #+begin_src bash
+   git clone https://github.com/d-SEAMS/yodaStruct.git
+   cd yodaStruct
+   meson setup bbdir --wrap-mode=nofallback
+   meson compile -C bbdir
+   meson test -C bbdir -v --print-errorlogs
+   #+end_src
+
+2. Preview the notes and the bump. Neither command publishes.
+
+   #+begin_src bash
+   towncrier build --draft
+   cog bump --dry-run
+   cog check v2.10.0..HEAD
+   #+end_src
+
+3. Refresh the version copies and pack a source rock. Packing does
+   not upload.
+
+   #+begin_src bash
+   python3 -m cogapp -r $(grep -v '^#' ci/version/files.txt)
+   luarocks pack dseams-2.10.0-1.rockspec
+   #+end_src
+
+4. Cut the release locally. ~cog bump~ runs the ~pre_bump_hooks~ in
+   ~cog.toml~:
+
+   - write ~{{version}}~ into ~meson.build~
+   - regenerate every file in ~ci/version/files.txt~
+   - ~towncrier build --yes --version {{version}}~
+
+   Then it commits and tags ~vX.Y.Z~.
+
+   #+begin_src bash
+   cog bump --version X.Y.Z
+   #+end_src
+
+   Rename ~dseams-2.10.0-1.rockspec~ to ~dseams-X.Y.Z-1.rockspec~ when
+   the version changed, put that path in ~ci/version/files.txt~, and
+   amend the version commit so the rockspec name matches the
+   ~version~ field.
+
+5. Publish. These two commands are the publishing steps. Do not run
+   them as a dry-run.
+
+   #+begin_src bash
+   git push origin HEAD --follow-tags
+   luarocks upload dseams-X.Y.Z-1.rockspec
+   #+end_src
+
+   ~luarocks upload~ needs an API key from luarocks.org. It is the
+   registry publish for this binding. A tag alone does not upload
+   the rock.
+
+** After the tag
+
+Confirm the tag ~vX.Y.Z~ points at the version commit, that
+~CHANGELOG.md~ has that section, and that the LuaRocks page for
+~dseams~ shows the upload.

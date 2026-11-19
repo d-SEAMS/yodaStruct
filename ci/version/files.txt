@@ -1,0 +1,6 @@
+# Copies of the release version in meson.build.
+# Regenerate: python3 -m cogapp -r $(grep -v '^#' ci/version/files.txt)
+nix/package.nix
+CITATION.cff
+towncrier.toml
+dseams-2.10.0-1.rockspec
