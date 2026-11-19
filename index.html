@@ -109,7 +109,6 @@ data-aria-dark="Switch to auto color mode">
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="tutorials/read-and-classify.html">Tutorial: Read a dump and classify</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">How-to</span></p>
 <ul>
@@ -130,8 +129,6 @@ data-aria-dark="Switch to auto color mode">
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="reference/index.html">Reference</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="reference/lua.html">require(&#8220;dseams&#8221;)</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="reference/lua-functions.html">Compiled registrations</a></li>
 </ul>
         </div>
       </div>
@@ -150,8 +147,7 @@ data-aria-dark="Switch to auto color mode">
 </li>
 <li><a class="reference internal" href="#related-projects">Related projects</a></li>
 <li><a class="reference internal" href="#license">License</a></li>
-<li><a class="reference internal" href="#ref-genindex">:ref:`genindex`</a></li>
-<li><a class="reference internal" href="#ref-search">:ref:`search`</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 </div><div class="edit-this-page">
   <a href="https://github.com/d-SEAMS/yodaStruct/blob/main/docs/source/index.rst">Edit this page</a>
@@ -224,8 +220,8 @@ The engine CLI is <code class="docutils literal notranslate"><span class="pre">s
 <a class="reference external" href="https://github.com/d-SEAMS/seams-core">seams-core</a>.
 Python is <a class="reference external" href="https://github.com/d-SEAMS/PydSEAMSlib">pydseams</a>.</p>
 <div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">dseams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">"dseams"</span><span class="p">)</span>
-</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">"water.lammpstrj"</span><span class="p">)</span>
-</span><span data-line="3"><span class="nb">print</span><span class="p">(</span><span class="nv">dseams</span><span class="p">.</span><span class="nf">chill_plus</span><span class="p">(</span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nv">cutoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.5</span><span class="p">}))</span>
+</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">"input/traj/exampleTraj.lammpstrj"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
+</span><span data-line="3"><span class="nb">print</span><span class="p">(</span><span class="nv">dseams</span><span class="p">.</span><span class="nf">chill_plus</span><span class="p">(</span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nv">cutoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.5</span><span class="p">,</span><span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">}))</span>
 </span></pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">dseams.core</span></code> is the compiled registrations (<code class="docutils literal notranslate"><span class="pre">dseams_core.so</span></code>).
@@ -285,7 +281,6 @@ relate:</p>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/read-and-classify.html">Tutorial: Read a dump and classify</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/read-and-classify.html">Tutorial: Read a dump and classify</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
@@ -316,8 +311,6 @@ relate:</p>
 <li class="toctree-l2"><a class="reference internal" href="reference/lua-functions.html">Compiled registrations</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="reference/lua.html">require(“dseams”)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reference/lua-functions.html">Compiled registrations</a></li>
 </ul>
 </div>
 <p>The compiled-registration appendix is <a class="reference external" href="reference/lua-functions.html">Compiled registrations</a>,
@@ -341,16 +334,13 @@ from Doxygen of <code class="docutils literal notranslate"><span class="pre">lua
 <p>MIT. Cite the <a class="reference external" href="https://doi.org/10.1021/acs.jcim.0c00031">2020 JCIM paper</a>
 and the <code class="docutils literal notranslate"><span class="pre">CITATION.cff</span></code> in this tree. See
 <a class="reference external" href="explanation/citation.html">How to cite</a>.</p>
-<p>#+begin_export rst
-Indices and tables
-<code class="docutils literal notranslate"><span class="pre">================</span></code></p>
 </section>
-<section id="ref-genindex">
-<h2>:ref:`genindex`<a class="headerlink" href="#ref-genindex" title="Link to this heading">#</a></h2>
-</section>
-<section id="ref-search">
-<h2>:ref:`search`<a class="headerlink" href="#ref-search" title="Link to this heading">#</a></h2>
-<p>#+end_export</p>
+<section id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
 </section>
 </section>
 

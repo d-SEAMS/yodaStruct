@@ -109,7 +109,6 @@ data-aria-dark="Switch to auto color mode">
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="../tutorials/read-and-classify.html">Tutorial: Read a dump and classify</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">How-to</span></p>
 <ul class="current">
@@ -130,8 +129,6 @@ data-aria-dark="Switch to auto color mode">
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../reference/index.html">Reference</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="../reference/lua.html">require(&#8220;dseams&#8221;)</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="../reference/lua-functions.html">Compiled registrations</a></li>
 </ul>
         </div>
       </div>
@@ -216,7 +213,8 @@ register on the Lua state when <code class="docutils literal notranslate"><span 
 </span></pre></div>
 </div>
 <div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">dseams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">"dseams"</span><span class="p">)</span>
-</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">"water.lammpstrj"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
+</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">"input/traj/exampleTraj.lammpstrj"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
+</span><span data-line="3"><span class="nb">assert</span><span class="p">(</span><span class="nv">cloud</span><span class="p">.</span><span class="py">nop</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <p>In-tree, <code class="docutils literal notranslate"><span class="pre">$PREFIX/share/luadseams/lua</span></code> is <code class="docutils literal notranslate"><span class="pre">lua/</span></code> and
@@ -282,12 +280,11 @@ the opener is in <code class="docutils literal notranslate"><span class="pre">pa
 <p>Load the vendored compiler, then <code class="docutils literal notranslate"><span class="pre">(require</span> <span class="pre">:dseams)</span></code>. The
 compiler is <code class="docutils literal notranslate"><span class="pre">src/include/external/fennel/fennel.lua</span></code> in the
 tree, or <code class="docutils literal notranslate"><span class="pre">$prefix/share/luadseams/fennel.lua</span></code> after install.</p>
-<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">fennel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">"fennel"</span><span class="p">)</span><span class="w">  </span><span class="c1">-- after fennel.lua is on package.path</span>
-</span><span data-line="2"><span class="c1">-- or: fennel = dofile("src/include/external/fennel/fennel.lua")</span>
-</span><span data-line="3"><span class="nb">print</span><span class="p">(</span><span class="nv">fennel</span><span class="p">.</span><span class="nf">eval</span><span class="p">([[</span>
-</span><span data-line="4"><span class="w">  </span><span class="p">(</span><span class="kd">local</span><span class="w"> </span><span class="nf">dseams</span><span class="w"> </span><span class="p">(</span><span class="nb">require</span><span class="w"> </span><span class="p">:</span><span class="nv">dseams</span><span class="p">))</span>
-</span><span data-line="5"><span class="w">  </span><span class="p">(</span><span class="nb">assert</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="py">read</span><span class="p">)</span>
-</span><span data-line="6"><span class="p">]]))</span>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">fennel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">dofile</span><span class="p">(</span><span class="s2">"src/include/external/fennel/fennel.lua"</span><span class="p">)</span>
+</span><span data-line="2"><span class="nb">print</span><span class="p">(</span><span class="nv">fennel</span><span class="p">.</span><span class="nf">eval</span><span class="p">([[</span>
+</span><span data-line="3"><span class="w">  </span><span class="p">(</span><span class="kd">local</span><span class="w"> </span><span class="nf">dseams</span><span class="w"> </span><span class="p">(</span><span class="nb">require</span><span class="w"> </span><span class="p">:</span><span class="nv">dseams</span><span class="p">))</span>
+</span><span data-line="4"><span class="w">  </span><span class="p">(</span><span class="nb">assert</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="py">read</span><span class="p">)</span>
+</span><span data-line="5"><span class="p">]]))</span>
 </span></pre></div>
 </div>
 <p>Kebab-case wrappers: <a class="reference external" href="fennel.html">Fennel</a>.</p>

@@ -109,7 +109,6 @@ data-aria-dark="Switch to auto color mode">
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="../tutorials/read-and-classify.html">Tutorial: Read a dump and classify</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">How-to</span></p>
 <ul class="current">
@@ -130,8 +129,6 @@ data-aria-dark="Switch to auto color mode">
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../reference/index.html">Reference</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="../reference/lua.html">require(&#8220;dseams&#8221;)</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="../reference/lua-functions.html">Compiled registrations</a></li>
 </ul>
         </div>
       </div>
@@ -202,8 +199,8 @@ data-aria-dark="Switch to auto color mode">
 </div>
 <p>The vendored compiler lives at
 <code class="docutils literal notranslate"><span class="pre">src/include/external/fennel/fennel.lua</span></code>. A meson install puts a
-copy at <code class="docutils literal notranslate"><span class="pre">$prefix/share/luadseams/fennel.lua</span></code>. Invoke it as a Lua
-script. It already puts <code class="docutils literal notranslate"><span class="pre">fennel</span></code> on <code class="docutils literal notranslate"><span class="pre">package.loaded</span></code>.</p>
+copy at <code class="docutils literal notranslate"><span class="pre">$prefix/share/luadseams/fennel.lua</span></code>. Load it with
+<code class="docutils literal notranslate"><span class="pre">dofile</span></code>, then use <code class="docutils literal notranslate"><span class="pre">fennel.dofile</span></code> to run a Fennel source file.</p>
 </section>
 <section id="require-dseams">
 <h2><code class="docutils literal notranslate"><span class="pre">(require</span> <span class="pre">:dseams)</span></code><a class="headerlink" href="#require-dseams" title="Link to this heading">#</a></h2>
@@ -216,7 +213,7 @@ script. It already puts <code class="docutils literal notranslate"><span class="
 </span></pre></div>
 </div>
 <p>Run it from the repository root:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">lua<span class="w"> </span>src/include/external/fennel/fennel.lua<span class="w"> </span>example_lua/library/chill.fnl
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">lua<span class="w"> </span>-e<span class="w"> </span><span class="s1">'local fennel = dofile("src/include/external/fennel/fennel.lua"); fennel.dofile("example_lua/library/chill.fnl")'</span>
 </span></pre></div>
 </div>
 <p>Fennel <code class="docutils literal notranslate"><span class="pre">require</span></code> falls through to Lua <code class="docutils literal notranslate"><span class="pre">package.path</span></code>, so
@@ -237,7 +234,7 @@ shape.</p>
 re-exports <code class="docutils literal notranslate"><span class="pre">.core</span></code>. Load it with <code class="docutils literal notranslate"><span class="pre">fennel.dofile</span></code> under a name that is
 not <code class="docutils literal notranslate"><span class="pre">dseams</span></code>, so the inner <code class="docutils literal notranslate"><span class="pre">(require</span> <span class="pre">:dseams)</span></code> still hits the Lua
 module:</p>
-<div class="highlight-fennel notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="p">(</span><span class="kd">local </span><span class="nv">fennel</span><span class="w"> </span><span class="p">(</span><span class="nb">require </span><span class="ss">:fennel</span><span class="p">))</span>
+<div class="highlight-fennel notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="p">(</span><span class="kd">local </span><span class="nv">fennel</span><span class="w"> </span><span class="p">(</span><span class="nb">dofile </span><span class="s">"src/include/external/fennel/fennel.lua"</span><span class="p">))</span>
 </span><span data-line="2"><span class="p">(</span><span class="kd">local </span><span class="nv">dseams</span><span class="w"> </span><span class="p">(</span><span class="nv">fennel.dofile</span><span class="w"> </span><span class="s">"lua/dseams.fnl"</span><span class="p">))</span>
 </span><span data-line="3"><span class="p">(</span><span class="kd">local </span><span class="nv">cloud</span><span class="w"> </span><span class="p">(</span><span class="nv">dseams.read</span><span class="w"> </span><span class="s">"input/traj/exampleTraj.lammpstrj"</span><span class="w"> </span><span class="p">{</span><span class="ss">:type</span><span class="w"> </span><span class="mi">2</span><span class="p">}))</span>
 </span><span data-line="4"><span class="p">(</span><span class="nb">print </span><span class="p">(</span><span class="nv">dseams.chill-plus</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="p">{</span><span class="ss">:cutoff</span><span class="w"> </span><span class="mf">3.5</span><span class="w"> </span><span class="ss">:type</span><span class="w"> </span><span class="mi">2</span><span class="p">}))</span>

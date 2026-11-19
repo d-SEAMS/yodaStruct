@@ -80,6 +80,7 @@ How do I read a LAMMPS dump?
 
 .. code:: lua
 
+    local dseams = require("dseams")
     local cloud = dseams.read("input/traj/exampleTraj.lammpstrj", {type = 2})
 
 Pass the oxygen type. On the shipped dump that type is 2.

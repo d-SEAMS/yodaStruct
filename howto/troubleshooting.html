@@ -109,7 +109,6 @@ data-aria-dark="Switch to auto color mode">
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="../tutorials/read-and-classify.html">Tutorial: Read a dump and classify</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">How-to</span></p>
 <ul class="current">
@@ -130,8 +129,6 @@ data-aria-dark="Switch to auto color mode">
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../reference/index.html">Reference</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="../reference/lua.html">require(&#8220;dseams&#8221;)</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="../reference/lua-functions.html">Compiled registrations</a></li>
 </ul>
         </div>
       </div>
@@ -312,7 +309,8 @@ not resolve from the current working directory.</p>
 <li><p>Work from the repository root for shipped examples.</p></li>
 <li><p>Pass the oxygen type:</p></li>
 </ol>
-<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">"input/traj/exampleTraj.lammpstrj"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">dseams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">"dseams"</span><span class="p">)</span>
+</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">"input/traj/exampleTraj.lammpstrj"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
 </span></pre></div>
 </div>
 <ol class="arabic simple">
@@ -327,8 +325,10 @@ empty cloud.</p></li>
 cloud of type-2 oxygens plus a type-1 neighbour filter is an
 empty graph.</p>
 <p><strong>**Solution:**</strong></p>
-<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="nv">dseams</span><span class="p">.</span><span class="nf">chill_plus</span><span class="p">(</span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nv">cutoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.5</span><span class="p">,</span><span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
-</span><span data-line="2"><span class="nv">dseams</span><span class="p">.</span><span class="nf">cages</span><span class="p">(</span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">dseams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">"dseams"</span><span class="p">)</span>
+</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">"input/traj/exampleTraj.lammpstrj"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
+</span><span data-line="3"><span class="nv">dseams</span><span class="p">.</span><span class="nf">chill_plus</span><span class="p">(</span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nv">cutoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.5</span><span class="p">,</span><span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
+</span><span data-line="4"><span class="nv">dseams</span><span class="p">.</span><span class="nf">cages</span><span class="p">(</span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
 </span></pre></div>
 </div>
 </section>

@@ -112,7 +112,6 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial: Read a dump and classify</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial: Read a dump and classify</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">How-to</span></p>
 <ul>
@@ -133,8 +132,6 @@ data-aria-dark="Switch to auto color mode">
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../reference/index.html">Reference</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="../reference/lua.html">require(&#8220;dseams&#8221;)</a></li>
-<li class="toctree-l1 _expand"><a class="reference internal" href="../reference/lua-functions.html">Compiled registrations</a></li>
 </ul>
         </div>
       </div>
@@ -401,8 +398,8 @@ snake<sub>case</sub>. The vendored compiler is
 <p>Save the snippet as <code class="docutils literal notranslate"><span class="pre">/tmp/read-and-classify.fnl</span></code>, or run the
 shipped file <code class="docutils literal notranslate"><span class="pre">example_lua/library/chill.fnl</span></code> (that one stops
 after <code class="docutils literal notranslate"><span class="pre">chill_plus</span></code>):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">lua<span class="w"> </span>src/include/external/fennel/fennel.lua<span class="w"> </span>/tmp/read-and-classify.fnl
-</span><span data-line="2">lua<span class="w"> </span>src/include/external/fennel/fennel.lua<span class="w"> </span>example_lua/library/chill.fnl
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">lua<span class="w"> </span>-e<span class="w"> </span><span class="s1">'local fennel = dofile("src/include/external/fennel/fennel.lua"); fennel.dofile("/tmp/read-and-classify.fnl")'</span>
+</span><span data-line="2">lua<span class="w"> </span>-e<span class="w"> </span><span class="s1">'local fennel = dofile("src/include/external/fennel/fennel.lua"); fennel.dofile("example_lua/library/chill.fnl")'</span>
 </span></pre></div>
 </div>
 <p>How Fennel finds <code class="docutils literal notranslate"><span class="pre">dseams</span></code>, and how <code class="docutils literal notranslate"><span class="pre">lua/dseams.fnl</span></code> adds
