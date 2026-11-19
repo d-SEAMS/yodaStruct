@@ -6,10 +6,12 @@ _conf_dir = os.path.dirname(os.path.abspath(__file__))
 subprocess.check_call(["doxygen", "Doxyfile"], cwd=_conf_dir)
 
 project = "dseams"
-# the release string is the meson project version, so the book cannot drift
-# from the build
+# The release string is the version keyword of project() in meson.build.
+# meson rewrite writes `version : '...'`; the file is also stored as
+# `version: '...'`. The match is the line that starts with that keyword,
+# so meson_version is left alone.
 with open(os.path.join(_conf_dir, "..", "..", "meson.build"), encoding="utf-8") as _fh:
-    release = re.search(r"version:\s*'([^']+)'", _fh.read()).group(1)
+    release = re.search(r"(?m)^\s*version\s*:\s*'([^']+)'", _fh.read()).group(1)
 copyright = "2019--present, d-SEAMS core team"
 author = "d-SEAMS core team"
 
