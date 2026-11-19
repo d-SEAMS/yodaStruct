@@ -1,5 +1,6 @@
--- Real reads of one .con, one PDB, and one GRO file.
--- Skip only when the feature query for that reader is false.
+-- Real reads of one .con, one PDB, one GRO, and one DCD file.
+-- con, pdb, and gro skip only when the feature query for that reader is false.
+-- dcd is a real read: a build without chemfiles fails it.
 -- A missing fixture, a short cloud, or a zero box is a failure.
 
 local dseams = require("dseams")
@@ -27,14 +28,25 @@ local cases = {
       return dseams.has_chemfiles()
     end,
   },
+  dcd = {
+    path = "input/readers/water.dcd",
+    nop = 2,
+    query = function()
+      return dseams.has_chemfiles()
+    end,
+    fail = true,
+  },
 }
 
 local case = cases[kind]
 if case == nil then
-  error("readers.lua needs con, pdb, or gro")
+  error("readers.lua needs con, pdb, gro, or dcd")
 end
 
 if case.query() ~= true then
+  if case.fail then
+    error(string.format("%s: chemfiles is not in this build", kind))
+  end
   io.stderr:write(string.format("SKIP %s: feature query is false\n", kind))
   os.exit(77)
 end

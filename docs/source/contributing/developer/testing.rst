@@ -22,24 +22,29 @@ helpers, the legacy chain, topology, and the Fennel wrappers.
 Reader tests
 ~~~~~~~~~~~~
 
-``example_lua/library/readers.lua`` reads three fixtures:
+``example_lua/library/readers.lua`` reads four fixtures:
 
 .. table::
 
-    +---------------------+-----------------------------+----------------------------+
-    | Test                | File                        | Query                      |
-    +=====================+=============================+============================+
-    | ``dseams_read_con`` | ``input/readers/cuh2.con``  | ``dseams.has_readcon()``   |
-    +---------------------+-----------------------------+----------------------------+
-    | ``dseams_read_pdb`` | ``input/readers/water.pdb`` | ``dseams.has_chemfiles()`` |
-    +---------------------+-----------------------------+----------------------------+
-    | ``dseams_read_gro`` | ``input/readers/water.gro`` | ``dseams.has_chemfiles()`` |
-    +---------------------+-----------------------------+----------------------------+
+    +---------------------+-----------------------------+-------------------------------------------------------+
+    | Test                | File                        | When it runs                                          |
+    +=====================+=============================+=======================================================+
+    | ``dseams_read_con`` | ``input/readers/cuh2.con``  | ``dseams.has_readcon()`` is true; otherwise exit 77   |
+    +---------------------+-----------------------------+-------------------------------------------------------+
+    | ``dseams_read_pdb`` | ``input/readers/water.pdb`` | ``dseams.has_chemfiles()`` is true; otherwise exit 77 |
+    +---------------------+-----------------------------+-------------------------------------------------------+
+    | ``dseams_read_gro`` | ``input/readers/water.gro`` | ``dseams.has_chemfiles()`` is true; otherwise exit 77 |
+    +---------------------+-----------------------------+-------------------------------------------------------+
+    | ``dseams_read_dcd`` | ``input/readers/water.dcd`` | registered when the build found chemfiles             |
+    +---------------------+-----------------------------+-------------------------------------------------------+
 
-Each test skips only when its query returns false, and it skips by
-exiting 77, which Meson records as skipped. A missing file, a wrong
-atom count, or an empty box fails the test. The queries are the
-compiled ``has_chemfiles`` and ``has_readcon`` bindings.
+The con, PDB, and GRO tests skip by exiting 77 when their query is
+false, which Meson records as skipped. The DCD test is registered
+only when chemfiles is found, and that run reads the fixture. A
+missing file, a wrong atom count, or an empty box fails the test.
+The queries are the compiled ``has_chemfiles`` and ``has_readcon``
+bindings. ``input/readers/water.dcd`` is a two-atom trajectory written
+by chemfiles.
 
 .. code:: bash
 
@@ -47,8 +52,8 @@ compiled ``has_chemfiles`` and ``has_readcon`` bindings.
 
 Build with both libraries when they should be present. Configuration
 with the options enabled fails when seams-core did not set
-``SEAMS_HAS_CHEMFILES`` or ``SEAMS_HAS_READCON``, so the suite cannot
-skip those three tests:
+``SEAMS_HAS_CHEMFILES`` or ``SEAMS_HAS_READCON``. The con, PDB, GRO, and
+DCD reads then all run:
 
 .. code:: bash
 

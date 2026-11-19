@@ -253,4 +253,15 @@ if lua_exe.found()
         suite: 'readers',
         timeout: 120,
     )
+    if engine_has_chemfiles
+        test(
+            'dseams_read_dcd',
+            lua_exe,
+            args: [readers_lua, 'dcd'],
+            env: lua_test_env,
+            workdir: meson.project_source_root(),
+            suite: 'readers',
+            timeout: 120,
+        )
+    endif
 endif
