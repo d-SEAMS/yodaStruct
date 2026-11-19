@@ -150,23 +150,30 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#tables-vs-userdata">Tables vs userdata</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#read-path-opts">~read~(path[, opts])</a></li>
-<li><a class="reference internal" href="#neighbors-cloud-opts">~neighbors~(cloud[, opts])</a></li>
+<li><a class="reference internal" href="#read-path-opts"><code class="docutils literal notranslate"><span class="pre">read(path[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#neighbors-cloud-opts"><code class="docutils literal notranslate"><span class="pre">neighbors(cloud[,</span> <span class="pre">opts])</span></code></a></li>
 <li><a class="reference internal" href="#pair-neighbours">Pair neighbours</a></li>
-<li><a class="reference internal" href="#cn-cloud-opts">~cn~(cloud[, opts])</a></li>
-<li><a class="reference internal" href="#rdf-cloud-opts">~rdf~(cloud[, opts])</a></li>
+<li><a class="reference internal" href="#cn-cloud-opts"><code class="docutils literal notranslate"><span class="pre">cn(cloud[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#rdf-cloud-opts"><code class="docutils literal notranslate"><span class="pre">rdf(cloud[,</span> <span class="pre">opts])</span></code></a></li>
 <li><a class="reference internal" href="#running-coordination-number">Running coordination number</a></li>
-<li><a class="reference internal" href="#knn-cloud-opts">~knn~(cloud[, opts])</a></li>
+<li><a class="reference internal" href="#knn-cloud-opts"><code class="docutils literal notranslate"><span class="pre">knn(cloud[,</span> <span class="pre">opts])</span></code></a></li>
 <li><a class="reference internal" href="#chill">CHILL+</a></li>
-<li><a class="reference internal" href="#chill-cloud-opts">~chill~(cloud[, opts])</a></li>
-<li><a class="reference internal" href="#cages-cloud-opts">~cages~(cloud[, opts])</a></li>
-<li><a class="reference internal" href="#seededcageaffiliation-strictrings-strictnlist-permrings-permnlist-ringadjacentcompletion">~seededCageAffiliation~(strictRings, strictNList, permRings, permNList[, ringAdjacentCompletion])</a></li>
+<li><a class="reference internal" href="#chill-cloud-opts"><code class="docutils literal notranslate"><span class="pre">chill(cloud[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#cages-cloud-opts"><code class="docutils literal notranslate"><span class="pre">cages(cloud[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#cages-by-signature-cloud-spec-opts"><code class="docutils literal notranslate"><span class="pre">cages_by_signature(cloud,</span> <span class="pre">spec[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#guest-occupancy-cloud-cages-guests-opts"><code class="docutils literal notranslate"><span class="pre">guest_occupancy(cloud,</span> <span class="pre">cages,</span> <span class="pre">guests[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#fingerprint-rows-opts"><code class="docutils literal notranslate"><span class="pre">fingerprint(rows[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#topology-library-rows-label-opts"><code class="docutils literal notranslate"><span class="pre">topology_library(rows,</span> <span class="pre">label[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#classify-topology-rows-library-opts"><code class="docutils literal notranslate"><span class="pre">classify_topology(rows,</span> <span class="pre">library[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#ion-environment-cloud-ice-ions-opts"><code class="docutils literal notranslate"><span class="pre">ion_environment(cloud,</span> <span class="pre">ice,</span> <span class="pre">ions[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#shell-ring-census-rings-shell-opts"><code class="docutils literal notranslate"><span class="pre">shell_ring_census(rings,</span> <span class="pre">shell[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#seededcageaffiliation-strictrings-strictnlist-permrings-permnlist-ringadjacentcompletion"><code class="docutils literal notranslate"><span class="pre">seededCageAffiliation(strictRings,</span> <span class="pre">strictNList,</span> <span class="pre">permRings,</span> <span class="pre">permNList[,</span> <span class="pre">ringAdjacentCompletion])</span></code></a></li>
 <li><a class="reference internal" href="#worked-example-the-legacy-ring-chain">Worked example: the legacy ring chain</a></li>
-<li><a class="reference internal" href="#hbonds-cloud-opts">~hbonds~(cloud[, opts])</a></li>
-<li><a class="reference internal" href="#density-cloud-opts">~density~(cloud[, opts])</a></li>
+<li><a class="reference internal" href="#hbonds-cloud-opts"><code class="docutils literal notranslate"><span class="pre">hbonds(cloud[,</span> <span class="pre">opts])</span></code></a></li>
+<li><a class="reference internal" href="#density-cloud-opts"><code class="docutils literal notranslate"><span class="pre">density(cloud[,</span> <span class="pre">opts])</span></code></a></li>
 <li><a class="reference internal" href="#site-mapping-table">Site mapping table</a></li>
-<li><a class="reference internal" href="#pairs-cloud-opts">~pairs~(cloud, opts)</a></li>
-<li><a class="reference internal" href="#domain-cloud-opts">~domain~(cloud, opts)</a></li>
+<li><a class="reference internal" href="#pairs-cloud-opts"><code class="docutils literal notranslate"><span class="pre">pairs(cloud,</span> <span class="pre">opts)</span></code></a></li>
+<li><a class="reference internal" href="#domain-cloud-opts"><code class="docutils literal notranslate"><span class="pre">domain(cloud,</span> <span class="pre">opts)</span></code></a></li>
 <li><a class="reference internal" href="#core"><code class="docutils literal notranslate"><span class="pre">core</span></code></a></li>
 </ul>
 </div><div class="edit-this-page">
@@ -242,6 +249,20 @@ Compiled names on <code class="docutils literal notranslate"><span class="pre">d
 <dt><code class="docutils literal notranslate"><span class="pre">chill</span></code></dt><dd><p>CHILL labels, no dump on disk.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">cages</span></code></dt><dd><p>seeded HC/DDC per-atom flags.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cages_by_signature</span></code></dt><dd><p>closed cages selected by their face census.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">guest_occupancy</span></code></dt><dd><p>assign guest atoms to periodic cage centres.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fingerprint</span></code></dt><dd><p>label-independent bonded-topology keys.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">topology_library</span></code></dt><dd><p>serialize topology keys under a label.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">classify_topology</span></code></dt><dd><p>name atoms from one or more key libraries.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ion_environment</span></code></dt><dd><p>classify ion hydration shells by ice flags.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">shell_ring_census</span></code></dt><dd><p>count rings that intersect a shell.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">hbonds</span></code></dt><dd><p>hydrogen-bond adjacency table.</p>
 </dd>
@@ -325,7 +346,7 @@ signature requires.</p>
 </section>
 </section>
 <section id="read-path-opts">
-<h2>~read~(path[, opts])<a class="headerlink" href="#read-path-opts" title="Link to this heading">#</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">read(path[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#read-path-opts" title="Link to this heading">#</a></h2>
 <p>Suffix-dispatching loader. Returns a <code class="docutils literal notranslate"><span class="pre">PointCloud</span></code>.</p>
 <div class="table-wrapper docutils container">
 <table class="docutils align-default">
@@ -367,7 +388,7 @@ and sets <code class="docutils literal notranslate"><span class="pre">inSlice</s
 The type argument is any LAMMPS type (the <code class="docutils literal notranslate"><span class="pre">O</span></code> is historical).</p>
 </section>
 <section id="neighbors-cloud-opts">
-<h2>~neighbors~(cloud[, opts])<a class="headerlink" href="#neighbors-cloud-opts" title="Link to this heading">#</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">neighbors(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#neighbors-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Cutoff neighbour list by atom ID. Calls
 <code class="docutils literal notranslate"><span class="pre">core.neighListO(opts.cutoff</span> <span class="pre">or</span> <span class="pre">3.5,</span> <span class="pre">cloud,</span> <span class="pre">opts.type</span> <span class="pre">or</span> <span class="pre">1)</span></code>.
 Hands back a Lua table of rows (self ID first).</p>
@@ -378,7 +399,7 @@ Hands back a Lua table of rows (self ID first).</p>
 <code class="docutils literal notranslate"><span class="pre">core.neighListPair(opts.cutoff</span> <span class="pre">or</span> <span class="pre">3.5,</span> <span class="pre">cloud,</span> <span class="pre">opts.type_i</span> <span class="pre">or</span> <span class="pre">1,</span> <span class="pre">opts.type_j</span> <span class="pre">or</span> <span class="pre">2)</span></code>. Like-type pairs reuse <code class="docutils literal notranslate"><span class="pre">neighListO</span></code>.</p>
 </section>
 <section id="cn-cloud-opts">
-<h2>~cn~(cloud[, opts])<a class="headerlink" href="#cn-cloud-opts" title="Link to this heading">#</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">cn(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#cn-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Site-site coordination number. Calls <code class="docutils literal notranslate"><span class="pre">core.calcCN</span></code> with
 <code class="docutils literal notranslate"><span class="pre">opts.type_i</span></code> (default 1), <code class="docutils literal notranslate"><span class="pre">opts.type_j</span></code> (default 2),
 <code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code> (default 4.5), and <code class="docutils literal notranslate"><span class="pre">opts.bins</span></code> (default
@@ -386,7 +407,7 @@ Hands back a Lua table of rows (self ID first).</p>
 partial RDF.</p>
 </section>
 <section id="rdf-cloud-opts">
-<h2>~rdf~(cloud[, opts])<a class="headerlink" href="#rdf-cloud-opts" title="Link to this heading">#</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">rdf(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#rdf-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Partial three-dimensional radial distribution function. Calls
 <code class="docutils literal notranslate"><span class="pre">core.calcRDF3D</span></code> with <code class="docutils literal notranslate"><span class="pre">opts.type_i</span></code> (default 1), <code class="docutils literal notranslate"><span class="pre">opts.type_j</span></code>
 (default 2), <code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code> (default 12.0), and <code class="docutils literal notranslate"><span class="pre">opts.bins</span></code> (default
@@ -400,7 +421,7 @@ Shared options and defaults match <code class="docutils literal notranslate"><sp
 <code class="docutils literal notranslate"><span class="pre">rhoJ</span> <span class="pre">=</span> <span class="pre">nJ</span> <span class="pre">/</span> <span class="pre">volume</span></code>.</p>
 </section>
 <section id="knn-cloud-opts">
-<h2>~knn~(cloud[, opts])<a class="headerlink" href="#knn-cloud-opts" title="Link to this heading">#</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">knn(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#knn-cloud-opts" title="Link to this heading">#</a></h2>
 <p>k-nearest graph by atom ID. Calls <code class="docutils literal notranslate"><span class="pre">core.kNearestNeighbourList</span></code>.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">opts.k</span></code> defaults to 4</p></li>
@@ -417,12 +438,12 @@ Shared options and defaults match <code class="docutils literal notranslate"><sp
 state names). Writes no file. Mutates <code class="docutils literal notranslate"><span class="pre">cloud</span></code>.</p>
 </section>
 <section id="chill-cloud-opts">
-<h2>~chill~(cloud[, opts])<a class="headerlink" href="#chill-cloud-opts" title="Link to this heading">#</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">chill(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#chill-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Same pipeline with <code class="docutils literal notranslate"><span class="pre">core.getCorrel</span></code> and <code class="docutils literal notranslate"><span class="pre">core.getIceTypeNoPrint</span></code>.
 Mutates <code class="docutils literal notranslate"><span class="pre">cloud</span></code>. Writes no file.</p>
 </section>
 <section id="cages-cloud-opts">
-<h2>~cages~(cloud[, opts])<a class="headerlink" href="#cages-cloud-opts" title="Link to this heading">#</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">cages(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#cages-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Seeded HC/DDC membership. Builds mutual and union k-nearest graphs
 (<code class="docutils literal notranslate"><span class="pre">opts.k</span></code> 4, <code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code> 5.0, <code class="docutils literal notranslate"><span class="pre">opts.type</span></code> 1), converts each to an
 index list, keeps six-membered rings, and calls
@@ -439,8 +460,93 @@ other vertices already carry an HC or DDC label.</p>
 </span></pre></div>
 </div>
 </section>
+<section id="cages-by-signature-cloud-spec-opts">
+<h2><code class="docutils literal notranslate"><span class="pre">cages_by_signature(cloud,</span> <span class="pre">spec[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#cages-by-signature-cloud-spec-opts" title="Link to this heading">#</a></h2>
+<p>Closed polyhedra whose faces match a ring-size census. <code class="docutils literal notranslate"><span class="pre">spec</span></code> is a
+comma-separated census such as <code class="docutils literal notranslate"><span class="pre">&quot;4:6,6:8&quot;</span></code>, or one of the named
+signatures <code class="docutils literal notranslate"><span class="pre">&quot;sodalite&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;alpha&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;512&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;51262&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;hc&quot;</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">&quot;ddc&quot;</span></code>. The helper builds a cutoff neighbour graph with
+<code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code> (default 3.5) and <code class="docutils literal notranslate"><span class="pre">opts.type</span></code> (default 1), converts it
+to cloud indices, enumerates primitive rings through <code class="docutils literal notranslate"><span class="pre">opts.max_ring</span></code>
+(default 8), and calls <code class="docutils literal notranslate"><span class="pre">core.findBySignature</span></code>.</p>
+<p>The result is an array of
+<code class="docutils literal notranslate"><span class="pre">{signature=,</span> <span class="pre">faces=,</span> <span class="pre">vertices=,</span> <span class="pre">certificate=}</span></code> tables. The <code class="docutils literal notranslate"><span class="pre">&quot;hc&quot;</span></code>
+and <code class="docutils literal notranslate"><span class="pre">&quot;ddc&quot;</span></code> names select the corresponding TUM finders.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">sod</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">cages_by_signature</span><span class="p">(</span><span class="nv">cloud</span><span class="p">,</span><span class="w"> </span><span class="s2">"sodalite"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">})</span>
+</span><span data-line="2"><span class="nb">print</span><span class="p">(</span><span class="o">#</span><span class="nv">sod</span><span class="p">,</span><span class="w"> </span><span class="nv">sod</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="o">#</span><span class="nv">sod</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nv">vertices</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+<section id="guest-occupancy-cloud-cages-guests-opts">
+<h2><code class="docutils literal notranslate"><span class="pre">guest_occupancy(cloud,</span> <span class="pre">cages,</span> <span class="pre">guests[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#guest-occupancy-cloud-cages-guests-opts" title="Link to this heading">#</a></h2>
+<p>Assign guest atoms such as methane, THF, or ions to cages. <code class="docutils literal notranslate"><span class="pre">cages</span></code>
+is an array of zero-based cloud-index lists and <code class="docutils literal notranslate"><span class="pre">guests</span></code> is an array
+of zero-based cloud indices. Each guest is assigned to the nearest
+periodic cage centroid within <code class="docutils literal notranslate"><span class="pre">opts.radius</span></code> (default 4.0).</p>
+<p>The result is
+<code class="docutils literal notranslate"><span class="pre">{guestsPerCage=,</span> <span class="pre">cageOfGuest=,</span> <span class="pre">centreDistance=,</span> <span class="pre">occupied=,</span> <span class="pre">multiply=,</span> <span class="pre">free=}</span></code>.
+<code class="docutils literal notranslate"><span class="pre">cageOfGuest</span></code> contains zero-based cage indices and uses <code class="docutils literal notranslate"><span class="pre">-1</span></code> for a
+free guest. <code class="docutils literal notranslate"><span class="pre">core.periodicCentroid(cloud,</span> <span class="pre">atoms)</span></code> computes a centroid
+after unwrapping every cage atom to its minimum image about the first
+atom.</p>
+</section>
+<section id="fingerprint-rows-opts">
+<h2><code class="docutils literal notranslate"><span class="pre">fingerprint(rows[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#fingerprint-rows-opts" title="Link to this heading">#</a></h2>
+<p>Compute label-independent topology keys for a bonded graph represented
+as index rows, such as the result of <code class="docutils literal notranslate"><span class="pre">core.neighbourListByIndex</span></code>.
+<code class="docutils literal notranslate"><span class="pre">opts.hops</span></code> defaults to 2 and <code class="docutils literal notranslate"><span class="pre">opts.max_ring</span></code> defaults to 7.
+<code class="docutils literal notranslate"><span class="pre">opts.colours</span></code> may supply one integer class per row so vertices of
+different species cannot match.</p>
+<p>The result is
+<code class="docutils literal notranslate"><span class="pre">{key=,</span> <span class="pre">method=,</span> <span class="pre">atomKeys=,</span> <span class="pre">classes=,</span> <span class="pre">ringCensus=,</span> <span class="pre">hops=}</span></code>. <code class="docutils literal notranslate"><span class="pre">method</span></code>
+is <code class="docutils literal notranslate"><span class="pre">&quot;nauty&quot;</span></code> when the engine links nauty and <code class="docutils literal notranslate"><span class="pre">&quot;wl&quot;</span></code> otherwise.</p>
+</section>
+<section id="topology-library-rows-label-opts">
+<h2><code class="docutils literal notranslate"><span class="pre">topology_library(rows,</span> <span class="pre">label[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#topology-library-rows-label-opts" title="Link to this heading">#</a></h2>
+<p>Serialize the frame’s distinct topology keys under <code class="docutils literal notranslate"><span class="pre">label</span></code>.
+<code class="docutils literal notranslate"><span class="pre">opts.library</span></code> may contain an existing library to extend. <code class="docutils literal notranslate"><span class="pre">opts.hops</span></code>,
+<code class="docutils literal notranslate"><span class="pre">opts.max_ring</span></code>, and <code class="docutils literal notranslate"><span class="pre">opts.colours</span></code> have the same meanings and defaults
+as for <code class="docutils literal notranslate"><span class="pre">fingerprint</span></code>.</p>
+</section>
+<section id="classify-topology-rows-library-opts">
+<h2><code class="docutils literal notranslate"><span class="pre">classify_topology(rows,</span> <span class="pre">library[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#classify-topology-rows-library-opts" title="Link to this heading">#</a></h2>
+<p>Name every atom from a key-library string. <code class="docutils literal notranslate"><span class="pre">library</span></code> may instead be a
+Lua sequence of library strings made at different hop counts; in that
+case the deepest library containing an atom’s key supplies its name and
+<code class="docutils literal notranslate"><span class="pre">opts.hops</span></code> is ignored.</p>
+<p>The result is <code class="docutils literal notranslate"><span class="pre">{labels=,</span> <span class="pre">counts=,</span> <span class="pre">depth=,</span> <span class="pre">matched=}</span></code>. An unmatched atom
+has an empty string in <code class="docutils literal notranslate"><span class="pre">labels</span></code>, depth 0, and contributes to
+<code class="docutils literal notranslate"><span class="pre">counts.unmatched</span></code>.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kd">local</span><span class="w"> </span><span class="nv">lib2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">topology_library</span><span class="p">(</span><span class="nv">rows</span><span class="p">,</span><span class="w"> </span><span class="s2">"Ic"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nv">hops</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">})</span>
+</span><span data-line="2"><span class="kd">local</span><span class="w"> </span><span class="nv">lib3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">topology_library</span><span class="p">(</span><span class="nv">rows</span><span class="p">,</span><span class="w"> </span><span class="s2">"Ic"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nv">hops</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">})</span>
+</span><span data-line="3"><span class="kd">local</span><span class="w"> </span><span class="nv">named</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dseams</span><span class="p">.</span><span class="nf">classify_topology</span><span class="p">(</span><span class="nv">rows</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nv">lib2</span><span class="p">,</span><span class="w"> </span><span class="nv">lib3</span><span class="p">})</span>
+</span><span data-line="4"><span class="nb">print</span><span class="p">(</span><span class="nv">named</span><span class="p">.</span><span class="py">matched</span><span class="p">,</span><span class="w"> </span><span class="nv">named</span><span class="p">.</span><span class="py">depth</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</span></pre></div>
+</div>
+</section>
+<section id="ion-environment-cloud-ice-ions-opts">
+<h2><code class="docutils literal notranslate"><span class="pre">ion_environment(cloud,</span> <span class="pre">ice,</span> <span class="pre">ions[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#ion-environment-cloud-ice-ions-opts" title="Link to this heading">#</a></h2>
+<p>Classify each ion from its first water shell against <code class="docutils literal notranslate"><span class="pre">ice</span></code>, a
+one-based per-atom boolean list. <code class="docutils literal notranslate"><span class="pre">ions</span></code> contains zero-based cloud
+indices. <code class="docutils literal notranslate"><span class="pre">opts.type</span></code> is the water atom type (default 1), and
+<code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code> is the shell radius (default 3.5). A shell is <code class="docutils literal notranslate"><span class="pre">&quot;ice&quot;</span></code>
+when every member is labelled, <code class="docutils literal notranslate"><span class="pre">&quot;liquid&quot;</span></code> when none is labelled, and
+<code class="docutils literal notranslate"><span class="pre">&quot;front&quot;</span></code> otherwise.</p>
+<p>The result is
+<code class="docutils literal notranslate"><span class="pre">{ion=,</span> <span class="pre">shell=,</span> <span class="pre">iceFraction=,</span> <span class="pre">state=,</span> <span class="pre">members=,</span> <span class="pre">nIce=,</span> <span class="pre">nFront=,</span> <span class="pre">nLiquid=}</span></code>.
+<code class="docutils literal notranslate"><span class="pre">members[i]</span></code> lists ion <code class="docutils literal notranslate"><span class="pre">i</span></code>’s shell.</p>
+</section>
+<section id="shell-ring-census-rings-shell-opts">
+<h2><code class="docutils literal notranslate"><span class="pre">shell_ring_census(rings,</span> <span class="pre">shell[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#shell-ring-census-rings-shell-opts" title="Link to this heading">#</a></h2>
+<p>Count rings that have at least one vertex in <code class="docutils literal notranslate"><span class="pre">shell</span></code>. <code class="docutils literal notranslate"><span class="pre">rings</span></code> and
+<code class="docutils literal notranslate"><span class="pre">shell</span></code> contain zero-based cloud indices, as returned by
+<code class="docutils literal notranslate"><span class="pre">core.ringNetwork</span></code> and <code class="docutils literal notranslate"><span class="pre">ion_environment</span></code>. Rings larger than
+<code class="docutils literal notranslate"><span class="pre">opts.max_ring</span></code> (default 7) are ignored. <code class="docutils literal notranslate"><span class="pre">census[s</span> <span class="pre">+</span> <span class="pre">1]</span></code> is the count
+of rings of size <code class="docutils literal notranslate"><span class="pre">s</span></code>. Passing <code class="docutils literal notranslate"><span class="pre">env.members[i]</span></code> as <code class="docutils literal notranslate"><span class="pre">shell</span></code> gives the
+hydration-shell ring census for ion <code class="docutils literal notranslate"><span class="pre">i</span></code>.</p>
+</section>
 <section id="seededcageaffiliation-strictrings-strictnlist-permrings-permnlist-ringadjacentcompletion">
-<h2>~seededCageAffiliation~(strictRings, strictNList, permRings, permNList[, ringAdjacentCompletion])<a class="headerlink" href="#seededcageaffiliation-strictrings-strictnlist-permrings-permnlist-ringadjacentcompletion" title="Link to this heading">#</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">seededCageAffiliation(strictRings,</span> <span class="pre">strictNList,</span> <span class="pre">permRings,</span> <span class="pre">permNList[,</span> <span class="pre">ringAdjacentCompletion])</span></code><a class="headerlink" href="#seededcageaffiliation-strictrings-strictnlist-permrings-permnlist-ringadjacentcompletion" title="Link to this heading">#</a></h2>
 <p>Compiled name on <code class="docutils literal notranslate"><span class="pre">dseams.core</span></code>. Mutual-graph seeds, permissive-graph
 fill. Hands back <code class="docutils literal notranslate"><span class="pre">{hc</span> <span class="pre">=</span> <span class="pre">hc,</span> <span class="pre">ddc</span> <span class="pre">=</span> <span class="pre">ddc}</span></code>, each a 1-based array of
 per-atom flags of length <code class="docutils literal notranslate"><span class="pre">cloud.nop</span></code>.</p>
@@ -514,7 +620,7 @@ build directory:</p>
 </div>
 </section>
 <section id="hbonds-cloud-opts">
-<h2>~hbonds~(cloud[, opts])<a class="headerlink" href="#hbonds-cloud-opts" title="Link to this heading">#</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">hbonds(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#hbonds-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Hydrogen-bond adjacency for the selected sites. The neighbour graph
 uses <code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code> (default 3.5) and <code class="docutils literal notranslate"><span class="pre">opts.type</span></code> (default 1).</p>
 <ul class="simple">
@@ -529,7 +635,7 @@ when dropped.</p></li>
 <code class="docutils literal notranslate"><span class="pre">h_cloud</span></code> is an error.</p>
 </section>
 <section id="density-cloud-opts">
-<h2>~density~(cloud[, opts])<a class="headerlink" href="#density-cloud-opts" title="Link to this heading">#</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">density(cloud[,</span> <span class="pre">opts])</span></code><a class="headerlink" href="#density-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Cartesian number density along <code class="docutils literal notranslate"><span class="pre">opts.axis</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;x&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;y&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;z&quot;</span></code>,
 or the matching zero-based index. The default direction is <code class="docutils literal notranslate"><span class="pre">&quot;z&quot;</span></code>.
 <code class="docutils literal notranslate"><span class="pre">opts.bins</span></code> defaults to that span divided into about 0.1
@@ -550,14 +656,14 @@ live on <code class="docutils literal notranslate"><span class="pre">dseams.core
 and <code class="docutils literal notranslate"><span class="pre">apolar</span></code>.</p>
 </section>
 <section id="pairs-cloud-opts">
-<h2>~pairs~(cloud, opts)<a class="headerlink" href="#pairs-cloud-opts" title="Link to this heading">#</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">pairs(cloud,</span> <span class="pre">opts)</span></code><a class="headerlink" href="#pairs-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Requires <code class="docutils literal notranslate"><span class="pre">opts.table</span></code>. Maps the cloud to ionic sites and returns
 mutual nearest unlike pairs as
 <code class="docutils literal notranslate"><span class="pre">{pairs</span> <span class="pre">=</span> <span class="pre">pairs,</span> <span class="pre">count</span> <span class="pre">=</span> <span class="pre">count,</span> <span class="pre">n_cation</span> <span class="pre">=</span> <span class="pre">n_cation,</span> <span class="pre">n_anion</span> <span class="pre">=</span> <span class="pre">n_anion}</span></code>.
 Each pair contains the original atom IDs.</p>
 </section>
 <section id="domain-cloud-opts">
-<h2>~domain~(cloud, opts)<a class="headerlink" href="#domain-cloud-opts" title="Link to this heading">#</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">domain(cloud,</span> <span class="pre">opts)</span></code><a class="headerlink" href="#domain-cloud-opts" title="Link to this heading">#</a></h2>
 <p>Requires <code class="docutils literal notranslate"><span class="pre">opts.table</span></code> and <code class="docutils literal notranslate"><span class="pre">opts.kind</span></code>. The graph joins mapped sites
 within <code class="docutils literal notranslate"><span class="pre">opts.cutoff</span></code> (default 3.5). Hands back
 <code class="docutils literal notranslate"><span class="pre">{site_kind</span> <span class="pre">=</span> <span class="pre">site_kind,</span> <span class="pre">n</span> <span class="pre">=</span> <span class="pre">n,</span> <span class="pre">largest</span> <span class="pre">=</span> <span class="pre">largest,</span> <span class="pre">percolation</span> <span class="pre">=</span> <span class="pre">percolation}</span></code>.
