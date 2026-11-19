@@ -30,10 +30,10 @@ meson compile -C bbdir
 | Changelog preview | ~towncrier build --draft~ |
 | Version copies | ~python3 -m cogapp -I ci/version -r @ci/version/files.txt~ |
 | Commit check | ~cog check v2.10.0..HEAD~ |
-| Bump dry-run | ~cog bump --dry-run~ |
+| Bump dry-run | ~cog bump --dry-run --auto~ |
 | Org to RST | ~emacs --batch --load export.el~ from ~docs/~ |
 | HTML docs | ~sphinx-build -b html docs/source docs/build~ |
-| Source rock | ~luarocks pack dseams-2.10.0-1.rockspec~ |
+| Upload rockspec | ~luarocks new_version rockspec X.Y.Z --tag vX.Y.Z~ |
 
 ** Documentation
 

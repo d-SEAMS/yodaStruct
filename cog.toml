@@ -1,5 +1,9 @@
 # Cocogitto release driver. Towncrier owns CHANGELOG.md.
-# Prepare: cog bump --auto   (or --patch / --minor / --major / --version X.Y.Z)
+# cog bump --auto runs three hooks, then commits and tags:
+#   meson rewrite writes the project() version in meson.build
+#   cogapp copies that version into ci/version/files.txt
+#   towncrier writes CHANGELOG.md
+# luarocks new_version names the upload rockspec.
 # The tag push is the maintainer's. Publishing to LuaRocks is luarocks upload.
 
 from_latest_tag = true
@@ -10,13 +14,14 @@ tag_prefix = "v"
 branch_whitelist = ["main", "master"]
 
 pre_bump_hooks = [
+    "meson rewrite kwargs set project / version {{version}}",
     "python3 -m cogapp -I ci/version -r @ci/version/files.txt",
     "towncrier build --yes --version {{version}}",
 ]
 
 post_bump_hooks = [
     "git --no-pager show --stat HEAD",
-    "echo \"Prepared v{{version}}. Push the version commit and tag v{{version}}, then luarocks upload the renamed rockspec.\"",
+    "echo \"Tagged v{{version}}. Push this commit and the tag, then luarocks new_version rockspec {{version}} --tag v{{version}} and luarocks upload dseams-{{version}}-1.rockspec.\"",
 ]
 
 [commit_types]

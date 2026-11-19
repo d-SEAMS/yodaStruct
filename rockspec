@@ -1,20 +1,16 @@
 rockspec_format = "3.0"
 package = "dseams"
 -- [[[cog
--- import re
--- from pathlib import Path
--- version = re.search(r"version:\s*'([^']+)'", Path("meson.build").read_text(encoding="utf-8")).group(1)
--- cog.outl(f'version = "{version}-1"')
+-- import dseams_version as v
+-- cog.outl('version = "%s-1"' % v.VERSION)
 -- ]]]
 version = "2.10.0-1"
 -- [[[end]]]
 source = {
    url = "git+https://github.com/d-SEAMS/yodaStruct.git",
    -- [[[cog
-   -- import re
-   -- from pathlib import Path
-   -- version = re.search(r"version:\s*'([^']+)'", Path("meson.build").read_text(encoding="utf-8")).group(1)
-   -- cog.outl(f'   tag = "v{version}",')
+   -- import dseams_version as v
+   -- cog.outl('   tag = "v%s",' % v.VERSION)
    -- ]]]
    tag = "v2.10.0",
    -- [[[end]]]

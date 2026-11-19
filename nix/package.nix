@@ -16,10 +16,8 @@
 stdenv.mkDerivation {
   pname = "dseams";
   # [[[cog
-  # import re
-  # from pathlib import Path
-  # version = re.search(r"version:\s*'([^']+)'", Path("meson.build").read_text(encoding="utf-8")).group(1)
-  # cog.outl(f'  version = "{version}";')
+  # import dseams_version as v
+  # cog.outl('  version = "%s";' % v.VERSION)
   # ]]]
   version = "2.10.0";
   # [[[end]]]

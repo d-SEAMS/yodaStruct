@@ -54,7 +54,8 @@ Sphinx. Hand-edited RST drifts from the Org. Release notes stay in
 
 ** What does LuaRocks publish?
 
-The rockspec ~dseams-2.10.0-1.rockspec~ describes the package and
-builds it with Meson. ~luarocks upload~ sends that rockspec to the
-LuaRocks registry. The upload is the publish step. See
+The in-repo rockspec is ~rockspec~. ~luarocks new_version~ writes
+~dseams-X.Y.Z-1.rockspec~ from it, and that file builds the package
+with Meson. ~luarocks upload~ sends the named rockspec to the LuaRocks
+registry. The upload is the publish step. See
 [[file:release.org][Release process]].
