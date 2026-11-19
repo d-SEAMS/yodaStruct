@@ -28,7 +28,7 @@ meson compile -C bbdir
 | Reader tests | ~meson test -C bbdir -v --suite readers~ |
 | Readers required | ~meson setup bbdir -Dwith_chemfiles=enabled -Dwith_readcon=enabled~ |
 | Changelog preview | ~towncrier build --draft~ |
-| Version copies | ~python3 -m cogapp -r $(grep -v '^#' ci/version/files.txt)~ |
+| Version copies | ~python3 -m cogapp -I ci/version -r @ci/version/files.txt~ |
 | Commit check | ~cog check v2.10.0..HEAD~ |
 | Bump dry-run | ~cog bump --dry-run~ |
 | Org to RST | ~emacs --batch --load export.el~ from ~docs/~ |
