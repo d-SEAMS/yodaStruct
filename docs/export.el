@@ -3,12 +3,23 @@
 ;; Org under orgmode/ is the source. RST under ./source/ is generated
 ;; and committed so CI stays `sphinx-build docs/source`.
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-(unless (package-installed-p 'ox-rst)
-  (package-refresh-contents)
-  (package-install 'ox-rst))
+(defconst yoda-ox-rst-version '(20250428 534))
+(defconst yoda-ox-rst-revision
+  "b73eff187eebac24b457688bfd27f09eff434860")
+
+(let ((installed (cadr (assq 'ox-rst package-alist))))
+  (unless (and installed
+               (equal (package-desc-version installed)
+                      yoda-ox-rst-version))
+    (when installed
+      (package-delete installed t))
+    (require 'package-vc)
+    (package-vc-install
+     `(ox-rst
+       :url "https://github.com/msnoigrs/ox-rst"
+       :rev ,yoda-ox-rst-revision))))
 
 (require 'ox-rst)
 (require 'ox-publish)

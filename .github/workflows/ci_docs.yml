@@ -14,12 +14,16 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
-      - name: Install Doxygen
-        run: sudo apt-get update && sudo apt-get install -y doxygen
+      - name: Install Doxygen and Emacs
+        run: sudo apt-get update && sudo apt-get install -y doxygen emacs-nox
+      - name: Check generated RST matches Org
+        run: |
+          (cd docs && emacs --batch --load export.el)
+          git diff --exit-code -- docs/source
       - name: Install Sphinx (Shibuya, sphinx-design, mermaid, Breathe)
         run: pip install -r docs/requirements.txt
       - name: Build HTML from Doxygen XML and RST
-        run: sphinx-build -b html docs/source docs/build
+        run: sphinx-build -W -b html docs/source docs/build
       - name: Add SEO metadata
         run: python3 tools/seo.py docs/build
       - name: Validate SEO metadata on every page
