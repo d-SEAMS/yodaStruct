@@ -129,16 +129,21 @@ How require finds the module
 ``require("yoda")`` is ``lua/yoda.lua``, which returns
 ``require("dseams")``.
 
-Optional readers follow the same pkg-config probe as seams-core.
+Optional readers are whatever seams-core compiled. That subproject
+probes pkg-config and, unless wrap fallbacks are disabled, can build
+readcon-core from its wrap when no system copy is installed.
 ``chemfiles`` turns on PDB, GRO, and DCD. ``readcon-core`` turns on
 ``.con``. Either library may be absent; the build still produces
-LAMMPS and XYZ reads.
+LAMMPS and XYZ reads. This binding does not probe those libraries
+itself. ``dseams.has_readcon()`` and ``dseams.has_chemfiles()`` follow
+the ``SEAMS_HAS_READCON`` and ``SEAMS_HAS_CHEMFILES`` macros on the
+linked engine.
 
-- ``dseams.has_readcon()`` is true only with readcon-core
-  (``SEAMS_HAS_READCON``), which registers ``core.readCon``
+- ``dseams.has_readcon()`` is true only when that engine has
+  readcon-core, which registers ``core.readCon``
 
-- ``dseams.has_chemfiles()`` is true only with chemfiles
-  (``SEAMS_HAS_CHEMFILES``), which registers ``core.readChemfiles``
+- ``dseams.has_chemfiles()`` is true only when that engine has
+  chemfiles, which registers ``core.readChemfiles``
 
 ``dseams.read`` errors with a clear message when you pass ``.con`` /
 ``.pdb`` / ``.gro`` / ``.dcd`` and the matching query is false. LAMMPS

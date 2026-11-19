@@ -46,7 +46,8 @@ compiled ``has_chemfiles`` and ``has_readcon`` bindings.
     meson test -C bbdir -v --suite readers --print-errorlogs
 
 Build with both libraries when they should be present. Configuration
-then fails if either pkg-config lookup misses, so the suite cannot
+with the options enabled fails when seams-core did not set
+``SEAMS_HAS_CHEMFILES`` or ``SEAMS_HAS_READCON``, so the suite cannot
 skip those three tests:
 
 .. code:: bash
