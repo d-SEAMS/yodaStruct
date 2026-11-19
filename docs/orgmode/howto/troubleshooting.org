@@ -73,6 +73,7 @@ not resolve from the current working directory.
 1. Work from the repository root for shipped examples.
 2. Pass the oxygen type:
 #+begin_src lua
+local dseams = require("dseams")
 local cloud = dseams.read("input/traj/exampleTraj.lammpstrj", {type = 2})
 #+end_src
 3. On a LAMMPS dump, if ~opts.type~ is nil, ~dseams.read~ tries
@@ -87,6 +88,8 @@ empty graph.
 
 **Solution:**
 #+begin_src lua
+local dseams = require("dseams")
+local cloud = dseams.read("input/traj/exampleTraj.lammpstrj", {type = 2})
 dseams.chill_plus(cloud, {cutoff = 3.5, type = 2})
 dseams.cages(cloud, {type = 2})
 #+end_src

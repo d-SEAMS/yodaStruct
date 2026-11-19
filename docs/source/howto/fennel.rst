@@ -30,8 +30,8 @@ Nix sets the same two variables to the installed library:
 
 The vendored compiler lives at
 ``src/include/external/fennel/fennel.lua``. A meson install puts a
-copy at ``$prefix/share/luadseams/fennel.lua``. Invoke it as a Lua
-script. It already puts ``fennel`` on ``package.loaded``.
+copy at ``$prefix/share/luadseams/fennel.lua``. Load it with
+``dofile``, then use ``fennel.dofile`` to run a Fennel source file.
 
 ``(require :dseams)``
 ---------------------
@@ -50,7 +50,7 @@ Run it from the repository root:
 
 .. code:: bash
 
-    lua src/include/external/fennel/fennel.lua example_lua/library/chill.fnl
+    lua -e 'local fennel = dofile("src/include/external/fennel/fennel.lua"); fennel.dofile("example_lua/library/chill.fnl")'
 
 Fennel ``require`` falls through to Lua ``package.path``, so
 ``(require :dseams)`` returns the same table as ``require("dseams")``:
@@ -75,7 +75,7 @@ module:
 
 .. code:: fennel
 
-    (local fennel (require :fennel))
+    (local fennel (dofile "src/include/external/fennel/fennel.lua"))
     (local dseams (fennel.dofile "lua/dseams.fnl"))
     (local cloud (dseams.read "input/traj/exampleTraj.lammpstrj" {:type 2}))
     (print (dseams.chill-plus cloud {:cutoff 3.5 :type 2}))

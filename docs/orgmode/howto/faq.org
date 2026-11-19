@@ -66,6 +66,7 @@ stay in ~lua/dseams.lua~ and call names on ~dseams.core~.
 *** How do I read a LAMMPS dump?
 
 #+begin_src lua
+local dseams = require("dseams")
 local cloud = dseams.read("input/traj/exampleTraj.lammpstrj", {type = 2})
 #+end_src
 

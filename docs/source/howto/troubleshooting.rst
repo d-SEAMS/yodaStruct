@@ -89,6 +89,7 @@ not resolve from the current working directory.
 
 .. code:: lua
 
+    local dseams = require("dseams")
     local cloud = dseams.read("input/traj/exampleTraj.lammpstrj", {type = 2})
 
 1. On a LAMMPS dump, if ``opts.type`` is nil, ``dseams.read`` tries
@@ -106,6 +107,8 @@ empty graph.
 
 .. code:: lua
 
+    local dseams = require("dseams")
+    local cloud = dseams.read("input/traj/exampleTraj.lammpstrj", {type = 2})
     dseams.chill_plus(cloud, {cutoff = 3.5, type = 2})
     dseams.cages(cloud, {type = 2})
 
