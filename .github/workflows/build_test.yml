@@ -99,6 +99,9 @@ jobs:
             'Cflags: -I${includedir}' \
             > "$CONDA_PREFIX/lib/pkgconfig/chemfiles.pc"
           cargo install cargo-c --locked
+          # v0.14.10 is the readcon-core revision in the seams-core wrap
+          # this tree builds. When that wrap moves, this pin must track
+          # seams-core's floor (>=0.16.2, the floor in seams-core v2.14.1).
           git clone --depth 1 --branch v0.14.10 https://github.com/lode-org/readcon-core.git
           cargo cinstall --release --prefix "$CONDA_PREFIX" \
             --libdir lib --pkgconfigdir lib/pkgconfig \
