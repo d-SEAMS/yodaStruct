@@ -44,11 +44,27 @@ html_title = "dseams Lua API | Molecular Simulation Structure Analysis"
 html_baseurl = "https://lua.dseams.info/"
 sitemap_url_scheme = "{link}"
 
+def _source_version():
+    # Edit links must target the ref that actually contains the built docs.
+    # PR docs builds set GITHUB_HEAD_REF (source branch); push builds set
+    # GITHUB_REF_NAME, and both include GITHUB_SHA. A local build can
+    # override with DOCS_EDIT_REF.
+    for key in ("DOCS_EDIT_REF", "GITHUB_HEAD_REF", "GITHUB_REF_NAME", "GITHUB_SHA"):
+        value = os.getenv(key)
+        if value:
+            return value
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], text=True, cwd=os.path.join(_conf_dir, "..", "..")
+        ).strip()
+    except Exception:
+        return "main"
+
 html_context = {
     "source_type": "github",
     "source_user": "d-SEAMS",
     "source_repo": "yodaStruct",
-    "source_version": "main",
+    "source_version": _source_version(),
     "source_docs_path": "/docs/source/",
 }
 
