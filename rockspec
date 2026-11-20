@@ -46,8 +46,9 @@ contact pairs, mapped-site domains, clusters, and slice selections.
 dependencies = {
    "lua >= 5.3, < 5.5",
    -- dseams.fnl and yoda.fnl are loaded with fennel.dofile. 1.5.3 is
-   -- the compiler vendored for the CLI.
-   "fennel == 1.5.3",
+   -- the compiler vendored for the CLI. A range rather than a pin, so
+   -- LuaRocks keeps an installed fennel 1.6 instead of downgrading it.
+   "fennel >= 1.5.3, < 2.0",
 }
 build = {
    type = "command",
