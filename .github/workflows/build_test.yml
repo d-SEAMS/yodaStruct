@@ -56,6 +56,29 @@ jobs:
           eval "$(luarocks --lua-version=5.4 path --tree "$PWD/.luarocks")"
           lua -e 'local d = require("dseams"); require("yoda"); local fennel = require("fennel"); local lua_file = assert(package.searchpath("dseams", package.path)); local fnl_file = lua_file:gsub("dseams%.lua$", "dseams.fnl"); local wrapped = fennel.dofile(fnl_file); assert(type(wrapped["chill-plus"]) == "function"); local cloud = d.core.readXYZ("example_lua/full_api/cube.xyz"); assert(cloud.nop > 0)'
 
+  lua_abi:
+    name: Lua ${{ matrix.lua }} beside the other Lua
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        lua: ['5.3', '5.4']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install Lua 5.3 and 5.4 together
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.3 liblua5.3-dev lua5.4 liblua5.4-dev \
+            meson ninja-build pkg-config g++ libeigen3-dev libblas-dev liblapack-dev
+      - name: Configure, build, and test against Lua ${{ matrix.lua }}
+        run: |
+          set -euxo pipefail
+          meson setup bbdir --wrap-mode=nofallback -Dlua_version=${{ matrix.lua }}
+          meson compile -C bbdir
+          readelf -d bbdir/dseams_core.so | grep -F "liblua${{ matrix.lua }}.so"
+          meson test -C bbdir -v --print-errorlogs
+          grep -F 'abi_match interpreter=${{ matrix.lua }} linked=${{ matrix.lua }}' bbdir/meson-logs/testlog.txt
+
   readers:
     name: chemfiles and readcon
     runs-on: ubuntu-24.04
