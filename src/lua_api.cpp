@@ -153,7 +153,7 @@ Cloud readLammpsTrjreduced(std::string filename, int targetFrame, int typeI,
 Cloud readXYZ(const std::string &filename) { return sinp::readXYZ(filename); }
 
 bool has_chemfiles() {
-#ifdef SEAMS_HAS_CHEMFILES
+#if defined(SEAMS_HAS_CHEMFILES) && !defined(DSEAMS_DISABLE_CHEMFILES)
   return true;
 #else
   return false;
@@ -161,14 +161,14 @@ bool has_chemfiles() {
 }
 
 bool has_readcon() {
-#ifdef SEAMS_HAS_READCON
+#if defined(SEAMS_HAS_READCON) && !defined(DSEAMS_DISABLE_READCON)
   return true;
 #else
   return false;
 #endif
 }
 
-#ifdef SEAMS_HAS_CHEMFILES
+#if defined(SEAMS_HAS_CHEMFILES) && !defined(DSEAMS_DISABLE_CHEMFILES)
 Cloud readChemfiles(std::string filename, int targetFrame,
                     sol::optional<int> typeFilter) {
   Cloud scratch;
@@ -177,7 +177,7 @@ Cloud readChemfiles(std::string filename, int targetFrame,
 }
 #endif
 
-#ifdef SEAMS_HAS_READCON
+#if defined(SEAMS_HAS_READCON) && !defined(DSEAMS_DISABLE_READCON)
 Cloud readCon(std::string filename, int targetFrame) {
   Cloud scratch;
   return sinp::readCon(filename, targetFrame, scratch);
@@ -598,10 +598,10 @@ void registerIO(sol::state_view lua, sol::table m) {
   m.set_function("readXYZ", readXYZ);
   m.set_function("has_chemfiles", has_chemfiles);
   m.set_function("has_readcon", has_readcon);
-#ifdef SEAMS_HAS_CHEMFILES
+#if defined(SEAMS_HAS_CHEMFILES) && !defined(DSEAMS_DISABLE_CHEMFILES)
   m.set_function("readChemfiles", readChemfiles);
 #endif
-#ifdef SEAMS_HAS_READCON
+#if defined(SEAMS_HAS_READCON) && !defined(DSEAMS_DISABLE_READCON)
   m.set_function("readCon", readCon);
 #endif
   m.set_function("readFrameOnlyOne", sinp::readLammpsTrjreduced);

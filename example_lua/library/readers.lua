@@ -5,12 +5,35 @@
 -- than 10 10 10 is a failure.
 
 local dseams = require("dseams")
+local core = dseams.core
+
+local function nearly_equal(a, b, tol)
+  return math.abs(a - b) <= tol
+end
+
+local function assert_coordinates(path, cloud, oracle, tol)
+  for atom_index = 1, #oracle do
+    local got = core.periodicCentroid(cloud, {atom_index - 1})
+    local want = oracle[atom_index]
+    for axis = 1, 3 do
+      if not nearly_equal(got[axis], want[axis], tol) then
+        error(string.format(
+          "%s atom %d axis %d %.6f, want %.6f (tol %.1e)",
+          path, atom_index, axis, got[axis], want[axis], tol))
+      end
+    end
+  end
+end
 
 local kind = arg[1]
 local cases = {
   con = {
     path = "input/readers/cuh2.con",
     nop = 4,
+    oracle = {
+      {0.6394, 0.9045, 6.9753},
+      {3.1969, 0.9045, 6.9753},
+    },
     query = function()
       return dseams.has_readcon()
     end,
@@ -18,6 +41,10 @@ local cases = {
   pdb = {
     path = "input/readers/water.pdb",
     nop = 2,
+    oracle = {
+      {1.0000, 2.0000, 3.0000},
+      {1.7570, 2.0000, 3.0000},
+    },
     query = function()
       return dseams.has_chemfiles()
     end,
@@ -25,6 +52,10 @@ local cases = {
   gro = {
     path = "input/readers/water.gro",
     nop = 2,
+    oracle = {
+      {1.0000, 2.0000, 3.0000},
+      {1.7600, 2.0000, 3.0000},
+    },
     query = function()
       return dseams.has_chemfiles()
     end,
@@ -32,6 +63,10 @@ local cases = {
   dcd = {
     path = "input/readers/water.dcd",
     nop = 2,
+    oracle = {
+      {1.0000, 2.0000, 3.0000},
+      {1.7570, 2.0000, 3.0000},
+    },
     query = function()
       return dseams.has_chemfiles()
     end,
@@ -71,6 +106,7 @@ if case.box then
 elseif not (box[1] > 0 and box[2] > 0 and box[3] > 0) then
   error(string.format("%s box is empty", case.path))
 end
+assert_coordinates(case.path, cloud, case.oracle, 1.0e-3)
 print(string.format(
   "read %s nop=%d frame=%d box=%g %g %g",
   case.path, cloud.nop, cloud.currentFrame, box[1], box[2], box[3]))

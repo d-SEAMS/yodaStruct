@@ -38,6 +38,11 @@ if get_option('with_readcon').enabled() and not engine_has_readcon
     error('seams-core was built without readcon-core (SEAMS_HAS_READCON unset)')
 endif
 
+# Meson options control the Lua-facing readers even when seams-core
+# was compiled with those backends available.
+lua_has_chemfiles = engine_has_chemfiles and not get_option('with_chemfiles').disabled()
+lua_has_readcon = engine_has_readcon and not get_option('with_readcon').disabled()
+
 # Vendored sol does not support Lua 5.5 (LUA_ERRGCMM is gone).
 # conda-forge gcc also drops `-I/usr/include` from the distro lua
 # 5.5 pc file, so sol cannot include lua.h. Prefer 5.3/5.4 with a
@@ -112,6 +117,14 @@ if host_machine.system() == 'linux'
     link_args += ['-Wl,--enable-new-dtags']
 endif
 
+reader_cpp_args = []
+if not lua_has_chemfiles
+    reader_cpp_args += ['-DDSEAMS_DISABLE_CHEMFILES']
+endif
+if not lua_has_readcon
+    reader_cpp_args += ['-DDSEAMS_DISABLE_READCON']
+endif
+
 dseams_core = shared_module(
     'dseams_core',
     files('src/lua_api.cpp', 'src/luaopen.cpp'),
@@ -119,15 +132,15 @@ dseams_core = shared_module(
     name_suffix: 'so',
     dependencies: [lua_dep, yds_dep],
     include_directories: inc,
-    cpp_args: lua_inc_args,
+    cpp_args: lua_inc_args + reader_cpp_args,
     link_args: link_args,
     install: true,
 )
 
 summary(
     {
-        'PDB/GRO/DCD (chemfiles)': engine_has_chemfiles,
-        '.con (readcon-core)': engine_has_readcon,
+        'PDB/GRO/DCD (chemfiles)': lua_has_chemfiles,
+        '.con (readcon-core)': lua_has_readcon,
     },
     section: 'Readers',
     bool_yn: true,
@@ -253,7 +266,7 @@ if lua_exe.found()
         suite: 'readers',
         timeout: 120,
     )
-    if engine_has_chemfiles
+    if lua_has_chemfiles
         test(
             'dseams_read_dcd',
             lua_exe,

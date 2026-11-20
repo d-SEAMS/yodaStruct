@@ -82,6 +82,7 @@ jobs:
             -DCMAKE_INSTALL_PREFIX="$CONDA_PREFIX" \
             -DCMAKE_C_COMPILER="${CC:-gcc}" \
             -DCMAKE_CXX_COMPILER="${CXX:-g++}" \
+            -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
             -DBUILD_SHARED_LIBS=ON
           cmake --build chemfiles-build --parallel
           cmake --install chemfiles-build
@@ -119,3 +120,13 @@ jobs:
           export LUA_CPATH="$PWD/bbdir/?.so;;"
           lua -e 'local d = require("dseams"); assert(d.has_chemfiles() == true); assert(d.has_readcon() == true)'
           meson test -C bbdir -v --print-errorlogs
+      - name: Configure with readers disabled and prove runtime disable
+        shell: bash -el {0}
+        run: |
+          set -euxo pipefail
+          meson setup bbdir-disabled --prefix=/usr --libdir=lib --wrap-mode=nofallback \
+            -Dwith_chemfiles=disabled -Dwith_readcon=disabled
+          meson compile -C bbdir-disabled
+          export LUA_PATH="$PWD/lua/?.lua;;"
+          export LUA_CPATH="$PWD/bbdir-disabled/?.so;;"
+          lua -e 'local d=require("dseams"); assert(d.has_chemfiles()==false); assert(d.has_readcon()==false); local okc, errc = pcall(d.read, "input/readers/water.dcd", {frame=1}); assert(okc == false and tostring(errc):find("chemfiles missing", 1, true) ~= nil); local okr, errr = pcall(d.read, "input/readers/cuh2.con", {frame=1}); assert(okr == false and tostring(errr):find("readcon-core missing", 1, true) ~= nil)'
