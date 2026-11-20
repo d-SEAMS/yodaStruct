@@ -206,12 +206,86 @@ install_data(
     install_dir: get_option('datadir') / 'luadseams',
 )
 
-lua_exe = find_program('lua5.4', 'lua-5.4', 'lua5.3', 'lua', required: false)
-if lua_exe.found()
-    lua_test_env = {
-        'LUA_PATH': meson.project_source_root() / 'lua' / '?.lua;;',
-        'LUA_CPATH': meson.current_build_dir() / '?.so;;',
-    }
+# A module linked against one Lua ABI crashes in an interpreter of the
+# other, so the test interpreter must report the linked _VERSION. Every
+# candidate is asked, because `lua` and even `lua5.4` can be a link to
+# another version.
+lua_dep_version = lua_dep.version().split('.')
+if lua_dep_version.length() < 2
+    error(
+        'cannot read the Lua ABI from lua_dep version "@0@"'.format(
+            lua_dep.version(),
+        ),
+    )
+endif
+lua_abi = lua_dep_version[0] + '.' + lua_dep_version[1]
+if lua_version_opt != 'auto' and lua_abi != lua_version_opt
+    error(
+        'lua_version=@0@ resolved a Lua @1@ dependency'.format(
+            lua_version_opt,
+            lua_dep.version(),
+        ),
+    )
+endif
+lua_exe_found = false
+lua_exe_mismatch = []
+foreach name : ['lua' + lua_abi, 'lua-' + lua_abi, 'lua']
+    if not lua_exe_found
+        cand = find_program(name, required: false)
+        if cand.found()
+            cand_abi = run_command(
+                cand,
+                '-e', 'io.write((string.match(_VERSION, "5%.%d+")))',
+                check: false,
+            )
+            if cand_abi.returncode() == 0 and cand_abi.stdout() == lua_abi
+                lua_exe = cand
+                lua_exe_found = true
+            else
+                lua_exe_mismatch += [cand]
+                message(
+                    '@0@ reports Lua "@1@", the module links Lua @2@'.format(
+                        cand.full_path(),
+                        cand_abi.stdout().strip(),
+                        lua_abi,
+                    ),
+                )
+            endif
+        endif
+    endif
+endforeach
+summary(
+    {
+        'linked ABI': lua_abi,
+        'test interpreter': lua_exe_found ? lua_exe.full_path() : 'none',
+    },
+    section: 'Lua',
+)
+
+lua_test_env = {
+    'LUA_PATH': meson.project_source_root() / 'lua' / '?.lua;;',
+    'LUA_CPATH': meson.current_build_dir() / '?.so;;',
+}
+lua_abi_check = meson.project_source_root() / 'example_lua/library/abi_match.lua'
+# With only a wrong-version interpreter on PATH, register just this test
+# so it fails instead of the suite disappearing.
+if not lua_exe_found and lua_exe_mismatch.length() > 0
+    test(
+        'lua_abi_match',
+        lua_exe_mismatch[0],
+        args: [lua_abi_check, lua_abi],
+        env: lua_test_env,
+        workdir: meson.project_source_root(),
+    )
+endif
+if lua_exe_found
+    test(
+        'lua_abi_match',
+        lua_exe,
+        args: [lua_abi_check, lua_abi],
+        env: lua_test_env,
+        workdir: meson.project_source_root(),
+    )
     test(
         'dseams_library_read',
         lua_exe,
