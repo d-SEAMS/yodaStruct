@@ -45,14 +45,23 @@ html_baseurl = "https://lua.dseams.info/"
 sitemap_url_scheme = "{link}"
 
 def _source_version():
-    # Edit links must target the ref that actually contains the built docs.
-    # PR docs builds set GITHUB_HEAD_REF (source branch); push builds set
-    # GITHUB_REF_NAME, and both include GITHUB_SHA. A local build can
-    # override with DOCS_EDIT_REF.
-    for key in ("DOCS_EDIT_REF", "GITHUB_HEAD_REF", "GITHUB_REF_NAME", "GITHUB_SHA"):
-        value = os.getenv(key)
-        if value:
-            return value
+    # Edit links must name a ref that exists in d-SEAMS/yodaStruct.
+    # A local build can set DOCS_EDIT_REF.
+    # Pull requests, including forks, use GITHUB_SHA. GITHUB_HEAD_REF
+    # is the contributor branch, which is not a branch here, so a blob
+    # URL built from it 404s. Push builds publish the site for a branch.
+    # A commit-pinned blob does not open GitHub's editor, so a push
+    # uses GITHUB_REF_NAME (main or develop, or the tag on a tag push).
+    override = os.getenv("DOCS_EDIT_REF")
+    if override:
+        return override
+    if os.getenv("GITHUB_EVENT_NAME") == "pull_request":
+        sha = os.getenv("GITHUB_SHA")
+        if sha:
+            return sha
+    ref_name = os.getenv("GITHUB_REF_NAME")
+    if ref_name:
+        return ref_name
     try:
         return subprocess.check_output(
             ["git", "rev-parse", "HEAD"], text=True, cwd=os.path.join(_conf_dir, "..", "..")

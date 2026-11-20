@@ -3,9 +3,11 @@ on:
   push:
     branches:
       - main
+      - develop
   pull_request:
     branches:
       - main
+      - develop
 jobs:
   build_test:
     name: ${{ matrix.os }}
@@ -28,6 +30,7 @@ jobs:
             libblas
             liblapack
             lua=5.4
+            luarocks
             cmake
           cache-environment: true
       - name: Configure and build
@@ -46,6 +49,12 @@ jobs:
           export LUA_CPATH="$PWD/stage/usr/lib/?.so;;"
           export DSEAMS_INSTALL_ROOT="$PWD/stage"
           lua example_lua/library/installed.lua
+      - name: Test LuaRocks local-tree install
+        shell: bash -el {0}
+        run: |
+          luarocks --lua-version=5.4 make --tree "$PWD/.luarocks" rockspec
+          eval "$(luarocks --lua-version=5.4 path --tree "$PWD/.luarocks")"
+          lua -e 'local d = require("dseams"); require("yoda"); local fennel = require("fennel"); local lua_file = assert(package.searchpath("dseams", package.path)); local fnl_file = lua_file:gsub("dseams%.lua$", "dseams.fnl"); local wrapped = fennel.dofile(fnl_file); assert(type(wrapped["chill-plus"]) == "function"); local cloud = d.core.readXYZ("example_lua/full_api/cube.xyz"); assert(cloud.nop > 0)'
 
   readers:
     name: chemfiles and readcon
@@ -55,6 +64,17 @@ jobs:
       - uses: dtolnay/rust-toolchain@df2a88e9fe4098bad09cb42c3dec7187f15861fc
         with:
           toolchain: stable
+      - name: Cache cargo-c
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.cargo/bin/cargo-capi
+            ~/.cargo/bin/cargo-cbuild
+            ~/.cargo/bin/cargo-cinstall
+            ~/.cargo/bin/cargo-ctest
+            ~/.cargo/.crates.toml
+            ~/.cargo/.crates2.json
+          key: cargo-c-0.10.26-${{ runner.os }}-${{ runner.arch }}
       - uses: mamba-org/setup-micromamba@f457c30a868e4760d3a6fcea5f25dc655b8edf39 # v3.2.1
         with:
           environment-name: yoda
@@ -99,7 +119,7 @@ jobs:
             'Libs: -L${libdir} -lchemfiles' \
             'Cflags: -I${includedir}' \
             > "$CONDA_PREFIX/lib/pkgconfig/chemfiles.pc"
-          cargo install cargo-c --locked
+          cargo install cargo-c --version 0.10.26 --locked
           # v0.14.10 is the readcon-core revision in the seams-core wrap
           # this tree builds. When that wrap moves, this pin must track
           # seams-core's floor (>=0.16.2, the floor in seams-core v2.14.1).

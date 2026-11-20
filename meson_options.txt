@@ -10,3 +10,10 @@ option(
     value: 'auto',
     description: 'enabled fails configure when seams-core did not set SEAMS_HAS_READCON. auto follows that engine result, including its readcon-core wrap',
 )
+option(
+    'lua_version',
+    type: 'combo',
+    choices: ['auto', '5.3', '5.4'],
+    value: 'auto',
+    description: 'Lua ABI for the compiled module. auto prefers 5.4 then 5.3. The rockspec passes the version LuaRocks is installing for.',
+)

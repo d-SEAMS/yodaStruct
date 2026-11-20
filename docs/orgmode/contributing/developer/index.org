@@ -11,7 +11,7 @@ The release steps are in [[file:release.org][Release process]].
 
 A C++20 compiler, Meson 1.3 or newer, Ninja, pkg-config, Lua 5.3 or
 5.4 (not 5.5), Eigen 3.4, and BLAS/LAPACK. Optional readers are
-~chemfiles~ (PDB, GRO, DCD) and ~readcon-core~ (`.con`), found by
+~chemfiles~ (PDB, GRO, DCD) and ~readcon-core~ (~.con~), found by
 pkg-config. The Nix development shell is ~nix develop~.
 
 #+begin_src bash

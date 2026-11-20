@@ -45,9 +45,14 @@ contact pairs, mapped-site domains, clusters, and slice selections.
 }
 dependencies = {
    "lua >= 5.3, < 5.5",
+   -- dseams.fnl and yoda.fnl are loaded with fennel.dofile. 1.5.3 is
+   -- the compiler vendored for the CLI.
+   "fennel == 1.5.3",
 }
 build = {
    type = "command",
-   build_command = "meson setup builddir --wrap-mode=nofallback && meson compile -C builddir",
-   install_command = "DESTDIR=$(PREFIX) meson install -C builddir",
+   -- $(LUA) is the interpreter LuaRocks selected. LuaRocks 3.8 does not
+   -- define $(LUA_VERSION), so the version is read from that interpreter.
+   build_command = "LV=$($(LUA) -e \"print(string.match(_VERSION, '5%.%d+'))\") && meson setup builddir --wrap-mode=nofallback -Dlua_version=\"$LV\" && meson compile -C builddir",
+   install_command = "mkdir -p \"$(LUADIR)\" \"$(LIBDIR)\" && cp lua/dseams.lua lua/yoda.lua lua/dseams.fnl lua/yoda.fnl \"$(LUADIR)/\" && cp builddir/dseams_core.so \"$(LIBDIR)/\"",
 }

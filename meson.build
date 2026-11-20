@@ -47,21 +47,50 @@ lua_has_readcon = engine_has_readcon and not get_option('with_readcon').disabled
 # conda-forge gcc also drops `-I/usr/include` from the distro lua
 # 5.5 pc file, so sol cannot include lua.h. Prefer 5.3/5.4 with a
 # visible header; the wrap is last resort.
+# lua_version=auto keeps that 5.4-then-5.3 search. A LuaRocks build
+# passes the version it is installing, so a 5.3 rock does not link
+# the 5.4 pc file when both are on the pkg-config path. A plain
+# `lua` pc file is accepted only when its version matches.
+lua_version_opt = get_option('lua_version')
+if lua_version_opt == '5.3'
+    lua_pc_names = ['lua-5.3', 'lua5.3', 'lua']
+    lua_ver_req = ['>=5.3', '<5.4']
+    lua_header_subdirs = ['lua5.3', 'lua-5.3']
+    lua_version_num = '503'
+elif lua_version_opt == '5.4'
+    lua_pc_names = ['lua-5.4', 'lua5.4', 'lua']
+    lua_ver_req = ['>=5.4', '<5.5']
+    lua_header_subdirs = ['lua5.4', 'lua-5.4']
+    lua_version_num = '504'
+else
+    lua_pc_names = ['lua-5.4', 'lua5.4', 'lua-5.3', 'lua5.3', 'lua']
+    lua_ver_req = ['>=5.3', '<5.5']
+    lua_header_subdirs = ['lua5.4', 'lua-5.4', 'lua5.3', 'lua-5.3']
+    lua_version_num = ''
+endif
 lua_dep = disabler()
-foreach name : ['lua-5.4', 'lua5.4', 'lua-5.3', 'lua5.3', 'lua']
+foreach name : lua_pc_names
     if not lua_dep.found()
-        cand = dependency(name, version: ['>=5.3', '<5.5'], required: false)
+        cand = dependency(name, version: lua_ver_req, required: false)
         if cand.found() and cpp.has_header('lua.h', dependencies: cand)
             lua_dep = cand
         endif
     endif
 endforeach
 if not lua_dep.found()
-    lua_dep = dependency(
-        'lua-5.4',
-        version: ['>=5.3', '<5.5'],
-        fallback: ['lua', 'lua_dep'],
-    )
+    if lua_version_opt == 'auto'
+        lua_dep = dependency(
+            'lua-5.4',
+            version: ['>=5.3', '<5.5'],
+            fallback: ['lua', 'lua_dep'],
+        )
+    else
+        error(
+            'Lua @0@ was requested (lua_version) and was not found'.format(
+                lua_version_opt,
+            ),
+        )
+    endif
 endif
 
 inc = include_directories('src/include/internal', 'src/include/external')
@@ -76,26 +105,45 @@ lua_includedir = lua_dep.get_variable('includedir', default_value: '')
 lua_h = ''
 lua_lualib_h = ''
 lua_lauxlib_h = ''
-# Versioned subdirs first. includedir itself is often /usr/include,
-# which holds a distro 5.5 lua.h next to lua5.4/lua.h.
-foreach base : [
-    lua_includedir / 'lua5.4',
-    lua_includedir / 'lua5.3',
-    lua_includedir,
-]
+# includedir is often /usr/include, which holds lua5.3/lua.h next to
+# lua5.4/lua.h and sometimes a distro 5.5 lua.h. Follow lua_version
+# so the absolute path written below is the same ABI as the library
+# we link. auto still prefers 5.4.
+header_bases = []
+foreach sub : lua_header_subdirs
+    header_bases += lua_includedir / sub
+endforeach
+header_bases += lua_includedir
+foreach base : header_bases
     cand = base / 'lua.h'
     if lua_h == '' and base != '' and fs.exists(cand)
+        header_text = fs.read(cand)
         # 5.5 headers define LUA_VERSION_MINOR_N; 5.3/5.4 do not.
-        if not fs.read(cand).contains('LUA_VERSION_MINOR_N')
-            lua_h = cand
-            lua_lualib_h = base / 'lualib.h'
-            lua_lauxlib_h = base / 'lauxlib.h'
+        if not header_text.contains('LUA_VERSION_MINOR_N')
+            version_ok = lua_version_num == ''
+            if not version_ok
+                foreach line : header_text.split('\n')
+                    if (
+                        line.contains('define')
+                        and line.contains('LUA_VERSION_NUM')
+                        and line.contains(lua_version_num)
+                    )
+                        version_ok = true
+                    endif
+                endforeach
+            endif
+            if version_ok
+                lua_h = cand
+                lua_lualib_h = base / 'lualib.h'
+                lua_lauxlib_h = base / 'lauxlib.h'
+            endif
         endif
     endif
 endforeach
 if lua_h == ''
     error(
-        'Lua 5.3/5.4 lua.h not found under includedir=@0@'.format(
+        'Lua @0@ lua.h not found under includedir=@1@'.format(
+            lua_version_opt,
             lua_includedir,
         ),
     )

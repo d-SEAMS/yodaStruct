@@ -2,7 +2,7 @@ name: Nix flake
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
     paths:
       - '.github/workflows/ci_nix.yml'
       - 'flake.nix'
@@ -14,7 +14,7 @@ on:
       - 'example_lua/**'
       - 'input/**'
   pull_request:
-    branches: [main]
+    branches: [main, develop]
     paths:
       - '.github/workflows/ci_nix.yml'
       - 'flake.nix'
