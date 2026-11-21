@@ -54,7 +54,10 @@ jobs:
         run: |
           set -euxo pipefail
           meson test -C bbdir -v --print-errorlogs
-          test "$(grep -c '^Skipped:' bbdir/meson-logs/testlog.txt)" -eq 0
+          if grep -Eq '^Skipped:[[:space:]]+[1-9]' bbdir/meson-logs/testlog.txt; then
+            echo 'meson test skipped tests' >&2
+            exit 1
+          fi
           test "$(grep -c '^missing input/readers/' bbdir/meson-logs/testlog.txt)" -eq 4
       - name: Test staged install
         shell: bash -el {0}
@@ -96,6 +99,10 @@ jobs:
           meson compile -C bbdir
           readelf -d bbdir/dseams_core.so | grep -F "liblua${{ matrix.lua }}.so"
           meson test -C bbdir -v --print-errorlogs
+          if grep -Eq '^Skipped:[[:space:]]+[1-9]' bbdir/meson-logs/testlog.txt; then
+            echo 'meson test skipped tests' >&2
+            exit 1
+          fi
           grep -F 'abi_match interpreter=${{ matrix.lua }} linked=${{ matrix.lua }}' bbdir/meson-logs/testlog.txt
 
   readers:
@@ -182,7 +189,10 @@ jobs:
           export LUA_CPATH="$PWD/bbdir/?.so;;"
           lua -e 'local d = require("dseams"); assert(d.has_chemfiles() == true); assert(d.has_readcon() == true)'
           meson test -C bbdir -v --print-errorlogs
-          test "$(grep -c '^Skipped:' bbdir/meson-logs/testlog.txt)" -eq 0
+          if grep -Eq '^Skipped:[[:space:]]+[1-9]' bbdir/meson-logs/testlog.txt; then
+            echo 'meson test skipped tests' >&2
+            exit 1
+          fi
           for f in cuh2.con water.dcd water.gro water.pdb; do
             grep -E "^read input/readers/$f nop=" bbdir/meson-logs/testlog.txt
           done
@@ -197,7 +207,10 @@ jobs:
           export LUA_CPATH="$PWD/bbdir-disabled/?.so;;"
           lua -e 'local d=require("dseams"); assert(d.has_chemfiles()==false); assert(d.has_readcon()==false); local okc, errc = pcall(d.read, "input/readers/water.dcd", {frame=1}); assert(okc == false and tostring(errc):find("chemfiles missing", 1, true) ~= nil); local okr, errr = pcall(d.read, "input/readers/cuh2.con", {frame=1}); assert(okr == false and tostring(errr):find("readcon-core missing", 1, true) ~= nil)'
           meson test -C bbdir-disabled -v --print-errorlogs --suite readers
-          test "$(grep -c '^Skipped:' bbdir-disabled/meson-logs/testlog.txt)" -eq 0
+          if grep -Eq '^Skipped:[[:space:]]+[1-9]' bbdir-disabled/meson-logs/testlog.txt; then
+            echo 'meson test skipped tests' >&2
+            exit 1
+          fi
           for f in cuh2.con water.dcd water.gro water.pdb; do
             grep -E "^missing input/readers/$f " bbdir-disabled/meson-logs/testlog.txt
           done
