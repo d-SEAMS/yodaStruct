@@ -94,16 +94,21 @@ From a clean clone to a published rock
        meson compile -C bbdir
        meson test -C bbdir -v --print-errorlogs
 
-2. Preview the notes and the bump on a clean worktree.
+2. Preview the notes and the bump on a clean worktree of ``main``.
+   ``branch_whitelist`` in ``cog.toml`` is ``["main", "master"]``, so
+   ``cog bump`` refuses to run on ``develop`` or a feature branch. Merge
+   ``develop`` into ``main`` first, then bump from ``main``.
    ``cog bump --dry-run --auto`` prints the version and stops before the hooks.
 
    .. code:: bash
 
+       git switch main
+       git pull --ff-only origin main
        towncrier build --draft --version unreleased
        cog bump --dry-run --auto
        cog check v2.10.0..HEAD
 
-3. Cut the release. ``cog bump --auto`` runs the ``pre_bump_hooks`` in
+3. Cut the release on ``main``. ``cog bump --auto`` runs the ``pre_bump_hooks`` in
    ``cog.toml``, in order:
 
    - ``meson rewrite kwargs set project / version {{version}}``
