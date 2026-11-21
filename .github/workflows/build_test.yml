@@ -30,9 +30,20 @@ jobs:
             libblas
             liblapack
             lua=5.4
-            luarocks
+            luarocks=3.12.2=lua54*
             cmake
           cache-environment: true
+      # conda-forge has no Lua 5.4 build of luarocks 3.13.0, so an unpinned
+      # luarocks resolves to the LuaJIT build. LuaJIT cannot load the
+      # luarocks.org manifest (more than 65536 constants in one chunk), and
+      # the rockspec's fennel dependency is then unresolvable.
+      - name: LuaRocks runs on Lua 5.4
+        shell: bash -el {0}
+        run: |
+          set -euxo pipefail
+          luarocks --version
+          lr_lua=$(luarocks config variables.LUA)
+          "$lr_lua" -e 'assert(_VERSION == "Lua 5.4", _VERSION); assert(jit == nil, "LuaJIT")'
       - name: Configure and build
         shell: bash -el {0}
         run: |
@@ -52,8 +63,12 @@ jobs:
       - name: Test LuaRocks local-tree install
         shell: bash -el {0}
         run: |
+          set -euxo pipefail
           luarocks --lua-version=5.4 make --tree "$PWD/.luarocks" rockspec
+          luarocks --lua-version=5.4 --tree "$PWD/.luarocks" list --porcelain
+          luarocks --lua-version=5.4 --tree "$PWD/.luarocks" list --porcelain fennel | grep -E '^fennel[[:space:]]+1\.'
           eval "$(luarocks --lua-version=5.4 path --tree "$PWD/.luarocks")"
+          lua -e 'local tree = os.getenv("PWD") .. "/.luarocks/"; local fennel_file = assert(package.searchpath("fennel", package.path)); assert(fennel_file:sub(1, #tree) == tree, fennel_file .. " is not in the rock tree"); local major, minor, patch = require("fennel").version:match("^(%d+)%.(%d+)%.(%d+)"); major, minor, patch = tonumber(major), tonumber(minor), tonumber(patch); assert(major == 1 and (minor > 5 or (minor == 5 and patch >= 3)), "fennel " .. require("fennel").version); print("fennel " .. require("fennel").version .. " from " .. fennel_file)'
           lua -e 'local d = require("dseams"); require("yoda"); local fennel = require("fennel"); local lua_file = assert(package.searchpath("dseams", package.path)); local fnl_file = lua_file:gsub("dseams%.lua$", "dseams.fnl"); local wrapped = fennel.dofile(fnl_file); assert(type(wrapped["chill-plus"]) == "function"); local cloud = d.core.readXYZ("example_lua/full_api/cube.xyz"); assert(cloud.nop > 0)'
 
   lua_abi:
