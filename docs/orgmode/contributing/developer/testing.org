@@ -34,9 +34,9 @@ All four run in every build and none skips. Meson passes ~on~ when
 the build has that reader and ~off~ when it does not. With ~on~,
 ~has_chemfiles~ or ~has_readcon~ must be true in Lua and
 ~has-chemfiles~ or ~has-readcon~ in ~dseams.fnl~, and the fixture is
-read and checked. The DCD read also requires the box lengths 10, 10,
-10. A missing file, a wrong atom count, or an empty box fails the
-test. With ~off~, both queries must be false, the compiled read must
+read and checked. The DCD read also requires the box lengths
+10, 10, 10. A missing file, a wrong atom count, or an empty box
+fails the test. With ~off~, both queries must be false, the compiled read must
 be absent, and ~read~ from Lua and from Fennel must raise the
 missing-reader error. ~input/readers/water.dcd~ is a two-atom
 trajectory written by chemfiles.
