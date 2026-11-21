@@ -360,43 +360,23 @@ if lua_exe_found
         workdir: meson.project_source_root(),
         timeout: 120,
     )
+    # Every reader test runs in every build. A built reader must read its
+    # fixture; a reader left out must report false and raise its error.
     readers_lua = meson.project_source_root() / 'example_lua/library/readers.lua'
-    test(
-        'dseams_read_con',
-        lua_exe,
-        args: [readers_lua, 'con'],
-        env: lua_test_env,
-        workdir: meson.project_source_root(),
-        suite: 'readers',
-        timeout: 120,
-    )
-    test(
-        'dseams_read_pdb',
-        lua_exe,
-        args: [readers_lua, 'pdb'],
-        env: lua_test_env,
-        workdir: meson.project_source_root(),
-        suite: 'readers',
-        timeout: 120,
-    )
-    test(
-        'dseams_read_gro',
-        lua_exe,
-        args: [readers_lua, 'gro'],
-        env: lua_test_env,
-        workdir: meson.project_source_root(),
-        suite: 'readers',
-        timeout: 120,
-    )
-    if lua_has_chemfiles
+    foreach kind, built : {
+        'con': lua_has_readcon,
+        'pdb': lua_has_chemfiles,
+        'gro': lua_has_chemfiles,
+        'dcd': lua_has_chemfiles,
+    }
         test(
-            'dseams_read_dcd',
+            'dseams_read_' + kind,
             lua_exe,
-            args: [readers_lua, 'dcd'],
+            args: [readers_lua, kind, built ? 'on' : 'off'],
             env: lua_test_env,
             workdir: meson.project_source_root(),
             suite: 'readers',
             timeout: 120,
         )
-    endif
+    endforeach
 endif

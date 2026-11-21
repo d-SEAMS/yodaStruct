@@ -1,11 +1,16 @@
--- Real reads of one .con, one PDB, one GRO, and one DCD file.
--- con, pdb, and gro skip only when the feature query for that reader is false.
--- dcd is a real read: a build without chemfiles fails it.
+-- lua readers.lua <con|pdb|gro|dcd> <on|off>
+-- The second argument is whether Meson built that reader into dseams_core.
+-- on: has_chemfiles / has_readcon (Lua and Fennel) must be true and the
+-- fixture is read and checked. off: both queries must be false, the
+-- compiled read must be absent, and dseams.read must raise the missing
+-- reader error. There is no skip.
 -- A missing fixture, a short cloud, a zero box, or a DCD box other
 -- than 10 10 10 is a failure.
 
 local dseams = require("dseams")
 local core = dseams.core
+local fennel = dofile("src/include/external/fennel/fennel.lua")
+local dseams_fnl = fennel.dofile("lua/dseams.fnl")
 
 local function nearly_equal(a, b, tol)
   return math.abs(a - b) <= tol
@@ -25,7 +30,20 @@ local function assert_coordinates(path, cloud, oracle, tol)
   end
 end
 
-local kind = arg[1]
+local chemfiles = {
+  query = "has_chemfiles",
+  fnl_query = "has-chemfiles",
+  bind = "readChemfiles",
+  missing = "readChemfiles is not in this build (chemfiles missing)",
+}
+local readcon = {
+  query = "has_readcon",
+  fnl_query = "has-readcon",
+  bind = "readCon",
+  missing = "readCon is not in this build (readcon-core missing)",
+}
+
+local kind, state = arg[1], arg[2]
 local cases = {
   con = {
     path = "input/readers/cuh2.con",
@@ -34,9 +52,7 @@ local cases = {
       {0.6394, 0.9045, 6.9753},
       {3.1969, 0.9045, 6.9753},
     },
-    query = function()
-      return dseams.has_readcon()
-    end,
+    reader = readcon,
   },
   pdb = {
     path = "input/readers/water.pdb",
@@ -45,9 +61,7 @@ local cases = {
       {1.0000, 2.0000, 3.0000},
       {1.7570, 2.0000, 3.0000},
     },
-    query = function()
-      return dseams.has_chemfiles()
-    end,
+    reader = chemfiles,
   },
   gro = {
     path = "input/readers/water.gro",
@@ -56,9 +70,7 @@ local cases = {
       {1.0000, 2.0000, 3.0000},
       {1.7600, 2.0000, 3.0000},
     },
-    query = function()
-      return dseams.has_chemfiles()
-    end,
+    reader = chemfiles,
   },
   dcd = {
     path = "input/readers/water.dcd",
@@ -67,25 +79,46 @@ local cases = {
       {1.0000, 2.0000, 3.0000},
       {1.7570, 2.0000, 3.0000},
     },
-    query = function()
-      return dseams.has_chemfiles()
-    end,
-    fail = true,
+    reader = chemfiles,
     box = {10, 10, 10},
   },
 }
 
 local case = cases[kind]
-if case == nil then
-  error("readers.lua needs con, pdb, gro, or dcd")
+if case == nil or (state ~= "on" and state ~= "off") then
+  error("usage: readers.lua <con|pdb|gro|dcd> <on|off>")
+end
+local reader = case.reader
+local expected = state == "on"
+
+local lua_query = dseams[reader.query]()
+local fnl_query = dseams_fnl[reader.fnl_query]()
+if lua_query ~= expected or fnl_query ~= expected then
+  error(string.format(
+    "%s: Meson built the reader %s, but %s() is %s and (%s) is %s",
+    kind, state, reader.query, tostring(lua_query),
+    reader.fnl_query, tostring(fnl_query)))
 end
 
-if case.query() ~= true then
-  if case.fail then
-    error(string.format("%s: chemfiles is not in this build", kind))
+local f = assert(io.open(case.path, "rb"))
+f:close()
+
+if not expected then
+  if core[reader.bind] ~= nil then
+    error(string.format("%s: core.%s is bound in a build without it",
+      kind, reader.bind))
   end
-  io.stderr:write(string.format("SKIP %s: feature query is false\n", kind))
-  os.exit(77)
+  for _, api in ipairs({{"dseams.read", dseams.read},
+                        {"(read)", dseams_fnl.read}}) do
+    local ok, err = pcall(api[2], case.path, {frame = 1})
+    if ok or tostring(err):find(reader.missing, 1, true) == nil then
+      error(string.format("%s: %s %s gave %s, want error %q",
+        kind, api[1], case.path, ok and "a cloud" or tostring(err),
+        reader.missing))
+    end
+  end
+  print(string.format("missing %s %s=false", case.path, reader.query))
+  return
 end
 
 local cloud = dseams.read(case.path, {frame = 1})
@@ -107,6 +140,9 @@ elseif not (box[1] > 0 and box[2] > 0 and box[3] > 0) then
   error(string.format("%s box is empty", case.path))
 end
 assert_coordinates(case.path, cloud, case.oracle, 1.0e-3)
+if dseams_fnl.read(case.path, {frame = 1}).nop ~= case.nop then
+  error(string.format("%s: (read) through dseams.fnl lost atoms", case.path))
+end
 print(string.format(
   "read %s nop=%d frame=%d box=%g %g %g",
   case.path, cloud.nop, cloud.currentFrame, box[1], box[2], box[3]))

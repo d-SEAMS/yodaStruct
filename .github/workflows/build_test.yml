@@ -51,7 +51,11 @@ jobs:
           meson compile -C bbdir
       - name: Tests
         shell: bash -el {0}
-        run: meson test -C bbdir -v --print-errorlogs
+        run: |
+          set -euxo pipefail
+          meson test -C bbdir -v --print-errorlogs
+          test "$(grep -c '^Skipped:' bbdir/meson-logs/testlog.txt)" -eq 0
+          test "$(grep -c '^missing input/readers/' bbdir/meson-logs/testlog.txt)" -eq 4
       - name: Test staged install
         shell: bash -el {0}
         run: |
@@ -178,6 +182,10 @@ jobs:
           export LUA_CPATH="$PWD/bbdir/?.so;;"
           lua -e 'local d = require("dseams"); assert(d.has_chemfiles() == true); assert(d.has_readcon() == true)'
           meson test -C bbdir -v --print-errorlogs
+          test "$(grep -c '^Skipped:' bbdir/meson-logs/testlog.txt)" -eq 0
+          for f in cuh2.con water.dcd water.gro water.pdb; do
+            grep -E "^read input/readers/$f nop=" bbdir/meson-logs/testlog.txt
+          done
       - name: Configure with readers disabled and prove runtime disable
         shell: bash -el {0}
         run: |
@@ -188,3 +196,8 @@ jobs:
           export LUA_PATH="$PWD/lua/?.lua;;"
           export LUA_CPATH="$PWD/bbdir-disabled/?.so;;"
           lua -e 'local d=require("dseams"); assert(d.has_chemfiles()==false); assert(d.has_readcon()==false); local okc, errc = pcall(d.read, "input/readers/water.dcd", {frame=1}); assert(okc == false and tostring(errc):find("chemfiles missing", 1, true) ~= nil); local okr, errr = pcall(d.read, "input/readers/cuh2.con", {frame=1}); assert(okr == false and tostring(errr):find("readcon-core missing", 1, true) ~= nil)'
+          meson test -C bbdir-disabled -v --print-errorlogs --suite readers
+          test "$(grep -c '^Skipped:' bbdir-disabled/meson-logs/testlog.txt)" -eq 0
+          for f in cuh2.con water.dcd water.gro water.pdb; do
+            grep -E "^missing input/readers/$f " bbdir-disabled/meson-logs/testlog.txt
+          done

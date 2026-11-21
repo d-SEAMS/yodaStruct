@@ -21,23 +21,25 @@ helpers, the legacy chain, topology, and the Fennel wrappers.
 
 ** Reader tests
 
-~example_lua/library/readers.lua~ reads four fixtures:
+~example_lua/library/readers.lua~ checks four fixtures:
 
-| Test | File | When it runs |
-|------+------+--------------|
-| ~dseams_read_con~ | ~input/readers/cuh2.con~ | ~dseams.has_readcon()~ is true; otherwise exit 77 |
-| ~dseams_read_pdb~ | ~input/readers/water.pdb~ | ~dseams.has_chemfiles()~ is true; otherwise exit 77 |
-| ~dseams_read_gro~ | ~input/readers/water.gro~ | ~dseams.has_chemfiles()~ is true; otherwise exit 77 |
-| ~dseams_read_dcd~ | ~input/readers/water.dcd~ | registered when the build found chemfiles |
+| Test | File | Reader |
+|------+------+--------|
+| ~dseams_read_con~ | ~input/readers/cuh2.con~ | readcon-core |
+| ~dseams_read_pdb~ | ~input/readers/water.pdb~ | chemfiles |
+| ~dseams_read_gro~ | ~input/readers/water.gro~ | chemfiles |
+| ~dseams_read_dcd~ | ~input/readers/water.dcd~ | chemfiles |
 
-The con, PDB, and GRO tests skip by exiting 77 when their query is
-false, which Meson records as skipped. The DCD test is registered
-only when chemfiles is found, and that run reads the fixture and
-requires the box lengths 10, 10, 10. A missing file, a wrong atom
-count, or an empty box fails the test.
-The queries are the compiled ~has_chemfiles~ and ~has_readcon~
-bindings. ~input/readers/water.dcd~ is a two-atom trajectory written
-by chemfiles.
+All four run in every build and none skips. Meson passes ~on~ when
+the build has that reader and ~off~ when it does not. With ~on~,
+~has_chemfiles~ or ~has_readcon~ must be true in Lua and
+~has-chemfiles~ or ~has-readcon~ in ~dseams.fnl~, and the fixture is
+read and checked. The DCD read also requires the box lengths 10, 10,
+10. A missing file, a wrong atom count, or an empty box fails the
+test. With ~off~, both queries must be false, the compiled read must
+be absent, and ~read~ from Lua and from Fennel must raise the
+missing-reader error. ~input/readers/water.dcd~ is a two-atom
+trajectory written by chemfiles.
 
 #+begin_src bash
 meson test -C bbdir -v --suite readers --print-errorlogs
@@ -59,7 +61,11 @@ meson test -C bbdir -v --suite readers --print-errorlogs
 
 The ~chemfiles and readcon~ CI job installs chemfiles 0.10.4 and
 readcon-core v0.14.10, configures with both options enabled, asserts
-both queries, and runs the full ~meson test~.
+both queries, runs the full ~meson test~, and requires a real read of
+all four fixtures. It then builds with both options disabled and runs
+the reader suite, which must report all four readers missing. The
+other build jobs have neither library, so their reader tests take the
+~off~ path.
 
 ** Documentation build
 
