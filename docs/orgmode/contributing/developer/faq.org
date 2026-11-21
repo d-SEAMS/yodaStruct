@@ -57,5 +57,4 @@ Sphinx. Hand-edited RST drifts from the Org. Release notes stay in
 The in-repo rockspec is ~rockspec~. ~luarocks new_version~ writes
 ~dseams-X.Y.Z-1.rockspec~ from it, and that file builds the package
 with Meson. ~luarocks upload~ sends the named rockspec to the LuaRocks
-registry. The upload is the publish step. See
-[[file:release.org][Release process]].
+registry. The upload is the publish step.

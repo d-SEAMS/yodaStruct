@@ -4,7 +4,6 @@ Developer Guide
 ---------------
 
 Day-to-day work on the Lua and Fennel library (``require("dseams")``).
-The release steps are in `Release process <release.rst>`_.
 
 Environment
 ~~~~~~~~~~~
@@ -41,8 +40,6 @@ Common tasks
     +---------------------+------------------------------------------------------------------------+
     | Commit check        | ``cog check v2.10.0..HEAD``                                            |
     +---------------------+------------------------------------------------------------------------+
-    | Bump dry-run        | ``cog bump --dry-run --auto``                                          |
-    +---------------------+------------------------------------------------------------------------+
     | Org to RST          | ``emacs --batch --load export.el`` from ``docs/``                      |
     +---------------------+------------------------------------------------------------------------+
     | HTML docs           | ``sphinx-build -b html docs/source docs/build``                        |
@@ -69,5 +66,4 @@ Sphinx builds HTML from that RST and from Doxygen XML of
    :caption: Details
 
    testing
-   release
    faq

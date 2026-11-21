@@ -62,5 +62,4 @@ What does LuaRocks publish?
 The in-repo rockspec is ``rockspec``. ``luarocks new_version`` writes
 ``dseams-X.Y.Z-1.rockspec`` from it, and that file builds the package
 with Meson. ``luarocks upload`` sends the named rockspec to the LuaRocks
-registry. The upload is the publish step. See
-`Release process <release.rst>`_.
+registry. The upload is the publish step.
