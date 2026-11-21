@@ -139,6 +139,12 @@ This documentation follows the `Diataxis <https://diataxis.fr/>`_ framework.
 
    reference/index
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Contributing
+
+   contributing/developer/index
+
 The compiled-registration appendix is `Compiled registrations <reference/lua-functions.rst>`_,
 from Doxygen of ``lua_api.hpp``.
 

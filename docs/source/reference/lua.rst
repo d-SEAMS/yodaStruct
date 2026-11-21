@@ -27,6 +27,12 @@ Public names
 ``read``
     suffix-dispatching loader.
 
+``has_chemfiles``
+    true when this build reads PDB, GRO, and DCD through chemfiles.
+
+``has_readcon``
+    true when this build reads ``.con`` through readcon-core.
+
 ``neighbors``
     cutoff neighbour list by atom ID.
 

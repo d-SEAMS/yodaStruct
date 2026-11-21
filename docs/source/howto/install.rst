@@ -129,14 +129,24 @@ How require finds the module
 ``require("yoda")`` is ``lua/yoda.lua``, which returns
 ``require("dseams")``.
 
-Optional readers are compile-gated in seams-core:
+Optional readers are whatever seams-core compiled. That subproject
+probes pkg-config and, unless wrap fallbacks are disabled, can build
+readcon-core from its wrap when no system copy is installed.
+``chemfiles`` turns on PDB, GRO, and DCD. ``readcon-core`` turns on
+``.con``. Either library may be absent; the build still produces
+LAMMPS and XYZ reads. This binding does not probe those libraries
+itself. ``dseams.has_readcon()`` and ``dseams.has_chemfiles()`` follow
+the ``SEAMS_HAS_READCON`` and ``SEAMS_HAS_CHEMFILES`` macros on the
+linked engine.
 
-- ``core.readCon`` exists only with ``SEAMS_HAS_READCON``
+- ``dseams.has_readcon()`` is true only when that engine has
+  readcon-core, which registers ``core.readCon``
 
-- ``core.readChemfiles`` exists only with ``SEAMS_HAS_CHEMFILES``
+- ``dseams.has_chemfiles()`` is true only when that engine has
+  chemfiles, which registers ``core.readChemfiles``
 
 ``dseams.read`` errors with a clear message when you pass ``.con`` /
-``.pdb`` / ``.gro`` / ``.dcd`` and the matching bind is missing. LAMMPS
+``.pdb`` / ``.gro`` / ``.dcd`` and the matching query is false. LAMMPS
 dumps and ``.xyz`` do not need those backends.
 
 Verification

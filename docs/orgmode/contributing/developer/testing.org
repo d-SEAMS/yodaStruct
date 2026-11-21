@@ -1,0 +1,71 @@
+#+TITLE: Testing
+#+OPTIONS: toc:nil todo:nil num:nil author:nil title:nil
+#+STARTUP: content
+
+* Testing
+
+** Library tests
+
+From a clean clone, with Lua 5.3 or 5.4, Eigen, and BLAS/LAPACK:
+
+#+begin_src bash
+meson setup bbdir --wrap-mode=nofallback
+meson compile -C bbdir
+meson test -C bbdir -v --print-errorlogs
+#+end_src
+
+The suite loads ~lua/dseams.lua~ and ~bbdir/dseams_core.so~ and runs
+the scripts under ~example_lua/library/~. That covers a LAMMPS read,
+RDF, running coordination number, coordination number, the workflow
+helpers, the legacy chain, topology, and the Fennel wrappers.
+
+** Reader tests
+
+~example_lua/library/readers.lua~ reads four fixtures:
+
+| Test | File | When it runs |
+|------+------+--------------|
+| ~dseams_read_con~ | ~input/readers/cuh2.con~ | ~dseams.has_readcon()~ is true; otherwise exit 77 |
+| ~dseams_read_pdb~ | ~input/readers/water.pdb~ | ~dseams.has_chemfiles()~ is true; otherwise exit 77 |
+| ~dseams_read_gro~ | ~input/readers/water.gro~ | ~dseams.has_chemfiles()~ is true; otherwise exit 77 |
+| ~dseams_read_dcd~ | ~input/readers/water.dcd~ | registered when the build found chemfiles |
+
+The con, PDB, and GRO tests skip by exiting 77 when their query is
+false, which Meson records as skipped. The DCD test is registered
+only when chemfiles is found, and that run reads the fixture and
+requires the box lengths 10, 10, 10. A missing file, a wrong atom
+count, or an empty box fails the test.
+The queries are the compiled ~has_chemfiles~ and ~has_readcon~
+bindings. ~input/readers/water.dcd~ is a two-atom trajectory written
+by chemfiles.
+
+#+begin_src bash
+meson test -C bbdir -v --suite readers --print-errorlogs
+#+end_src
+
+Build with both libraries when they should be present. Configuration
+with the options enabled fails when seams-core did not set
+~SEAMS_HAS_CHEMFILES~ or ~SEAMS_HAS_READCON~. The con, PDB, GRO, and
+DCD reads then all run:
+
+#+begin_src bash
+meson setup bbdir --wrap-mode=nofallback \
+  -Dwith_chemfiles=enabled -Dwith_readcon=enabled
+meson compile -C bbdir
+LUA_PATH="$PWD/lua/?.lua;;" LUA_CPATH="$PWD/bbdir/?.so;;" \
+  lua -e 'local d=require("dseams"); assert(d.has_chemfiles()==true); assert(d.has_readcon()==true)'
+meson test -C bbdir -v --suite readers --print-errorlogs
+#+end_src
+
+The ~chemfiles and readcon~ CI job installs chemfiles 0.10.4 and
+readcon-core v0.14.10, configures with both options enabled, asserts
+both queries, and runs the full ~meson test~.
+
+** Documentation build
+
+#+begin_src bash
+cd docs && emacs --batch --load export.el
+sphinx-build -b html docs/source docs/build
+#+end_src
+
+Doxygen runs from ~docs/source/conf.py~ before Sphinx reads the XML.

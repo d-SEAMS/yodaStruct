@@ -3,9 +3,11 @@ on:
   push:
     branches:
       - main
+      - develop
   pull_request:
     branches:
       - main
+      - develop
 jobs:
   build_test:
     name: ${{ matrix.os }}
@@ -16,6 +18,10 @@ jobs:
         os: [ubuntu-24.04, macos-latest]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # conda-forge has no Lua 5.4 build of luarocks 3.13.0, so an unpinned
+      # luarocks resolves to the LuaJIT build. LuaJIT cannot load the
+      # luarocks.org manifest (more than 65536 constants), and fennel then
+      # does not resolve. The lua54 build runs on the Lua 5.4 below.
       - uses: mamba-org/setup-micromamba@f457c30a868e4760d3a6fcea5f25dc655b8edf39 # v3.2.1
         with:
           environment-name: yoda
@@ -28,6 +34,7 @@ jobs:
             libblas
             liblapack
             lua=5.4
+            luarocks=3.12.2=lua54*
             cmake
           cache-environment: true
       - name: Configure and build
@@ -46,3 +53,131 @@ jobs:
           export LUA_CPATH="$PWD/stage/usr/lib/?.so;;"
           export DSEAMS_INSTALL_ROOT="$PWD/stage"
           lua example_lua/library/installed.lua
+      - name: Test LuaRocks local-tree install
+        shell: bash -el {0}
+        run: |
+          set -euxo pipefail
+          luarocks --version
+          luarocks --lua-version=5.4 make --tree "$PWD/.luarocks" rockspec
+          eval "$(luarocks --lua-version=5.4 path --tree "$PWD/.luarocks")"
+          luarocks --lua-version=5.4 list --tree "$PWD/.luarocks"
+          lua -e 'local tree = os.getenv("PWD") .. "/.luarocks/"; local fennel = require("fennel"); assert(package.searchpath("fennel", package.path):sub(1, #tree) == tree); local maj, min, pat = fennel.version:match("^(%d+)%.(%d+)%.(%d+)"); maj, min, pat = tonumber(maj), tonumber(min), tonumber(pat); assert(maj == 1 and (min > 5 or (min == 5 and pat >= 3)), fennel.version); print("fennel " .. fennel.version)'
+          lua -e 'local d = require("dseams"); require("yoda"); local fennel = require("fennel"); local lua_file = assert(package.searchpath("dseams", package.path)); local fnl_file = lua_file:gsub("dseams%.lua$", "dseams.fnl"); local wrapped = fennel.dofile(fnl_file); assert(type(wrapped["chill-plus"]) == "function"); local cloud = d.core.readXYZ("example_lua/full_api/cube.xyz"); assert(cloud.nop > 0)'
+
+  lua_abi:
+    name: Lua ${{ matrix.lua }} beside the other Lua
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        lua: ['5.3', '5.4']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install Lua 5.3 and 5.4 together
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.3 liblua5.3-dev lua5.4 liblua5.4-dev \
+            meson ninja-build pkg-config g++ libeigen3-dev libblas-dev liblapack-dev
+      - name: Configure, build, and test against Lua ${{ matrix.lua }}
+        run: |
+          set -euxo pipefail
+          meson setup bbdir --wrap-mode=nofallback -Dlua_version=${{ matrix.lua }}
+          meson compile -C bbdir
+          readelf -d bbdir/dseams_core.so | grep -F "liblua${{ matrix.lua }}.so"
+          meson test -C bbdir -v --print-errorlogs
+          grep -F 'abi_match interpreter=${{ matrix.lua }} linked=${{ matrix.lua }}' bbdir/meson-logs/testlog.txt
+
+  readers:
+    name: chemfiles and readcon
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: dtolnay/rust-toolchain@df2a88e9fe4098bad09cb42c3dec7187f15861fc
+        with:
+          toolchain: stable
+      - name: Cache cargo-c
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.cargo/bin/cargo-capi
+            ~/.cargo/bin/cargo-cbuild
+            ~/.cargo/bin/cargo-cinstall
+            ~/.cargo/bin/cargo-ctest
+            ~/.cargo/.crates.toml
+            ~/.cargo/.crates2.json
+          key: cargo-c-0.10.26-${{ runner.os }}-${{ runner.arch }}
+      - uses: mamba-org/setup-micromamba@f457c30a868e4760d3a6fcea5f25dc655b8edf39 # v3.2.1
+        with:
+          environment-name: yoda
+          create-args: >-
+            cxx-compiler
+            meson
+            ninja
+            pkg-config
+            eigen
+            libblas
+            liblapack
+            lua=5.4
+            cmake
+            openssl
+            make
+          cache-environment: true
+      - name: Install chemfiles 0.10.4 and readcon-core v0.14.10
+        shell: bash -el {0}
+        run: |
+          set -euxo pipefail
+          curl -fsSL -o chemfiles.tar.gz https://github.com/chemfiles/chemfiles/archive/refs/tags/0.10.4.tar.gz
+          tar -xzf chemfiles.tar.gz
+          cmake -S chemfiles-0.10.4 -B chemfiles-build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX="$CONDA_PREFIX" \
+            -DCMAKE_C_COMPILER="${CC:-gcc}" \
+            -DCMAKE_CXX_COMPILER="${CXX:-g++}" \
+            -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+            -DBUILD_SHARED_LIBS=ON
+          cmake --build chemfiles-build --parallel
+          cmake --install chemfiles-build
+          # 0.10.4 installs a CMake package and no pkg-config file.
+          mkdir -p "$CONDA_PREFIX/lib/pkgconfig"
+          printf '%s\n' \
+            "prefix=${CONDA_PREFIX}" \
+            'libdir=${prefix}/lib' \
+            'includedir=${prefix}/include' \
+            '' \
+            'Name: chemfiles' \
+            'Description: Library for reading and writing chemistry files' \
+            'Version: 0.10.4' \
+            'Libs: -L${libdir} -lchemfiles' \
+            'Cflags: -I${includedir}' \
+            > "$CONDA_PREFIX/lib/pkgconfig/chemfiles.pc"
+          cargo install cargo-c --version 0.10.26 --locked
+          # v0.14.10 is the readcon-core revision in the seams-core wrap
+          # this tree builds. When that wrap moves, this pin must track
+          # seams-core's floor (>=0.16.2, the floor in seams-core v2.14.1).
+          git clone --depth 1 --branch v0.14.10 https://github.com/lode-org/readcon-core.git
+          cargo cinstall --release --prefix "$CONDA_PREFIX" \
+            --libdir lib --pkgconfigdir lib/pkgconfig \
+            --manifest-path readcon-core/Cargo.toml
+          pkg-config --modversion chemfiles
+          pkg-config --modversion readcon-core
+      - name: Configure, require both readers, and test
+        shell: bash -el {0}
+        run: |
+          set -euxo pipefail
+          meson setup bbdir --prefix=/usr --libdir=lib --wrap-mode=nofallback \
+            -Dwith_chemfiles=enabled -Dwith_readcon=enabled
+          meson compile -C bbdir
+          export LUA_PATH="$PWD/lua/?.lua;;"
+          export LUA_CPATH="$PWD/bbdir/?.so;;"
+          lua -e 'local d = require("dseams"); assert(d.has_chemfiles() == true); assert(d.has_readcon() == true)'
+          meson test -C bbdir -v --print-errorlogs
+      - name: Configure with readers disabled and prove runtime disable
+        shell: bash -el {0}
+        run: |
+          set -euxo pipefail
+          meson setup bbdir-disabled --prefix=/usr --libdir=lib --wrap-mode=nofallback \
+            -Dwith_chemfiles=disabled -Dwith_readcon=disabled
+          meson compile -C bbdir-disabled
+          export LUA_PATH="$PWD/lua/?.lua;;"
+          export LUA_CPATH="$PWD/bbdir-disabled/?.so;;"
+          lua -e 'local d=require("dseams"); assert(d.has_chemfiles()==false); assert(d.has_readcon()==false); local okc, errc = pcall(d.read, "input/readers/water.dcd", {frame=1}); assert(okc == false and tostring(errc):find("chemfiles missing", 1, true) ~= nil); local okr, errr = pcall(d.read, "input/readers/cuh2.con", {frame=1}); assert(okr == false and tostring(errr):find("readcon-core missing", 1, true) ~= nil)'

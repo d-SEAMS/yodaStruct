@@ -1,5 +1,11 @@
 [tool.towncrier]
 name = "yodaStruct"
+# [[[cog
+# import dseams_version as v
+# cog.outl('version = "%s"' % v.VERSION)
+# ]]]
+version = "2.10.0"
+# [[[end]]]
 directory = "changelog.d"
 filename = "CHANGELOG.md"
 start_string = "<!-- towncrier release notes start -->\n"

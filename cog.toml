@@ -1,0 +1,43 @@
+# Cocogitto release driver. Towncrier owns CHANGELOG.md.
+# cog bump --auto runs three hooks, then commits and tags:
+#   meson rewrite writes the project() version in meson.build
+#   cogapp copies that version into ci/version/files.txt
+#   YODA_RELEASE_DATE=$(date +%F) on that command sets date-released
+#   towncrier writes CHANGELOG.md
+# luarocks new_version names the upload rockspec.
+# The tag push is the maintainer's. Publishing to LuaRocks is luarocks upload.
+
+from_latest_tag = true
+ignore_merge_commits = true
+disable_changelog = true
+disable_bump_commit = false
+tag_prefix = "v"
+branch_whitelist = ["main", "master"]
+
+pre_bump_hooks = [
+    "meson rewrite kwargs set project / version {{version}}",
+    "YODA_RELEASE_DATE=$(date +%F) python3 -m cogapp -I ci/version -r @ci/version/files.txt",
+    "towncrier build --yes --version {{version}}",
+]
+
+post_bump_hooks = [
+    "git --no-pager show --stat HEAD",
+    "echo \"Tagged v{{version}}. Push this commit and the tag, then luarocks new_version rockspec {{version}} --tag v{{version}} and luarocks upload dseams-{{version}}-1.rockspec.\"",
+]
+
+[commit_types]
+feat = { changelog_title = "Features" }
+fix = { changelog_title = "Bug Fixes" }
+perf = { changelog_title = "Performance" }
+refactor = { changelog_title = "Refactoring" }
+docs = { changelog_title = "Documentation" }
+test = { changelog_title = "Tests" }
+build = { changelog_title = "Build System" }
+ci = { changelog_title = "CI" }
+chore = { changelog_title = "Miscellaneous" }
+style = { changelog_title = "Style" }
+revert = { changelog_title = "Reverts" }
+
+[changelog]
+path = "CHANGELOG.md"
+authors = [{ username = "HaoZeke", signature = "Rohit Goswami" }]

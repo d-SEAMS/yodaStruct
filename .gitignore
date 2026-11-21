@@ -6,3 +6,4 @@ bbdir/
 docs/source/xml/
 *.swp
 .DS_Store
+__pycache__/
