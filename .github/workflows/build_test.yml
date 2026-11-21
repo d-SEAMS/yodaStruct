@@ -18,6 +18,10 @@ jobs:
         os: [ubuntu-24.04, macos-latest]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # conda-forge has no Lua 5.4 build of luarocks 3.13.0, so an unpinned
+      # luarocks resolves to the LuaJIT build. LuaJIT cannot load the
+      # luarocks.org manifest (more than 65536 constants), and fennel then
+      # does not resolve. The lua54 build runs on the Lua 5.4 below.
       - uses: mamba-org/setup-micromamba@f457c30a868e4760d3a6fcea5f25dc655b8edf39 # v3.2.1
         with:
           environment-name: yoda
@@ -30,7 +34,7 @@ jobs:
             libblas
             liblapack
             lua=5.4
-            luarocks
+            luarocks=3.12.2=lua54*
             cmake
           cache-environment: true
       - name: Configure and build
@@ -52,8 +56,12 @@ jobs:
       - name: Test LuaRocks local-tree install
         shell: bash -el {0}
         run: |
+          set -euxo pipefail
+          luarocks --version
           luarocks --lua-version=5.4 make --tree "$PWD/.luarocks" rockspec
           eval "$(luarocks --lua-version=5.4 path --tree "$PWD/.luarocks")"
+          luarocks --lua-version=5.4 list --tree "$PWD/.luarocks"
+          lua -e 'local tree = os.getenv("PWD") .. "/.luarocks/"; local fennel = require("fennel"); assert(package.searchpath("fennel", package.path):sub(1, #tree) == tree); local maj, min, pat = fennel.version:match("^(%d+)%.(%d+)%.(%d+)"); maj, min, pat = tonumber(maj), tonumber(min), tonumber(pat); assert(maj == 1 and (min > 5 or (min == 5 and pat >= 3)), fennel.version); print("fennel " .. fennel.version)'
           lua -e 'local d = require("dseams"); require("yoda"); local fennel = require("fennel"); local lua_file = assert(package.searchpath("dseams", package.path)); local fnl_file = lua_file:gsub("dseams%.lua$", "dseams.fnl"); local wrapped = fennel.dofile(fnl_file); assert(type(wrapped["chill-plus"]) == "function"); local cloud = d.core.readXYZ("example_lua/full_api/cube.xyz"); assert(cloud.nop > 0)'
 
   lua_abi:
