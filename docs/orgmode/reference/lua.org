@@ -22,6 +22,8 @@ local nl = dseams.core.neighListO(3.5, cloud, 2)
 #+end_src
 
 - ~read~ :: suffix-dispatching loader.
+- ~has_chemfiles~ :: true when this build reads PDB, GRO, and DCD through chemfiles.
+- ~has_readcon~ :: true when this build reads ~.con~ through readcon-core.
 - ~neighbors~ :: cutoff neighbour list by atom ID.
 - ~neighbors_pair~ :: I-J cutoff neighbour list.
 - ~cn~ :: site-site coordination number.

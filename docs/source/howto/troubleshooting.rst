@@ -115,19 +115,22 @@ empty graph.
 Problem: readCon is not in this build (readcon-core missing)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-****Cause:**** seams-core was compiled without ``SEAMS_HAS_READCON``.
+****Cause:**** ``dseams.has_readcon()`` is false. seams-core was
+compiled without ``SEAMS_HAS_READCON``.
 
-****Solution:**** Use a LAMMPS dump or ``.xyz``, or rebuild seams-core
-with readcon. ``dseams.read`` on ``.con`` raises this error on
-purpose.
+****Solution:**** Use a LAMMPS dump or ``.xyz``, or rebuild with
+readcon-core on the pkg-config path. ``dseams.read`` on ``.con``
+raises this error on purpose.
 
 Problem: readChemfiles is not in this build (chemfiles missing)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-****Cause:**** seams-core was compiled without ``SEAMS_HAS_CHEMFILES``.
+****Cause:**** ``dseams.has_chemfiles()`` is false. seams-core was
+compiled without ``SEAMS_HAS_CHEMFILES``.
 
 ****Solution:**** Use a LAMMPS dump or ``.xyz``, or rebuild with
-chemfiles. Suffixes ``.pdb``, ``.gro``, and ``.dcd`` take this path.
+chemfiles on the pkg-config path. Suffixes ``.pdb``, ``.gro``, and
+``.dcd`` take this path.
 
 Classification Issues
 ~~~~~~~~~~~~~~~~~~~~~

@@ -143,6 +143,12 @@ This documentation follows the [[https://diataxis.fr/][Diataxis]] framework.
    :caption: Reference
 
    reference/index
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contributing
+
+   contributing/developer/index
 #+end_export
 
 The compiled-registration appendix is [[file:reference/lua-functions.org][Compiled registrations]],

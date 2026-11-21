@@ -100,9 +100,9 @@ shipped example.
 
 *** readCon / readChemfiles is not in this build
 
-Those binds exist only when seams-core was compiled with
-~SEAMS_HAS_READCON~ or ~SEAMS_HAS_CHEMFILES~. LAMMPS dumps and
-~.xyz~ do not need them.
+~dseams.has_readcon()~ and ~dseams.has_chemfiles()~ are false
+unless this build found readcon-core or chemfiles. LAMMPS dumps
+and ~.xyz~ do not need them.
 
 *** Fennel loads dseams.fnl as itself
 

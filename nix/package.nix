@@ -15,12 +15,18 @@
 
 stdenv.mkDerivation {
   pname = "dseams";
+  # [[[cog
+  # import dseams_version as v
+  # cog.outl('  version = "%s";' % v.VERSION)
+  # ]]]
   version = "2.10.0";
+  # [[[end]]]
 
   src = lib.fileset.toSource {
     root = ./..;
     fileset = lib.fileset.unions [
       ../meson.build
+      ../meson_options.txt
       ../src
       ../lua
       ../example_lua
@@ -86,7 +92,7 @@ stdenv.mkDerivation {
   '';
 
   meta = {
-    description = "d-SEAMS Lua and Fennel library (require(\"dseams\"))";
+    description = "Lua and Fennel front end for d-SEAMS: LAMMPS, XYZ, optional .con (readcon-core) and PDB/GRO/DCD (chemfiles) reads; neighbour lists, rings, cages, CHILL and CHILL+, Steinhardt Ql, RDF, coordination numbers, density, hydrogen bonds, topology fingerprints, and site domains";
     homepage = "https://github.com/d-SEAMS/yodaStruct";
     license = lib.licenses.mit;
     platforms = lib.platforms.linux ++ lib.platforms.darwin;

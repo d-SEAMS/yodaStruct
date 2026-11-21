@@ -7,6 +7,10 @@ project(
 )
 
 # C++ engine. This repo is the Lua/Fennel library (require("dseams")).
+# Do not probe chemfiles or readcon-core here. Meson caches a not-found
+# dependency() for the whole build, and that cache skips the readcon-core
+# wrap fallback inside seams-core. The readers are whatever that subproject
+# compiled. It puts -DSEAMS_HAS_CHEMFILES and -DSEAMS_HAS_READCON on yds_dep.
 seams = subproject(
     'seams-core',
     default_options: [
@@ -21,26 +25,72 @@ seams = subproject(
 # the Lua 5.3/5.4 -I wins over a distro lua.h in /usr/include.
 yds_dep = seams.get_variable('yds_dep').as_system()
 
+# The subproject's own dependency objects. found() is true when
+# seams-core compiled that reader, including a readcon-core wrap.
+# compiler.get_define() cannot take this internal dependency.
+cpp = meson.get_compiler('cpp')
+engine_has_chemfiles = seams.get_variable('chemfiles_dep').found()
+engine_has_readcon = seams.get_variable('readcon_dep').found()
+if get_option('with_chemfiles').enabled() and not engine_has_chemfiles
+    error('seams-core was built without chemfiles (SEAMS_HAS_CHEMFILES unset)')
+endif
+if get_option('with_readcon').enabled() and not engine_has_readcon
+    error('seams-core was built without readcon-core (SEAMS_HAS_READCON unset)')
+endif
+
+# Meson options control the Lua-facing readers even when seams-core
+# was compiled with those backends available.
+lua_has_chemfiles = engine_has_chemfiles and not get_option('with_chemfiles').disabled()
+lua_has_readcon = engine_has_readcon and not get_option('with_readcon').disabled()
+
 # Vendored sol does not support Lua 5.5 (LUA_ERRGCMM is gone).
 # conda-forge gcc also drops `-I/usr/include` from the distro lua
 # 5.5 pc file, so sol cannot include lua.h. Prefer 5.3/5.4 with a
 # visible header; the wrap is last resort.
-cpp = meson.get_compiler('cpp')
+# lua_version=auto keeps that 5.4-then-5.3 search. A LuaRocks build
+# passes the version it is installing, so a 5.3 rock does not link
+# the 5.4 pc file when both are on the pkg-config path. A plain
+# `lua` pc file is accepted only when its version matches.
+lua_version_opt = get_option('lua_version')
+if lua_version_opt == '5.3'
+    lua_pc_names = ['lua-5.3', 'lua5.3', 'lua']
+    lua_ver_req = ['>=5.3', '<5.4']
+    lua_header_subdirs = ['lua5.3', 'lua-5.3']
+    lua_version_num = '503'
+elif lua_version_opt == '5.4'
+    lua_pc_names = ['lua-5.4', 'lua5.4', 'lua']
+    lua_ver_req = ['>=5.4', '<5.5']
+    lua_header_subdirs = ['lua5.4', 'lua-5.4']
+    lua_version_num = '504'
+else
+    lua_pc_names = ['lua-5.4', 'lua5.4', 'lua-5.3', 'lua5.3', 'lua']
+    lua_ver_req = ['>=5.3', '<5.5']
+    lua_header_subdirs = ['lua5.4', 'lua-5.4', 'lua5.3', 'lua-5.3']
+    lua_version_num = ''
+endif
 lua_dep = disabler()
-foreach name : ['lua-5.4', 'lua5.4', 'lua-5.3', 'lua5.3', 'lua']
+foreach name : lua_pc_names
     if not lua_dep.found()
-        cand = dependency(name, version: ['>=5.3', '<5.5'], required: false)
+        cand = dependency(name, version: lua_ver_req, required: false)
         if cand.found() and cpp.has_header('lua.h', dependencies: cand)
             lua_dep = cand
         endif
     endif
 endforeach
 if not lua_dep.found()
-    lua_dep = dependency(
-        'lua-5.4',
-        version: ['>=5.3', '<5.5'],
-        fallback: ['lua', 'lua_dep'],
-    )
+    if lua_version_opt == 'auto'
+        lua_dep = dependency(
+            'lua-5.4',
+            version: ['>=5.3', '<5.5'],
+            fallback: ['lua', 'lua_dep'],
+        )
+    else
+        error(
+            'Lua @0@ was requested (lua_version) and was not found'.format(
+                lua_version_opt,
+            ),
+        )
+    endif
 endif
 
 inc = include_directories('src/include/internal', 'src/include/external')
@@ -55,26 +105,45 @@ lua_includedir = lua_dep.get_variable('includedir', default_value: '')
 lua_h = ''
 lua_lualib_h = ''
 lua_lauxlib_h = ''
-# Versioned subdirs first. includedir itself is often /usr/include,
-# which holds a distro 5.5 lua.h next to lua5.4/lua.h.
-foreach base : [
-    lua_includedir / 'lua5.4',
-    lua_includedir / 'lua5.3',
-    lua_includedir,
-]
+# includedir is often /usr/include, which holds lua5.3/lua.h next to
+# lua5.4/lua.h and sometimes a distro 5.5 lua.h. Follow lua_version
+# so the absolute path written below is the same ABI as the library
+# we link. auto still prefers 5.4.
+header_bases = []
+foreach sub : lua_header_subdirs
+    header_bases += lua_includedir / sub
+endforeach
+header_bases += lua_includedir
+foreach base : header_bases
     cand = base / 'lua.h'
     if lua_h == '' and base != '' and fs.exists(cand)
+        header_text = fs.read(cand)
         # 5.5 headers define LUA_VERSION_MINOR_N; 5.3/5.4 do not.
-        if not fs.read(cand).contains('LUA_VERSION_MINOR_N')
-            lua_h = cand
-            lua_lualib_h = base / 'lualib.h'
-            lua_lauxlib_h = base / 'lauxlib.h'
+        if not header_text.contains('LUA_VERSION_MINOR_N')
+            version_ok = lua_version_num == ''
+            if not version_ok
+                foreach line : header_text.split('\n')
+                    if (
+                        line.contains('define')
+                        and line.contains('LUA_VERSION_NUM')
+                        and line.contains(lua_version_num)
+                    )
+                        version_ok = true
+                    endif
+                endforeach
+            endif
+            if version_ok
+                lua_h = cand
+                lua_lualib_h = base / 'lualib.h'
+                lua_lauxlib_h = base / 'lauxlib.h'
+            endif
         endif
     endif
 endforeach
 if lua_h == ''
     error(
-        'Lua 5.3/5.4 lua.h not found under includedir=@0@'.format(
+        'Lua @0@ lua.h not found under includedir=@1@'.format(
+            lua_version_opt,
             lua_includedir,
         ),
     )
@@ -96,6 +165,14 @@ if host_machine.system() == 'linux'
     link_args += ['-Wl,--enable-new-dtags']
 endif
 
+reader_cpp_args = []
+if not lua_has_chemfiles
+    reader_cpp_args += ['-DDSEAMS_DISABLE_CHEMFILES']
+endif
+if not lua_has_readcon
+    reader_cpp_args += ['-DDSEAMS_DISABLE_READCON']
+endif
+
 dseams_core = shared_module(
     'dseams_core',
     files('src/lua_api.cpp', 'src/luaopen.cpp'),
@@ -103,9 +180,18 @@ dseams_core = shared_module(
     name_suffix: 'so',
     dependencies: [lua_dep, yds_dep],
     include_directories: inc,
-    cpp_args: lua_inc_args,
+    cpp_args: lua_inc_args + reader_cpp_args,
     link_args: link_args,
     install: true,
+)
+
+summary(
+    {
+        'PDB/GRO/DCD (chemfiles)': lua_has_chemfiles,
+        '.con (readcon-core)': lua_has_readcon,
+    },
+    section: 'Readers',
+    bool_yn: true,
 )
 
 install_data(
@@ -120,12 +206,86 @@ install_data(
     install_dir: get_option('datadir') / 'luadseams',
 )
 
-lua_exe = find_program('lua5.4', 'lua-5.4', 'lua5.3', 'lua', required: false)
-if lua_exe.found()
-    lua_test_env = {
-        'LUA_PATH': meson.project_source_root() / 'lua' / '?.lua;;',
-        'LUA_CPATH': meson.current_build_dir() / '?.so;;',
-    }
+# A module linked against one Lua ABI crashes in an interpreter of the
+# other, so the test interpreter must report the linked _VERSION. Every
+# candidate is asked, because `lua` and even `lua5.4` can be a link to
+# another version.
+lua_dep_version = lua_dep.version().split('.')
+if lua_dep_version.length() < 2
+    error(
+        'cannot read the Lua ABI from lua_dep version "@0@"'.format(
+            lua_dep.version(),
+        ),
+    )
+endif
+lua_abi = lua_dep_version[0] + '.' + lua_dep_version[1]
+if lua_version_opt != 'auto' and lua_abi != lua_version_opt
+    error(
+        'lua_version=@0@ resolved a Lua @1@ dependency'.format(
+            lua_version_opt,
+            lua_dep.version(),
+        ),
+    )
+endif
+lua_exe_found = false
+lua_exe_mismatch = []
+foreach name : ['lua' + lua_abi, 'lua-' + lua_abi, 'lua']
+    if not lua_exe_found
+        cand = find_program(name, required: false)
+        if cand.found()
+            cand_abi = run_command(
+                cand,
+                '-e', 'io.write((string.match(_VERSION, "5%.%d+")))',
+                check: false,
+            )
+            if cand_abi.returncode() == 0 and cand_abi.stdout() == lua_abi
+                lua_exe = cand
+                lua_exe_found = true
+            else
+                lua_exe_mismatch += [cand]
+                message(
+                    '@0@ reports Lua "@1@", the module links Lua @2@'.format(
+                        cand.full_path(),
+                        cand_abi.stdout().strip(),
+                        lua_abi,
+                    ),
+                )
+            endif
+        endif
+    endif
+endforeach
+summary(
+    {
+        'linked ABI': lua_abi,
+        'test interpreter': lua_exe_found ? lua_exe.full_path() : 'none',
+    },
+    section: 'Lua',
+)
+
+lua_test_env = {
+    'LUA_PATH': meson.project_source_root() / 'lua' / '?.lua;;',
+    'LUA_CPATH': meson.current_build_dir() / '?.so;;',
+}
+lua_abi_check = meson.project_source_root() / 'example_lua/library/abi_match.lua'
+# With only a wrong-version interpreter on PATH, register just this test
+# so it fails instead of the suite disappearing.
+if not lua_exe_found and lua_exe_mismatch.length() > 0
+    test(
+        'lua_abi_match',
+        lua_exe_mismatch[0],
+        args: [lua_abi_check, lua_abi],
+        env: lua_test_env,
+        workdir: meson.project_source_root(),
+    )
+endif
+if lua_exe_found
+    test(
+        'lua_abi_match',
+        lua_exe,
+        args: [lua_abi_check, lua_abi],
+        env: lua_test_env,
+        workdir: meson.project_source_root(),
+    )
     test(
         'dseams_library_read',
         lua_exe,
@@ -200,4 +360,23 @@ if lua_exe.found()
         workdir: meson.project_source_root(),
         timeout: 120,
     )
+    # Every reader test runs in every build. A built reader must read its
+    # fixture; a reader left out must report false and raise its error.
+    readers_lua = meson.project_source_root() / 'example_lua/library/readers.lua'
+    foreach kind, built : {
+        'con': lua_has_readcon,
+        'pdb': lua_has_chemfiles,
+        'gro': lua_has_chemfiles,
+        'dcd': lua_has_chemfiles,
+    }
+        test(
+            'dseams_read_' + kind,
+            lua_exe,
+            args: [readers_lua, kind, built ? 'on' : 'off'],
+            env: lua_test_env,
+            workdir: meson.project_source_root(),
+            suite: 'readers',
+            timeout: 120,
+        )
+    endforeach
 endif

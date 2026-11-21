@@ -4,6 +4,14 @@
 local core = require("dseams_core")
 local dseams = {core = core}
 
+function dseams.has_chemfiles()
+  return core.has_chemfiles() == true
+end
+
+function dseams.has_readcon()
+  return core.has_readcon() == true
+end
+
 local function suffix(path)
   return (path:match("%.([^%./]+)$") or ""):lower()
 end

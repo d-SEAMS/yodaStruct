@@ -62,13 +62,19 @@ Cloud readLammpsTrjreduced(std::string filename, int targetFrame, int typeI,
 /** XYZ coordinates, whole file. */
 Cloud readXYZ(const std::string &filename);
 
-#ifdef SEAMS_HAS_CHEMFILES
+/** True when this module was built with chemfiles (PDB, GRO, DCD). */
+bool has_chemfiles();
+
+/** True when this module was built with readcon-core (`.con`). */
+bool has_readcon();
+
+#if defined(SEAMS_HAS_CHEMFILES) && !defined(DSEAMS_DISABLE_CHEMFILES)
 /** One chemfiles frame. `typeFilter` -1 keeps every type. */
 Cloud readChemfiles(std::string filename, int targetFrame,
                     sol::optional<int> typeFilter);
 #endif
 
-#ifdef SEAMS_HAS_READCON
+#if defined(SEAMS_HAS_READCON) && !defined(DSEAMS_DISABLE_READCON)
 /** One readcon `.con` frame. */
 Cloud readCon(std::string filename, int targetFrame);
 #endif
