@@ -87,7 +87,6 @@ stdenv.mkDerivation {
     mkdir -p subprojects
     cp -r ${seams-core-src} subprojects/seams-core
     chmod -R u+w subprojects/seams-core
-    rm -rf subprojects/seams-core/subprojects
     cp -R ${linkcellSrc} subprojects/linkcell
     chmod -R u+w subprojects/linkcell
     cp ${seams-core-src}/subprojects/linkcell.wrap subprojects/linkcell.wrap
