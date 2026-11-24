@@ -10,6 +10,20 @@ by [towncrier](https://towncrier.readthedocs.io/).
 
 <!-- towncrier release notes start -->
 
+## [2.14.2] - 2026-11-24
+
+### Changed
+
+- CHANGELOG.md follows Keep a Changelog. Unreleased notes are
+  changelog.d fragments assembled by towncrier.
+- Engine wrap and flake lock follow seams-core 67628524 (v2.10.0 plus ice XXI).
+- Engine wrap follows seams-core 91235ec1 (CHILL+ device-safe target loops).
+- Engine wrap follows seams-core bdc9b74 (RDF MIC-once and ice XXI fingerprint).
+- Engine wrap follows seams-core eb1a4985 (j815 leftover batch).
+- Engine wrap follows seams-core fa1c8a73 (audit UB and IRA residual).
+- The Lua and Fennel package builds against seams-core 2.14.2 and includes Linkcell 0.6.0 in the native build.
+
+
 ## 2.10.0 (2026-09-06)
 
 - Engine pinned at seams-core v2.10.0: F4 and Zeron q12, water-type CHILL, incomplete cages, TUM offload.

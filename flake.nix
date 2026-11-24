@@ -5,7 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     # Source only: meson builds seams-core as a static subproject.
     seams-core = {
-      url = "github:d-SEAMS/seams-core";
+      url = "github:d-SEAMS/seams-core/v2.14.2";
       flake = false;
     };
   };

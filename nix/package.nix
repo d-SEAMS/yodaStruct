@@ -8,14 +8,41 @@
   blas,
   lapack,
   libhwy,
+  cargo,
+  rustc,
+  fetchFromGitHub,
+  rustPlatform,
+  runCommand,
   lua5_4,
   llvmPackages,
   seams-core-src,
 }:
 
+let
+  linkcellSrc = fetchFromGitHub {
+    owner = "d-SEAMS";
+    repo = "linkcell";
+    rev = "v0.6.0";
+    hash = "sha256-C1RPSOQHsBjfYxsw5Si6Q4+B+YGlQjNHitinndAv8XA=";
+  };
+  linkcellCargoVendor = rustPlatform.fetchCargoVendor {
+    src = linkcellSrc;
+    hash = "sha256-2QscNVUPmCrwO1cAHWnDZAtU8Hsr6Bl/WTO65WwDsC8=";
+  };
+  cargoHome = runCommand "yodastruct-cargo-home" { } ''
+    mkdir -p "$out"
+    cat > "$out/config.toml" <<EOF
+    [source.vendored-source-registry-0]
+    directory = "${linkcellCargoVendor}/source-registry-0"
+
+    [source.crates-io]
+    replace-with = "vendored-source-registry-0"
+    EOF
+  '';
+in
 stdenv.mkDerivation {
   pname = "dseams";
-  version = "2.10.0";
+  version = "2.14.2";
 
   src = lib.fileset.toSource {
     root = ./..;
@@ -35,6 +62,8 @@ stdenv.mkDerivation {
     ninja
     pkg-config
     lua5_4
+    cargo
+    rustc
   ];
 
   buildInputs = [
@@ -50,6 +79,8 @@ stdenv.mkDerivation {
 
   preConfigure = ''
     export DSEAMS_SOURCE_DIR="$PWD"
+    export CARGO_HOME=${cargoHome}
+    export CARGO_NET_OFFLINE=true
   '';
 
   postPatch = ''
@@ -57,6 +88,9 @@ stdenv.mkDerivation {
     cp -r ${seams-core-src} subprojects/seams-core
     chmod -R u+w subprojects/seams-core
     rm -rf subprojects/seams-core/subprojects
+    cp -R ${linkcellSrc} subprojects/linkcell
+    chmod -R u+w subprojects/linkcell
+    cp ${seams-core-src}/subprojects/linkcell.wrap subprojects/linkcell.wrap
   '';
 
   doCheck = true;

@@ -29,11 +29,15 @@ jobs:
             liblapack
             lua=5.4
             cmake
+            rust
           cache-environment: true
       - name: Configure and build
         shell: bash -el {0}
         run: |
-          meson setup bbdir --prefix=/usr --libdir=lib --wrap-mode=nofallback
+          meson subprojects download seams-core
+          cp subprojects/seams-core/subprojects/linkcell.wrap subprojects/
+          meson subprojects download linkcell
+          meson setup bbdir --prefix=/usr --libdir=lib --wrap-mode=nodownload -Dauto_features=disabled
           meson compile -C bbdir
       - name: Tests
         shell: bash -el {0}
