@@ -11,10 +11,8 @@ seams = subproject(
     'seams-core',
     default_options: [
         'default_library=static',
-        'with_python=false',
         'with_tests=false',
         'with_cli=false',
-        'with_lua=disabled',
     ],
 )
 # Eigen/BLAS inject -I/usr/include. Mark those as system includes so
