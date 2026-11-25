@@ -130,6 +130,10 @@ data-aria-dark="Switch to auto color mode">
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../reference/index.html">Reference</a></li>
 </ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../contributing/developer/index.html">Developer Guide</a></li>
+</ul>
         </div>
       </div>
     </div>
@@ -218,10 +222,10 @@ copy at <code class="docutils literal notranslate"><span class="pre">$prefix/sha
 </div>
 <p>Fennel <code class="docutils literal notranslate"><span class="pre">require</span></code> falls through to Lua <code class="docutils literal notranslate"><span class="pre">package.path</span></code>, so
 <code class="docutils literal notranslate"><span class="pre">(require</span> <span class="pre">:dseams)</span></code> returns the same table as <code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code>:
-<code class="docutils literal notranslate"><span class="pre">read</span></code>, <code class="docutils literal notranslate"><span class="pre">neighbors</span></code>, <code class="docutils literal notranslate"><span class="pre">neighbors_pair</span></code>, <code class="docutils literal notranslate"><span class="pre">cn</span></code>, <code class="docutils literal notranslate"><span class="pre">rdf</span></code>, <code class="docutils literal notranslate"><span class="pre">running_cn</span></code>,
-<code class="docutils literal notranslate"><span class="pre">knn</span></code>, <code class="docutils literal notranslate"><span class="pre">chill_plus</span></code>, <code class="docutils literal notranslate"><span class="pre">chill</span></code>, <code class="docutils literal notranslate"><span class="pre">cages</span></code>, <code class="docutils literal notranslate"><span class="pre">hbonds</span></code>, <code class="docutils literal notranslate"><span class="pre">density</span></code>,
-<code class="docutils literal notranslate"><span class="pre">site_table</span></code>, <code class="docutils literal notranslate"><span class="pre">pairs</span></code>, <code class="docutils literal notranslate"><span class="pre">domain</span></code>, and <code class="docutils literal notranslate"><span class="pre">.core</span></code>. Public Lua names use
-underscores.</p>
+<code class="docutils literal notranslate"><span class="pre">read</span></code>, <code class="docutils literal notranslate"><span class="pre">has_chemfiles</span></code>, <code class="docutils literal notranslate"><span class="pre">has_readcon</span></code>, <code class="docutils literal notranslate"><span class="pre">neighbors</span></code>,
+<code class="docutils literal notranslate"><span class="pre">neighbors_pair</span></code>, <code class="docutils literal notranslate"><span class="pre">cn</span></code>, <code class="docutils literal notranslate"><span class="pre">rdf</span></code>, <code class="docutils literal notranslate"><span class="pre">running_cn</span></code>, <code class="docutils literal notranslate"><span class="pre">knn</span></code>, <code class="docutils literal notranslate"><span class="pre">chill_plus</span></code>,
+<code class="docutils literal notranslate"><span class="pre">chill</span></code>, <code class="docutils literal notranslate"><span class="pre">cages</span></code>, <code class="docutils literal notranslate"><span class="pre">hbonds</span></code>, <code class="docutils literal notranslate"><span class="pre">density</span></code>, <code class="docutils literal notranslate"><span class="pre">site_table</span></code>, <code class="docutils literal notranslate"><span class="pre">pairs</span></code>,
+<code class="docutils literal notranslate"><span class="pre">domain</span></code>, and <code class="docutils literal notranslate"><span class="pre">.core</span></code>. Public Lua names use underscores.</p>
 <p>Scripts that mention <code class="docutils literal notranslate"><span class="pre">readFrameOnlyOne</span></code>, <code class="docutils literal notranslate"><span class="pre">functionScript</span></code>, or
 <code class="docutils literal notranslate"><span class="pre">trajectory</span></code> as a global expect the 2020 driver. Rewrite them to
 <code class="docutils literal notranslate"><span class="pre">(require</span> <span class="pre">:dseams)</span></code>. <code class="docutils literal notranslate"><span class="pre">example_lua/fennel/script.fnl</span></code> is that older
@@ -438,7 +442,7 @@ to <code class="docutils literal notranslate"><span class="pre">fennel.dofile</s
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=67920a36"></script>
+      <script src="../_static/documentation_options.js?v=e8362b60"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../_static/design-tabs.js?v=fcb327ea"></script>

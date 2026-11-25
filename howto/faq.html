@@ -130,6 +130,10 @@ data-aria-dark="Switch to auto color mode">
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../reference/index.html">Reference</a></li>
 </ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../contributing/developer/index.html">Developer Guide</a></li>
+</ul>
         </div>
       </div>
     </div>
@@ -343,9 +347,9 @@ shipped example.</p>
 </section>
 <section id="readcon-readchemfiles-is-not-in-this-build">
 <h4><a class="toc-backref" href="#id20" role="doc-backlink">readCon / readChemfiles is not in this build</a><a class="headerlink" href="#readcon-readchemfiles-is-not-in-this-build" title="Link to this heading">#</a></h4>
-<p>Those binds exist only when seams-core was compiled with
-<code class="docutils literal notranslate"><span class="pre">SEAMS_HAS_READCON</span></code> or <code class="docutils literal notranslate"><span class="pre">SEAMS_HAS_CHEMFILES</span></code>. LAMMPS dumps and
-<code class="docutils literal notranslate"><span class="pre">.xyz</span></code> do not need them.</p>
+<p><code class="docutils literal notranslate"><span class="pre">dseams.has_readcon()</span></code> and <code class="docutils literal notranslate"><span class="pre">dseams.has_chemfiles()</span></code> are false
+unless this build found readcon-core or chemfiles. LAMMPS dumps
+and <code class="docutils literal notranslate"><span class="pre">.xyz</span></code> do not need them.</p>
 </section>
 <section id="fennel-loads-dseams-fnl-as-itself">
 <h4><a class="toc-backref" href="#id21" role="doc-backlink">Fennel loads dseams.fnl as itself</a><a class="headerlink" href="#fennel-loads-dseams-fnl-as-itself" title="Link to this heading">#</a></h4>
@@ -568,7 +572,7 @@ environment, then CLI flags).</p>
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=67920a36"></script>
+      <script src="../_static/documentation_options.js?v=e8362b60"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../_static/design-tabs.js?v=fcb327ea"></script>

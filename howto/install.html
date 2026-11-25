@@ -130,6 +130,10 @@ data-aria-dark="Switch to auto color mode">
 <ul>
 <li class="toctree-l1 _expand"><a class="reference internal" href="../reference/index.html">Reference</a></li>
 </ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1 _expand"><a class="reference internal" href="../contributing/developer/index.html">Developer Guide</a></li>
+</ul>
         </div>
       </div>
     </div>
@@ -310,13 +314,23 @@ on the versioned <code class="docutils literal notranslate"><span class="pre">sh
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">require(&quot;yoda&quot;)</span></code> is <code class="docutils literal notranslate"><span class="pre">lua/yoda.lua</span></code>, which returns
 <code class="docutils literal notranslate"><span class="pre">require(&quot;dseams&quot;)</span></code>.</p>
-<p>Optional readers are compile-gated in seams-core:</p>
+<p>Optional readers are whatever seams-core compiled. That subproject
+probes pkg-config and, unless wrap fallbacks are disabled, can build
+readcon-core from its wrap when no system copy is installed.
+<code class="docutils literal notranslate"><span class="pre">chemfiles</span></code> turns on PDB, GRO, and DCD. <code class="docutils literal notranslate"><span class="pre">readcon-core</span></code> turns on
+<code class="docutils literal notranslate"><span class="pre">.con</span></code>. Either library may be absent; the build still produces
+LAMMPS and XYZ reads. This binding does not probe those libraries
+itself. <code class="docutils literal notranslate"><span class="pre">dseams.has_readcon()</span></code> and <code class="docutils literal notranslate"><span class="pre">dseams.has_chemfiles()</span></code> follow
+the <code class="docutils literal notranslate"><span class="pre">SEAMS_HAS_READCON</span></code> and <code class="docutils literal notranslate"><span class="pre">SEAMS_HAS_CHEMFILES</span></code> macros on the
+linked engine.</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">core.readCon</span></code> exists only with <code class="docutils literal notranslate"><span class="pre">SEAMS_HAS_READCON</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">core.readChemfiles</span></code> exists only with <code class="docutils literal notranslate"><span class="pre">SEAMS_HAS_CHEMFILES</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dseams.has_readcon()</span></code> is true only when that engine has
+readcon-core, which registers <code class="docutils literal notranslate"><span class="pre">core.readCon</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dseams.has_chemfiles()</span></code> is true only when that engine has
+chemfiles, which registers <code class="docutils literal notranslate"><span class="pre">core.readChemfiles</span></code></p></li>
 </ul>
 <p><code class="docutils literal notranslate"><span class="pre">dseams.read</span></code> errors with a clear message when you pass <code class="docutils literal notranslate"><span class="pre">.con</span></code> /
-<code class="docutils literal notranslate"><span class="pre">.pdb</span></code> / <code class="docutils literal notranslate"><span class="pre">.gro</span></code> / <code class="docutils literal notranslate"><span class="pre">.dcd</span></code> and the matching bind is missing. LAMMPS
+<code class="docutils literal notranslate"><span class="pre">.pdb</span></code> / <code class="docutils literal notranslate"><span class="pre">.gro</span></code> / <code class="docutils literal notranslate"><span class="pre">.dcd</span></code> and the matching query is false. LAMMPS
 dumps and <code class="docutils literal notranslate"><span class="pre">.xyz</span></code> do not need those backends.</p>
 </section>
 <section id="verification">
@@ -518,7 +532,7 @@ dump path resolves.</p>
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=67920a36"></script>
+      <script src="../_static/documentation_options.js?v=e8362b60"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../_static/design-tabs.js?v=fcb327ea"></script>

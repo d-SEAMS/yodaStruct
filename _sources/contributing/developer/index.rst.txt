@@ -1,0 +1,69 @@
+
+
+Developer Guide
+---------------
+
+Day-to-day work on the Lua and Fennel library (``require("dseams")``).
+
+Environment
+~~~~~~~~~~~
+
+A C++20 compiler, Meson 1.3 or newer, Ninja, pkg-config, Lua 5.3 or
+5.4 (not 5.5), Eigen 3.4, and BLAS/LAPACK. Optional readers are
+``chemfiles`` (PDB, GRO, DCD) and ``readcon-core`` (``.con``), found by
+pkg-config. The Nix development shell is ``nix develop``.
+
+.. code:: bash
+
+    meson setup bbdir --wrap-mode=nofallback
+    meson compile -C bbdir
+
+Common tasks
+~~~~~~~~~~~~
+
+.. table::
+
+    +---------------------+------------------------------------------------------------------------+
+    | Task                | Command                                                                |
+    +=====================+========================================================================+
+    | Configure and build | ``meson setup bbdir --wrap-mode=nofallback && meson compile -C bbdir`` |
+    +---------------------+------------------------------------------------------------------------+
+    | Full test suite     | ``meson test -C bbdir -v --print-errorlogs``                           |
+    +---------------------+------------------------------------------------------------------------+
+    | Reader tests        | ``meson test -C bbdir -v --suite readers``                             |
+    +---------------------+------------------------------------------------------------------------+
+    | Readers required    | ``meson setup bbdir -Dwith_chemfiles=enabled -Dwith_readcon=enabled``  |
+    +---------------------+------------------------------------------------------------------------+
+    | Changelog preview   | ``towncrier build --draft --version unreleased``                       |
+    +---------------------+------------------------------------------------------------------------+
+    | Version copies      | ``python3 -m cogapp -I ci/version -r @ci/version/files.txt``           |
+    +---------------------+------------------------------------------------------------------------+
+    | Commit check        | ``cog check v2.10.0..HEAD``                                            |
+    +---------------------+------------------------------------------------------------------------+
+    | Org to RST          | ``emacs --batch --load export.el`` from ``docs/``                      |
+    +---------------------+------------------------------------------------------------------------+
+    | HTML docs           | ``sphinx-build -b html docs/source docs/build``                        |
+    +---------------------+------------------------------------------------------------------------+
+    | Upload rockspec     | ``luarocks new_version rockspec X.Y.Z --tag vX.Y.Z``                   |
+    +---------------------+------------------------------------------------------------------------+
+
+Documentation
+~~~~~~~~~~~~~
+
+Reader pages and this guide are Org under ``docs/orgmode/``.
+``docs/export.el`` writes RST under ``docs/source/``.
+Do not edit the RST by hand.
+Sphinx builds HTML from that RST and from Doxygen XML of
+``src/include/internal/lua_api.hpp``.
+
+.. code:: bash
+
+    cd docs && emacs --batch --load export.el
+    sphinx-build -b html docs/source docs/build
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Details
+
+   testing
+   faq
