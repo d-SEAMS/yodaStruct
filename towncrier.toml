@@ -4,7 +4,7 @@ name = "yodaStruct"
 # import dseams_version as v
 # cog.outl('version = "%s"' % v.VERSION)
 # ]]]
-version = "2.10.0"
+version = "2.14.2"
 # [[[end]]]
 directory = "changelog.d"
 filename = "CHANGELOG.md"

@@ -4,7 +4,7 @@ package = "dseams"
 -- import dseams_version as v
 -- cog.outl('version = "%s-1"' % v.VERSION)
 -- ]]]
-version = "2.10.0-1"
+version = "2.14.2-1"
 -- [[[end]]]
 source = {
    url = "git+https://github.com/d-SEAMS/yodaStruct.git",
@@ -12,7 +12,7 @@ source = {
    -- import dseams_version as v
    -- cog.outl('   tag = "v%s",' % v.VERSION)
    -- ]]]
-   tag = "v2.10.0",
+   tag = "v2.14.2",
    -- [[[end]]]
 }
 description = {

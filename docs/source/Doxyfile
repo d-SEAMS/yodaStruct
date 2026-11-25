@@ -3,7 +3,7 @@ PROJECT_NAME           = "dseams"
 # import dseams_version as v
 # cog.outl('PROJECT_NUMBER         = "v%s"' % v.VERSION)
 # ]]]
-PROJECT_NUMBER         = "v2.10.0"
+PROJECT_NUMBER         = "v2.14.2"
 # [[[end]]]
 PROJECT_BRIEF          = "Lua names on dseams.core"
 OUTPUT_DIRECTORY       = "."
