@@ -23,6 +23,10 @@ by [towncrier](https://towncrier.readthedocs.io/).
 - Engine wrap follows seams-core fa1c8a73 (audit UB and IRA residual).
 - The Lua and Fennel package builds against seams-core 2.14.2 and includes Linkcell 0.6.0 in the native build.
 
+### Fixed
+
+- The Nix flake uses Nixpkgs 26.05 on Intel macOS.
+
 
 ## 2.10.0 (2026-09-06)
 
