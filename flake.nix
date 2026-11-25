@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgsIntelDarwin.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     # Source only: meson builds seams-core as a static subproject.
     seams-core = {
       url = "github:d-SEAMS/seams-core/v2.14.2";
@@ -11,7 +12,7 @@
   };
 
   outputs =
-    { self, nixpkgs, seams-core }:
+    { self, nixpkgs, nixpkgsIntelDarwin, seams-core }:
     let
       inherit (nixpkgs) lib;
       systems = [
@@ -21,7 +22,12 @@
         "aarch64-darwin"
       ];
       forAllSystems = lib.genAttrs systems;
-      pkgsFor = system: nixpkgs.legacyPackages.${system};
+      pkgsFor =
+        system:
+        if system == "x86_64-darwin" then
+          nixpkgsIntelDarwin.legacyPackages.${system}
+        else
+          nixpkgs.legacyPackages.${system};
     in
     {
       packages = forAllSystems (
