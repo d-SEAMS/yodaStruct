@@ -78,7 +78,7 @@ jobs:
         shell: bash -el {0}
         run: |
           set -euxo pipefail
-          luarocks --lua-version=5.4 make --tree "$PWD/.luarocks" rockspec
+          luarocks --lua-version=5.4 make --tree "$PWD/.luarocks" rockspec "LUA=$(command -v lua)"
           luarocks --lua-version=5.4 --tree "$PWD/.luarocks" list --porcelain
           luarocks --lua-version=5.4 --tree "$PWD/.luarocks" list --porcelain fennel | grep -E '^fennel[[:space:]]+1\.'
           eval "$(luarocks --lua-version=5.4 path --tree "$PWD/.luarocks")"
