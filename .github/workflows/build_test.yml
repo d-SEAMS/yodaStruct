@@ -52,7 +52,7 @@ jobs:
           meson subprojects download seams-core
           cp subprojects/seams-core/subprojects/linkcell.wrap subprojects/
           mkdir -p subprojects/packagefiles
-          cp subprojects/seams-core/subprojects/packagefiles/linkcell-conda-openmp.patch subprojects/packagefiles/
+          cp subprojects/seams-core/subprojects/packagefiles/linkcell-*.patch subprojects/packagefiles/
           meson subprojects download linkcell
           meson setup bbdir --prefix=/usr --libdir=lib --wrap-mode=nodownload -Dauto_features=disabled
           meson compile -C bbdir
