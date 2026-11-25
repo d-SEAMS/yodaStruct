@@ -13,6 +13,7 @@
   fetchFromGitHub,
   rustPlatform,
   runCommand,
+  symlinkJoin,
   lua5_4,
   llvmPackages,
   seams-core-src,
@@ -28,6 +29,13 @@ let
   linkcellCargoVendor = rustPlatform.fetchCargoVendor {
     src = linkcellSrc;
     hash = "sha256-2QscNVUPmCrwO1cAHWnDZAtU8Hsr6Bl/WTO65WwDsC8=";
+  };
+  libompPrefix = symlinkJoin {
+    name = "yodastruct-libomp";
+    paths = [
+      (lib.getDev llvmPackages.openmp)
+      (lib.getLib llvmPackages.openmp)
+    ];
   };
   cargoHome = runCommand "yodastruct-cargo-home" { } ''
     mkdir -p "$out"
@@ -87,6 +95,8 @@ stdenv.mkDerivation {
     export DSEAMS_SOURCE_DIR="$PWD"
     export CARGO_HOME=${cargoHome}
     export CARGO_NET_OFFLINE=true
+  '' + lib.optionalString stdenv.hostPlatform.isDarwin ''
+    export LIBOMP_PREFIX=${libompPrefix}
   '';
 
   postPatch = ''
@@ -96,6 +106,9 @@ stdenv.mkDerivation {
     cp -R ${linkcellSrc} subprojects/linkcell
     chmod -R u+w subprojects/linkcell
     cp ${seams-core-src}/subprojects/linkcell.wrap subprojects/linkcell.wrap
+    for patch in linkcell-conda-openmp.patch linkcell-macos-rpath.patch; do
+      patch -d subprojects/linkcell -p1 < "subprojects/seams-core/subprojects/packagefiles/$patch"
+    done
   '';
 
   doCheck = true;
