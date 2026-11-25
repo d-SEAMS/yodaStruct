@@ -54,6 +54,17 @@ build = {
    type = "command",
    -- $(LUA) is the interpreter LuaRocks selected. LuaRocks 3.8 does not
    -- define $(LUA_VERSION), so the version is read from that interpreter.
-   build_command = "LV=$($(LUA) -e \"print(string.match(_VERSION, '5%.%d+'))\") && meson setup builddir -Dlua_version=\"$LV\" && meson compile -C builddir",
-   install_command = "mkdir -p \"$(LUADIR)\" \"$(LIBDIR)\" && cp lua/dseams.lua lua/yoda.lua lua/dseams.fnl lua/yoda.fnl \"$(LUADIR)/\" && cp builddir/dseams_core.so \"$(LIBDIR)/\"",
+   build_command = "LV=$($(LUA) -e \"print(string.match(_VERSION, '5%.%d+'))\") && meson setup builddir --prefix=/usr --libdir=lib -Dlua_version=\"$LV\" && meson compile -C builddir",
+   install_command = [[
+set -eu
+meson install -C builddir --no-rebuild --destdir "$PWD/builddir/rock-install"
+mkdir -p "$(LUADIR)" "$(LIBDIR)"
+cp lua/dseams.lua lua/yoda.lua lua/dseams.fnl lua/yoda.fnl "$(LUADIR)/"
+cp builddir/rock-install/usr/lib/dseams_core.so "$(LIBDIR)/"
+for library in builddir/rock-install/usr/lib/libseams-chemfiles*; do
+   if [ -f "$library" ]; then
+      cp -P "$library" "$(LIBDIR)/"
+   fi
+done
+]],
 }

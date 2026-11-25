@@ -157,6 +157,13 @@ jobs:
           for f in cuh2.con water.dcd water.gro water.pdb; do
             grep -E "^read input/readers/$f nop=" bbdir/meson-logs/testlog.txt
           done
+      - name: Load the installed module with both readers
+        shell: bash -el {0}
+        run: |
+          DESTDIR="$PWD/stage-readers" meson install -C bbdir --no-rebuild
+          export LUA_PATH="$PWD/stage-readers/usr/share/luadseams/lua/?.lua;;"
+          export LUA_CPATH="$PWD/stage-readers/usr/lib/?.so;;"
+          env -u LD_LIBRARY_PATH lua -e 'local d = require("dseams"); assert(d.has_chemfiles()); assert(d.has_readcon())'
       - name: Configure with readers disabled and prove runtime disable
         shell: bash -el {0}
         run: |

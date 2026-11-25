@@ -180,6 +180,7 @@ dseams_core = shared_module(
     include_directories: inc,
     cpp_args: lua_inc_args + reader_cpp_args,
     link_args: link_args,
+    install_rpath: host_machine.system() == 'darwin' ? '@loader_path' : '$ORIGIN',
     install: true,
 )
 
