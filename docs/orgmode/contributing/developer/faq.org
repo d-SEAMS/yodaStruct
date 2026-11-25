@@ -24,13 +24,10 @@ not search for the libraries. They fail configure when seams-core
 left the matching macro unset. ~auto~, the default, accepts whatever
 the engine built.
 
-With the default wrap mode and no system readcon-core, seams-core
-builds its readcon-core wrap and ~has_readcon()~ is true. ~--wrap-mode=nofallback~
-leaves ~.con~ out unless a system library is found. There is no
-chemfiles wrap. The wrap revision in this tree is readcon-core
-v0.14.10. chemfiles 0.10.4 matches the calls in seams-core. When the
-wrap moves, the installed readcon-core must track seams-core's floor
-(>=0.16.2 in seams-core v2.14.1).
+Seams-core 2.14.2 uses readcon-core 0.16.2 or newer. The default wrap
+mode can build the engine's pinned readcon-core. The engine requires the
+patched Chemfiles 0.10.4 build for its full set of readers. Use
+~-Dseams-core:use_vendored_chemfiles=enabled~ to build that copy.
 
 ** Where is the version written?
 
