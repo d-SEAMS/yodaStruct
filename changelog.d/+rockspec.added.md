@@ -1,1 +1,0 @@
-`luarocks make rockspec` builds `dseams_core` for the Lua version LuaRocks installs for, installs `dseams`, `yoda`, and their Fennel sources where `require` finds them, and pulls in `fennel >= 1.5.3, < 2.0`.

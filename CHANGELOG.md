@@ -12,6 +12,12 @@ by [towncrier](https://towncrier.readthedocs.io/).
 
 ## [2.14.2] - 2026-11-24
 
+### Added
+
+- `dseams.has_chemfiles` and `dseams.has_readcon` report whether this build can read PDB, GRO, and DCD files through chemfiles and `.con` files through readcon-core.
+- `dseams.read` reads `input/readers/water.dcd`, a two-atom trajectory written by chemfiles.
+- `luarocks make rockspec` builds `dseams_core` for the Lua version LuaRocks installs for, installs `dseams`, `yoda`, and their Fennel sources where `require` finds them, and pulls in `fennel >= 1.5.3, < 2.0`.
+
 ### Changed
 
 - CHANGELOG.md follows Keep a Changelog. Unreleased notes are
@@ -26,6 +32,7 @@ by [towncrier](https://towncrier.readthedocs.io/).
 ### Fixed
 
 - The Nix flake uses Nixpkgs 26.05 on Intel macOS.
+- `dseams.has_chemfiles` and `dseams.has_readcon` follow the macros on the linked seams-core, including a readcon-core wrap when no system library is installed.
 
 
 ## 2.10.0 (2026-09-06)
