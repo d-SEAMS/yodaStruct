@@ -2,8 +2,29 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it using the metadata below."
 title: "yodaStruct: Lua and Fennel front end for d-SEAMS"
 type: software
+# [[[cog
+# import dseams_version as v
+# cog.outl('version: "%s"' % v.VERSION)
+# ]]]
 version: "2.14.2"
+# [[[end]]]
+# [[[cog
+# import os
+# import re
+# import dseams_version as v
+# released = os.environ.get("YODA_RELEASE_DATE")
+# if released:
+#     released = released.strip()
+# else:
+#     text = (v.ROOT / "CITATION.cff").read_text(encoding="utf-8")
+#     released = re.search(
+#         r'(?m)^date-released: "(\d{4}-\d{2}-\d{2})"',
+#         text,
+#     ).group(1)
+# cog.outl('date-released: "%s"' % released)
+# ]]]
 date-released: "2026-11-24"
+# [[[end]]]
 license: MIT
 repository-code: "https://github.com/d-SEAMS/yodaStruct"
 url: https://dseams.info

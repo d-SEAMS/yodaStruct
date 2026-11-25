@@ -6,10 +6,12 @@ _conf_dir = os.path.dirname(os.path.abspath(__file__))
 subprocess.check_call(["doxygen", "Doxyfile"], cwd=_conf_dir)
 
 project = "dseams"
-# the release string is the meson project version, so the book cannot drift
-# from the build
+# The release string is the version keyword of project() in meson.build.
+# meson rewrite writes `version : '...'`; the file is also stored as
+# `version: '...'`. The match is the line that starts with that keyword,
+# so meson_version is left alone.
 with open(os.path.join(_conf_dir, "..", "..", "meson.build"), encoding="utf-8") as _fh:
-    release = re.search(r"version:\s*'([^']+)'", _fh.read()).group(1)
+    release = re.search(r"(?m)^\s*version\s*:\s*'([^']+)'", _fh.read()).group(1)
 copyright = "2019--present, d-SEAMS core team"
 author = "d-SEAMS core team"
 
@@ -42,11 +44,36 @@ html_title = "dseams Lua API | Molecular Simulation Structure Analysis"
 html_baseurl = "https://lua.dseams.info/"
 sitemap_url_scheme = "{link}"
 
+def _source_version():
+    # Edit links must name a ref that exists in d-SEAMS/yodaStruct.
+    # A local build can set DOCS_EDIT_REF.
+    # Pull requests, including forks, use GITHUB_SHA. GITHUB_HEAD_REF
+    # is the contributor branch, which is not a branch here, so a blob
+    # URL built from it 404s. Push builds publish the site for a branch.
+    # A commit-pinned blob does not open GitHub's editor, so a push
+    # uses GITHUB_REF_NAME (main or develop, or the tag on a tag push).
+    override = os.getenv("DOCS_EDIT_REF")
+    if override:
+        return override
+    if os.getenv("GITHUB_EVENT_NAME") == "pull_request":
+        sha = os.getenv("GITHUB_SHA")
+        if sha:
+            return sha
+    ref_name = os.getenv("GITHUB_REF_NAME")
+    if ref_name:
+        return ref_name
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], text=True, cwd=os.path.join(_conf_dir, "..", "..")
+        ).strip()
+    except Exception:
+        return "main"
+
 html_context = {
     "source_type": "github",
     "source_user": "d-SEAMS",
     "source_repo": "yodaStruct",
-    "source_version": "main",
+    "source_version": _source_version(),
     "source_docs_path": "/docs/source/",
 }
 

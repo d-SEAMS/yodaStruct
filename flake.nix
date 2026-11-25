@@ -1,5 +1,5 @@
 {
-  description = "d-SEAMS Lua and Fennel library (require(\"dseams\"))";
+  description = "Lua and Fennel front end for d-SEAMS: LAMMPS, XYZ, optional .con (readcon-core) and PDB/GRO/DCD (chemfiles) reads; neighbour lists, rings, cages, CHILL and CHILL+, Steinhardt Ql, RDF, coordination numbers, density, hydrogen bonds, topology fingerprints, and site domains";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
