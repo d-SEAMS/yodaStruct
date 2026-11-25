@@ -32,6 +32,7 @@ jobs:
             lua=5.4
             luarocks=3.12.2=lua54*
             cmake
+            libsqlite
             rust
           cache-environment: true
       # conda-forge has no Lua 5.4 build of luarocks 3.13.0, so an unpinned
@@ -50,6 +51,8 @@ jobs:
         run: |
           meson subprojects download seams-core
           cp subprojects/seams-core/subprojects/linkcell.wrap subprojects/
+          mkdir -p subprojects/packagefiles
+          cp subprojects/seams-core/subprojects/packagefiles/linkcell-conda-openmp.patch subprojects/packagefiles/
           meson subprojects download linkcell
           meson setup bbdir --prefix=/usr --libdir=lib --wrap-mode=nodownload -Dauto_features=disabled
           meson compile -C bbdir
@@ -99,7 +102,7 @@ jobs:
       - name: Configure, build, and test against Lua ${{ matrix.lua }}
         run: |
           set -euxo pipefail
-          meson setup bbdir --wrap-mode=nofallback -Dlua_version=${{ matrix.lua }}
+          meson setup bbdir -Dauto_features=disabled -Dlua_version=${{ matrix.lua }}
           meson compile -C bbdir
           readelf -d bbdir/dseams_core.so | grep -F "liblua${{ matrix.lua }}.so"
           meson test -C bbdir -v --print-errorlogs
@@ -117,17 +120,6 @@ jobs:
       - uses: dtolnay/rust-toolchain@df2a88e9fe4098bad09cb42c3dec7187f15861fc
         with:
           toolchain: stable
-      - name: Cache cargo-c
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: |
-            ~/.cargo/bin/cargo-capi
-            ~/.cargo/bin/cargo-cbuild
-            ~/.cargo/bin/cargo-cinstall
-            ~/.cargo/bin/cargo-ctest
-            ~/.cargo/.crates.toml
-            ~/.cargo/.crates2.json
-          key: cargo-c-0.10.26-${{ runner.os }}-${{ runner.arch }}
       - uses: mamba-org/setup-micromamba@f457c30a868e4760d3a6fcea5f25dc655b8edf39 # v3.2.1
         with:
           environment-name: yoda
@@ -141,52 +133,17 @@ jobs:
             liblapack
             lua=5.4
             cmake
+            libsqlite
             openssl
             make
           cache-environment: true
-      - name: Install chemfiles 0.10.4 and readcon-core v0.14.10
-        shell: bash -el {0}
-        run: |
-          set -euxo pipefail
-          curl -fsSL -o chemfiles.tar.gz https://github.com/chemfiles/chemfiles/archive/refs/tags/0.10.4.tar.gz
-          tar -xzf chemfiles.tar.gz
-          cmake -S chemfiles-0.10.4 -B chemfiles-build \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_INSTALL_PREFIX="$CONDA_PREFIX" \
-            -DCMAKE_C_COMPILER="${CC:-gcc}" \
-            -DCMAKE_CXX_COMPILER="${CXX:-g++}" \
-            -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
-            -DBUILD_SHARED_LIBS=ON
-          cmake --build chemfiles-build --parallel
-          cmake --install chemfiles-build
-          # 0.10.4 installs a CMake package and no pkg-config file.
-          mkdir -p "$CONDA_PREFIX/lib/pkgconfig"
-          printf '%s\n' \
-            "prefix=${CONDA_PREFIX}" \
-            'libdir=${prefix}/lib' \
-            'includedir=${prefix}/include' \
-            '' \
-            'Name: chemfiles' \
-            'Description: Library for reading and writing chemistry files' \
-            'Version: 0.10.4' \
-            'Libs: -L${libdir} -lchemfiles' \
-            'Cflags: -I${includedir}' \
-            > "$CONDA_PREFIX/lib/pkgconfig/chemfiles.pc"
-          cargo install cargo-c --version 0.10.26 --locked
-          # v0.14.10 is the readcon-core revision in the seams-core wrap
-          # this tree builds. When that wrap moves, this pin must track
-          # seams-core's floor (>=0.16.2, the floor in seams-core v2.14.1).
-          git clone --depth 1 --branch v0.14.10 https://github.com/lode-org/readcon-core.git
-          cargo cinstall --release --prefix "$CONDA_PREFIX" \
-            --libdir lib --pkgconfigdir lib/pkgconfig \
-            --manifest-path readcon-core/Cargo.toml
-          pkg-config --modversion chemfiles
-          pkg-config --modversion readcon-core
       - name: Configure, require both readers, and test
         shell: bash -el {0}
         run: |
           set -euxo pipefail
-          meson setup bbdir --prefix=/usr --libdir=lib --wrap-mode=nofallback \
+          meson setup bbdir --prefix=/usr --libdir=lib \
+            -Dseams-core:with_chemfiles=enabled -Dseams-core:use_vendored_chemfiles=enabled \
+            -Dseams-core:with_readcon=enabled \
             -Dwith_chemfiles=enabled -Dwith_readcon=enabled
           meson compile -C bbdir
           export LUA_PATH="$PWD/lua/?.lua;;"
@@ -204,7 +161,9 @@ jobs:
         shell: bash -el {0}
         run: |
           set -euxo pipefail
-          meson setup bbdir-disabled --prefix=/usr --libdir=lib --wrap-mode=nofallback \
+          meson setup bbdir-disabled --prefix=/usr --libdir=lib \
+            -Dseams-core:with_chemfiles=enabled -Dseams-core:use_vendored_chemfiles=enabled \
+            -Dseams-core:with_readcon=enabled \
             -Dwith_chemfiles=disabled -Dwith_readcon=disabled
           meson compile -C bbdir-disabled
           export LUA_PATH="$PWD/lua/?.lua;;"
